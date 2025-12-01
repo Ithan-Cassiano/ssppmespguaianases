@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concursos - Polícia Militar do Estado de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background-color: var(--white);
+            color: var(--darker-gray);
+            padding: 60px 0;
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .concursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+        
+        .concurso-item {
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .concursos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-header">
+                <h1>CONCURSOS ABERTOS</h1>
+                <div class="red-line-news"></div>
+            </div>
+            
+            <div class="concursos-grid" id="concursos-grid">
+                <div class="empty-concursos" style="text-align: center; padding: 60px 20px; color: #999; grid-column: 1 / -1;">
+                    <i class="fas fa-clipboard-list" style="font-size: 64px; margin-bottom: 20px; opacity: 0.3;"></i>
+                    <h3>Nenhum concurso disponível no momento</h3>
+                    <p>Novos concursos serão publicados em breve</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script src="../scripts/concursos-manager.js"></script>
+    <script>
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+        });
+    </script>
+    <script>
+        // Carregar concursos dinamicamente
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof concursosManager !== 'undefined') {
+                const concursosGrid = document.getElementById('concursos-grid');
+                if (concursosGrid) {
+                    // Obter cargo do usuário logado
+                    const currentUser = auth.getCurrentUser();
+                    const userRole = currentUser ? currentUser.role : null;
+                    
+                    // Filtrar concursos baseado no cargo
+                    const concursos = concursosManager.getConcursosByAccess(userRole);
+                    
+                    if (concursos.length > 0) {
+                        concursosGrid.innerHTML = concursos.map(concurso => {
+                            const hasImage = concurso.image && !concurso.image.includes('placeholder');
+                            return `
+                                <article class="concurso-item">
+                                    <div class="concurso-image">
+                                        ${hasImage ? 
+                                            `<img src="${concurso.image}" alt="${concurso.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onerror="this.parentElement.innerHTML='<div class=\\'concurso-placeholder\\'><i class=\\'fas fa-clipboard-list\\'></i></div>'">` :
+                                            `<div class="concurso-placeholder"><i class="fas fa-clipboard-list"></i></div>`
+                                        }
+                                    </div>
+                                    <div class="concurso-content">
+                                        <h3>${concurso.title}</h3>
+                                        ${concurso.description ? `<p>${concurso.description}</p>` : ''}
+                                        <div class="concurso-dates">
+                                            ${concurso.dataPostagem ? `<span class="concurso-date"><strong>Postado em:</strong> ${concurso.dataPostagem}</span>` : ''}
+                                            ${concurso.dataConcurso ? `<span class="concurso-date"><strong>Data do Concurso:</strong> ${concurso.dataConcurso}</span>` : ''}
+                                        </div>
+                                        <div class="concurso-links">
+                                            ${(function() {
+                                                // Verificar se a prova pode ser liberada e se ainda está aberta
+                                                let provaLiberada = false;
+                                                let provaFechada = false;
+                                                let mensagem = '';
+                                                
+                                                if (concurso.linkProva) {
+                                                    const agora = new Date();
+                                                    
+                                                    // Verificar se a prova já foi liberada
+                                                    if (concurso.dataHoraProva) {
+                                                        const dataHoraLiberacao = new Date(concurso.dataHoraProva);
+                                                        provaLiberada = agora >= dataHoraLiberacao;
+                                                    } else {
+                                                        // Se não tem data/hora definida, libera imediatamente
+                                                        provaLiberada = true;
+                                                    }
+                                                    
+                                                    // Verificar se a prova já foi fechada
+                                                    if (concurso.dataHoraFecharProva) {
+                                                        const dataHoraFechamento = new Date(concurso.dataHoraFecharProva);
+                                                        provaFechada = agora > dataHoraFechamento;
+                                                    }
+                                                    
+                                                    // Determinar o que mostrar
+                                                    if (provaFechada) {
+                                                        mensagem = `<span class="btn-concurso btn-prova" style="opacity: 0.5; cursor: not-allowed; background-color: #dc2626; color: white;"><i class="fas fa-lock"></i> Prova encerrada em ${new Date(concurso.dataHoraFecharProva).toLocaleString('pt-BR')}</span>`;
+                                                    } else if (provaLiberada) {
+                                                        mensagem = `<a href="${concurso.linkProva}" target="_blank" class="btn-concurso btn-prova"><i class="fas fa-file-alt"></i> Acessar Prova</a>`;
+                                                    } else if (concurso.dataHoraProva) {
+                                                        mensagem = `<span class="btn-concurso btn-prova" style="opacity: 0.5; cursor: not-allowed; background-color: #ccc;"><i class="fas fa-clock"></i> Prova será liberada em ${new Date(concurso.dataHoraProva).toLocaleString('pt-BR')}</span>`;
+                                                    }
+                                                }
+                                                
+                                                return mensagem;
+                                            })()}
+                                            ${concurso.linkApostila ? `<a href="${concurso.linkApostila}" target="_blank" class="btn-concurso btn-apostila"><i class="fas fa-book"></i> Apostila</a>` : ''}
+                                        </div>
+                                    </div>
+                                </article>
+                            `;
+                        }).join('');
+                    } else {
+                        // Manter mensagem padrão se não houver concursos
+                        const emptyMsg = concursosGrid.querySelector('.empty-concursos');
+                        if (!emptyMsg) {
+                            concursosGrid.innerHTML = `
+                                <div class="empty-concursos" style="text-align: center; padding: 60px 20px; color: #999; grid-column: 1 / -1;">
+                                    <i class="fas fa-clipboard-list" style="font-size: 64px; margin-bottom: 20px; opacity: 0.3;"></i>
+                                    <h3>Nenhum concurso disponível no momento</h3>
+                                    <p>Novos concursos serão publicados em breve</p>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

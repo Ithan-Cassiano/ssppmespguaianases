@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Painel Administrativo - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .admin-header h1 {
+            color: var(--blue);
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .admin-actions .btn {
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background-color: var(--blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .btn-news {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .btn-news:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .btn-activities {
+            background-color: #059669;
+            color: white;
+        }
+        
+        .btn-activities:hover {
+            background-color: #047857;
+        }
+        
+        .btn-concursos {
+            background-color: #dc2626;
+            color: white;
+        }
+        
+        .btn-concursos:hover {
+            background-color: #b91c1c;
+        }
+        
+        .btn-diario {
+            background-color: #7c3aed;
+            color: white;
+        }
+        
+        .btn-diario:hover {
+            background-color: #6d28d9;
+        }
+        
+        .btn-users {
+            background-color: #ea580c;
+            color: white;
+        }
+        
+        .btn-users:hover {
+            background-color: #c2410c;
+        }
+        
+        .btn-numbers {
+            background-color: #0891b2;
+            color: white;
+        }
+        
+        .btn-numbers:hover {
+            background-color: #0e7490;
+        }
+        
+        .btn-banner {
+            background-color: #be185d;
+            color: white;
+        }
+        
+        .btn-banner:hover {
+            background-color: #9f1239;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .news-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .news-item-admin {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            align-items: center;
+        }
+        
+        .news-item-admin:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item-admin:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .news-item-image {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .news-item-content {
+            flex: 1;
+        }
+        
+        .news-item-content h3 {
+            margin: 0 0 8px 0;
+            color: var(--darker-gray);
+            font-size: 16px;
+        }
+        
+        .news-item-content p {
+            margin: 0 0 8px 0;
+            color: #666;
+            font-size: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .news-item-date {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .news-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            color: var(--blue);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--darker-gray);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e5e5;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .image-preview.active {
+            display: block;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .admin-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        
+        .panel-header h2 {
+            margin: 0;
+            color: var(--blue);
+            font-size: 20px;
+        }
+        
+        .users-list {
+            margin-top: 20px;
+        }
+        
+        .user-item-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            transition: background 0.3s;
+        }
+        
+        .user-item-admin:last-child {
+            border-bottom: none;
+        }
+        
+        .user-item-admin:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-details h3 {
+            margin: 0 0 5px 0;
+            color: var(--darker-gray);
+            font-size: 16px;
+        }
+        
+        .user-details p {
+            margin: 0 0 8px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .user-role {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .role-admin {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .role-user {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .role-policial {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .user-date {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .activities-admin-list {
+            margin-top: 20px;
+        }
+        
+        .activity-item-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            transition: background 0.3s;
+        }
+        
+        .activity-item-admin:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-item-admin:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .activity-info-admin {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+        
+        .activity-icon-admin {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .activity-details-admin {
+            flex: 1;
+        }
+        
+        .activity-details-admin h3 {
+            margin: 0 0 8px 0;
+            color: var(--darker-gray);
+            font-size: 16px;
+        }
+        
+        .activity-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .type-cultural {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .type-community {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .type-education {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .activity-actions-admin {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-cog"></i> Painel Administrativo</h1>
+            <div class="admin-actions">
+                <button class="btn btn-news" onclick="showNewsPanel()">
+                    <i class="fas fa-newspaper"></i> Gerenciar Notícias
+                </button>
+                <button class="btn btn-activities" onclick="showActivitiesPanel()">
+                    <i class="fas fa-calendar-alt"></i> Gerenciar Atividades
+                </button>
+                <button class="btn btn-concursos" onclick="showConcursosPanel()">
+                    <i class="fas fa-clipboard-list"></i> Gerenciar Concursos
+                </button>
+                <button class="btn btn-diario" onclick="showDiarioPanel()">
+                    <i class="fas fa-file-alt"></i> Gerenciar Diário Oficial
+                </button>
+                <button class="btn btn-users" onclick="showUsersPanel()">
+                    <i class="fas fa-users"></i> Gerenciar Usuários
+                </button>
+                <button class="btn btn-numbers" onclick="showNumbersPanel()">
+                    <i class="fas fa-chart-bar"></i> Gerenciar Números PM
+                </button>
+                <button class="btn btn-banner" onclick="showBannerPanel()">
+                    <i class="fas fa-image"></i> Gerenciar Banner
+                </button>
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> Voltar ao Site
+                </a>
+                <button class="btn btn-danger" onclick="auth.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+        
+        <div id="alert-container"></div>
+        
+        
+        <div id="news-panel" class="admin-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-newspaper"></i> Gerenciar Notícias</h2>
+                <button class="btn btn-primary" onclick="openAddNewsModal()">
+                    <i class="fas fa-plus"></i> Nova Notícia
+                </button>
+            </div>
+            <div class="news-list">
+                <div id="news-list-container">
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="activities-panel" class="admin-panel" style="display: none;">
+            <div class="panel-header">
+                <h2><i class="fas fa-calendar-alt"></i> Gerenciar Atividades</h2>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="openAddActivityModal('cultural')">
+                        <i class="fas fa-theater-masks"></i> Nova Atividade Cultural
+                    </button>
+                    <button class="btn btn-primary" onclick="openAddActivityModal('community')">
+                        <i class="fas fa-users"></i> Nova Atividade Comunitária
+                    </button>
+                    <button class="btn btn-primary" onclick="openAddActivityModal('education')">
+                        <i class="fas fa-graduation-cap"></i> Nova Diretoria de Ensino
+                    </button>
+                </div>
+            </div>
+            <div class="activities-admin-list">
+                <div id="activities-list-container">
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="concursos-panel" class="admin-panel" style="display: none;">
+            <div class="panel-header">
+                <h2><i class="fas fa-clipboard-list"></i> Gerenciar Concursos</h2>
+                <button class="btn btn-primary" onclick="openAddConcursoModal()">
+                    <i class="fas fa-plus"></i> Novo Concurso
+                </button>
+            </div>
+            <div class="concursos-list">
+                <div id="concursos-list-container">
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="diario-panel" class="admin-panel" style="display: none;">
+            <div class="panel-header">
+                <h2><i class="fas fa-file-alt"></i> Gerenciar Diário Oficial</h2>
+                <button class="btn btn-primary" onclick="openAddDiarioModal()">
+                    <i class="fas fa-plus"></i> Nova Publicação
+                </button>
+            </div>
+            <div class="diario-admin-list">
+                <div id="diario-list-container">
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="users-panel" class="admin-panel" style="display: none;">
+            <div class="panel-header">
+                <h2><i class="fas fa-users"></i> Gerenciar Usuários</h2>
+                <button class="btn btn-primary" onclick="openCreateUserModal()">
+                    <i class="fas fa-user-plus"></i> Criar Usuário
+                </button>
+            </div>
+            <div class="users-list">
+                <div id="users-list-container">
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="numbers-panel" class="admin-panel" style="display: none;">
+            <div class="panel-header">
+                <h2><i class="fas fa-chart-bar"></i> Gerenciar Números PM</h2>
+                <button class="btn btn-primary" onclick="openEditNumbersModal()">
+                    <i class="fas fa-edit"></i> Editar Números
+                </button>
+            </div>
+            <div class="numbers-preview">
+                <div id="numbers-preview-container">
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="banner-panel" class="admin-panel" style="display: none;">
+            <div class="panel-header">
+                <h2><i class="fas fa-image"></i> Gerenciar Banner Principal</h2>
+                <button class="btn btn-primary" onclick="openEditBannerModal()">
+                    <i class="fas fa-edit"></i> Editar Imagem de Fundo
+                </button>
+                <button class="btn btn-primary" onclick="openEditBannerTextsModal()">
+                    <i class="fas fa-text-width"></i> Editar Mensagens
+                </button>
+            </div>
+            <div class="banner-preview">
+                <div id="banner-preview-container">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="activity-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-activity-title">Nova Atividade</h2>
+                <button class="close-modal" onclick="closeActivityModal()">&times;</button>
+            </div>
+            
+            <form id="activity-form">
+                <input type="hidden" id="activity-id" name="id">
+                <input type="hidden" id="activity-type" name="type" value="cultural">
+                
+                <div class="form-group">
+                    <label for="activity-title">Título *</label>
+                    <input type="text" id="activity-title" name="title" required>
+                </div>
+                
+                <div class="form-group" id="activity-description-group">
+                    <label for="activity-description">Descrição <span id="description-required" style="display: none;">*</span></label>
+                    <textarea id="activity-description" name="description" rows="4" placeholder="Digite a descrição da atividade..."></textarea>
+                </div>
+                
+                <div class="form-group" id="activity-date-group">
+                    <label for="activity-date">Data <span id="date-required" style="display: none;">*</span></label>
+                    <input type="text" id="activity-date" name="date" placeholder="Ex: Novembro 2024">
+                </div>
+                
+                <div class="form-group">
+                    <label for="activity-image">URL da Imagem (opcional)</label>
+                    <input type="text" id="activity-image" name="image" placeholder="Ex: images/atividade.jpg">
+                    <img id="activity-image-preview" class="image-preview" alt="Preview">
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeActivityModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="concurso-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-concurso-title">Novo Concurso</h2>
+                <button class="close-modal" onclick="closeConcursoModal()">&times;</button>
+            </div>
+            
+            <form id="concurso-form">
+                <input type="hidden" id="concurso-id" name="id">
+                
+                <div class="form-group">
+                    <label for="concurso-title">Título *</label>
+                    <input type="text" id="concurso-title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-description">Descrição</label>
+                    <textarea id="concurso-description" name="description" rows="4" placeholder="Digite a descrição do concurso..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-image">URL da Imagem (opcional)</label>
+                    <input type="text" id="concurso-image" name="image" placeholder="Ex: images/concurso.jpg">
+                    <img id="concurso-image-preview" class="image-preview" alt="Preview">
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-link-prova">Link da Prova (opcional)</label>
+                    <input type="url" id="concurso-link-prova" name="linkProva" placeholder="https://exemplo.com/prova">
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-data-hora-prova">Data e Hora para Liberar a Prova (opcional)</label>
+                    <input type="datetime-local" id="concurso-data-hora-prova" name="dataHoraProva" placeholder="Data e hora para liberar a prova">
+                    <small style="color: #666; font-size: 12px;">O botão da prova só aparecerá após esta data/hora</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-data-hora-fechar-prova">Data e Hora para Fechar a Prova (opcional)</label>
+                    <input type="datetime-local" id="concurso-data-hora-fechar-prova" name="dataHoraFecharProva" placeholder="Data e hora para fechar a prova">
+                    <small style="color: #666; font-size: 12px;">O botão da prova será desabilitado após esta data/hora</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-link-apostila">Link da Apostila (opcional)</label>
+                    <input type="url" id="concurso-link-apostila" name="linkApostila" placeholder="https://exemplo.com/apostila">
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-data-postagem">Data de Postagem (opcional)</label>
+                    <input type="text" id="concurso-data-postagem" name="dataPostagem" placeholder="Ex: 15 de Janeiro de 2025">
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-data-concurso">Data do Concurso (opcional)</label>
+                    <input type="text" id="concurso-data-concurso" name="dataConcurso" placeholder="Ex: 20 de Março de 2025">
+                </div>
+                
+                <div class="form-group">
+                    <label for="concurso-tipo">Tipo de Concurso *</label>
+                    <select id="concurso-tipo" name="tipo" required>
+                        <option value="aberto">Aberto a Todos</option>
+                        <option value="interno">Interno (Apenas Policiais)</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeConcursoModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="create-user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Criar Novo Usuário</h2>
+                <button class="close-modal" onclick="closeCreateUserModal()">&times;</button>
+            </div>
+            
+            <form id="create-user-form">
+                <div class="form-group">
+                    <label for="new-username">Usuário *</label>
+                    <input type="text" id="new-username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-email">E-mail *</label>
+                    <input type="email" id="new-email" name="email" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password">Senha *</label>
+                    <input type="password" id="new-password" name="password" required autocomplete="new-password" minlength="6">
+                    <small style="color: #666; font-size: 12px;">Mínimo 6 caracteres</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-role">Cargo *</label>
+                    <select id="new-role" name="role" required>
+                        <option value="user">Usuário Comum</option>
+                        <option value="policial">Policial</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Criar Usuário
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeCreateUserModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="change-password-title">Trocar Senha</h2>
+                <button class="close-modal" onclick="closeChangePasswordModal()">&times;</button>
+            </div>
+            
+            <form id="change-password-form">
+                <input type="hidden" id="change-password-username" name="username">
+                
+                <div class="form-group">
+                    <label>Usuário</label>
+                    <input type="text" id="change-password-username-display" readonly style="background-color: #f5f5f5;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password-user">Nova Senha *</label>
+                    <input type="password" id="new-password-user" name="password" required minlength="6">
+                    <small style="color: #666; font-size: 12px;">Mínimo 6 caracteres</small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Alterar Senha
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeChangePasswordModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="diario-modal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2 id="modal-diario-title">Nova Publicação</h2>
+                <button class="close-modal" onclick="closeDiarioModal()">&times;</button>
+            </div>
+            
+            <form id="diario-form">
+                <input type="hidden" id="diario-id" name="id">
+                
+                <div class="form-group">
+                    <label for="diario-titulo">Título da Publicação *</label>
+                    <input type="text" id="diario-titulo" name="titulo" required placeholder="Ex: PORTARIA Nº 123/2025">
+                </div>
+                
+                <div class="form-group">
+                    <label for="diario-edicao">Edição (opcional)</label>
+                    <input type="text" id="diario-edicao" name="edicao" placeholder="Ex: Edição de 30 de NOVEMBRO de 2025">
+                </div>
+                
+                <div class="form-group">
+                    <label for="diario-caderno">Caderno *</label>
+                    <select id="diario-caderno" name="caderno" required>
+                        <option value="Executivo">Executivo</option>
+                        <option value="Legislativo">Legislativo</option>
+                        <option value="Judiciário">Judiciário</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="diario-secao">Seção *</label>
+                    <select id="diario-secao" name="secao" required>
+                        <option value="Atos de Pessoal">Atos de Pessoal</option>
+                        <option value="Atos do Governador">Atos do Governador</option>
+                        <option value="Atos de Outros Órgãos">Atos de Outros Órgãos</option>
+                        <option value="Extratos">Extratos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="diario-data-publicacao">Data de Publicação *</label>
+                    <input type="date" id="diario-data-publicacao" name="dataPublicacao" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="diario-conteudo">Conteúdo da Publicação *</label>
+                    <textarea id="diario-conteudo" name="conteudo" rows="15" required placeholder="Digite o conteúdo da publicação...&#10;&#10;Use quebras de linha para separar parágrafos." style="font-family: 'Times New Roman', serif; font-size: 14px; line-height: 1.8;"></textarea>
+                    <small style="color: #666; font-size: 12px;">O cabeçalho e assinatura serão adicionados automaticamente</small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeDiarioModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="banner-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Editar Imagem de Fundo do Banner</h2>
+                <button class="close-modal" onclick="closeBannerModal()">&times;</button>
+            </div>
+            <form id="banner-form">
+                <div class="form-group">
+                    <label for="banner-image-url">URL da Imagem de Fundo</label>
+                    <input type="text" id="banner-image-url" name="imageUrl" placeholder="Ex: images/banner-background.jpg">
+                    <small style="color: #666; font-size: 12px;">Deixe em branco para usar o gradiente padrão</small>
+                </div>
+                
+                <div id="banner-image-preview" style="margin: 20px 0; text-align: center;">
+                    
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeBannerModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="removeBannerImage()" style="flex: 1;">
+                        <i class="fas fa-trash"></i> Remover Imagem
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="banner-texts-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Editar Mensagens do Banner</h2>
+                <button class="close-modal" onclick="closeBannerTextsModal()">&times;</button>
+            </div>
+            <form id="banner-texts-form">
+                <div class="form-group">
+                    <label for="banner-logo-text">Texto Principal (POLÍCIA MILITAR)</label>
+                    <input type="text" id="banner-logo-text" name="logoText" placeholder="Ex: POLÍCIA MILITAR">
+                </div>
+                
+                <div class="form-group">
+                    <label for="banner-rumo-text">Texto "Rumo aos"</label>
+                    <input type="text" id="banner-rumo-text" name="rumoText" placeholder="Ex: RUMO AOS">
+                </div>
+                
+                <div class="form-group">
+                    <label for="banner-number-text">Número</label>
+                    <input type="text" id="banner-number-text" name="numberText" placeholder="Ex: 200">
+                </div>
+                
+                <div class="form-group">
+                    <label for="banner-anos-text">Texto "Anos"</label>
+                    <input type="text" id="banner-anos-text" name="anosText" placeholder="Ex: ANOS">
+                </div>
+                
+                <div class="form-group">
+                    <label for="banner-slogan-text">Slogan</label>
+                    <textarea id="banner-slogan-text" name="sloganText" rows="3" placeholder="Ex: VAMOS TODOS JUNTOS. NINGUÉM FICA PARA TRÁS."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeBannerTextsModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="numbers-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>Editar Números PM</h2>
+                <button class="close-modal" onclick="closeNumbersModal()">&times;</button>
+            </div>
+            <form id="numbers-form">
+                <div class="form-group">
+                    <label for="numbers-period">Período *</label>
+                    <input type="text" id="numbers-period" name="period" required placeholder="Ex: JANEIRO A DEZEMBRO DE 2026">
+                </div>
+                
+                <div id="numbers-form-container">
+                    
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar Alterações
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeNumbersModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="news-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Nova Notícia</h2>
+                <button class="close-modal" onclick="closeNewsModal()">&times;</button>
+            </div>
+            
+            <form id="news-form">
+                <input type="hidden" id="news-id" name="id">
+                
+                <div class="form-group">
+                    <label for="news-title">Título *</label>
+                    <input type="text" id="news-title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="news-description">Descrição *</label>
+                    <textarea id="news-description" name="description" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="news-date">Data *</label>
+                    <input type="text" id="news-date" name="date" placeholder="Ex: Novembro 2024" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="news-image">URL da Imagem *</label>
+                    <input type="text" id="news-image" name="image" placeholder="Ex: images/noticia.jpg" required>
+                    <img id="image-preview" class="image-preview" alt="Preview">
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeNewsModal()" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="../scripts/auth.js"></script>
+    <script src="../scripts/news-manager.js"></script>
+    <script src="../scripts/activities-manager.js"></script>
+    <script src="../scripts/concursos-manager.js"></script>
+    <script src="../scripts/diario-manager.js"></script>
+    <script src="../scripts/pm-numbers-manager.js"></script>
+    <script src="../scripts/banner-manager.js"></script>
+    <script src="../scripts/user-management.js"></script>
+    <script>
+        // ========== FUNÇÕES GLOBAIS (fora do DOMContentLoaded) ==========
+        // Garantir que as funções estejam disponíveis IMEDIATAMENTE
+        console.log('Script do admin.html carregado');
+        
+        // Funções de navegação - DEFINIDAS NO ESCOPO GLOBAL
+        // Definir como função normal E como window para garantir acesso
+        function showNewsPanel() {
+            console.log('showNewsPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                
+                if (!newsPanel) {
+                    console.error('news-panel não encontrado!');
+                    alert('Erro: Painel de notícias não encontrado. Recarregue a página.');
+                    return;
+                }
+                
+                const numbersPanel = document.getElementById('numbers-panel');
+                const bannerPanel = document.getElementById('banner-panel');
+                if (newsPanel) newsPanel.style.display = 'block';
+                if (activitiesPanel) activitiesPanel.style.display = 'none';
+                if (concursosPanel) concursosPanel.style.display = 'none';
+                if (diarioPanel) diarioPanel.style.display = 'none';
+                if (usersPanel) usersPanel.style.display = 'none';
+                if (numbersPanel) numbersPanel.style.display = 'none';
+                if (bannerPanel) bannerPanel.style.display = 'none';
+                
+                if (typeof loadNews === 'function') {
+                    loadNews();
+                } else {
+                    console.warn('loadNews não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showNewsPanel:', e);
+                alert('Erro ao mostrar painel de notícias: ' + e.message);
+            }
+        }
+        // Garantir acesso global
+        window.showNewsPanel = showNewsPanel;
+
+        function showActivitiesPanel() {
+            console.log('showActivitiesPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                
+                if (!activitiesPanel) {
+                    console.error('activities-panel não encontrado!');
+                    return;
+                }
+                
+                const numbersPanel = document.getElementById('numbers-panel');
+                const bannerPanel = document.getElementById('banner-panel');
+                if (newsPanel) newsPanel.style.display = 'none';
+                if (activitiesPanel) activitiesPanel.style.display = 'block';
+                if (concursosPanel) concursosPanel.style.display = 'none';
+                if (diarioPanel) diarioPanel.style.display = 'none';
+                if (usersPanel) usersPanel.style.display = 'none';
+                if (numbersPanel) numbersPanel.style.display = 'none';
+                if (bannerPanel) bannerPanel.style.display = 'none';
+                
+                if (typeof loadActivities === 'function') {
+                    loadActivities();
+                } else {
+                    console.warn('loadActivities não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showActivitiesPanel:', e);
+                alert('Erro ao mostrar painel de atividades: ' + e.message);
+            }
+        }
+        window.showActivitiesPanel = showActivitiesPanel;
+
+        function showConcursosPanel() {
+            console.log('showConcursosPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                
+                if (!concursosPanel) {
+                    console.error('concursos-panel não encontrado!');
+                    return;
+                }
+                
+                const numbersPanel = document.getElementById('numbers-panel');
+                const bannerPanel = document.getElementById('banner-panel');
+                if (newsPanel) newsPanel.style.display = 'none';
+                if (activitiesPanel) activitiesPanel.style.display = 'none';
+                if (concursosPanel) concursosPanel.style.display = 'block';
+                if (diarioPanel) diarioPanel.style.display = 'none';
+                if (usersPanel) usersPanel.style.display = 'none';
+                if (numbersPanel) numbersPanel.style.display = 'none';
+                if (bannerPanel) bannerPanel.style.display = 'none';
+                
+                if (typeof loadConcursos === 'function') {
+                    loadConcursos();
+                } else {
+                    console.warn('loadConcursos não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showConcursosPanel:', e);
+                alert('Erro ao mostrar painel de concursos: ' + e.message);
+            }
+        }
+        window.showConcursosPanel = showConcursosPanel;
+
+        function showDiarioPanel() {
+            console.log('showDiarioPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                
+                if (!diarioPanel) {
+                    console.error('diario-panel não encontrado!');
+                    return;
+                }
+                
+                const numbersPanel = document.getElementById('numbers-panel');
+                const bannerPanel = document.getElementById('banner-panel');
+                if (newsPanel) newsPanel.style.display = 'none';
+                if (activitiesPanel) activitiesPanel.style.display = 'none';
+                if (concursosPanel) concursosPanel.style.display = 'none';
+                if (diarioPanel) diarioPanel.style.display = 'block';
+                if (usersPanel) usersPanel.style.display = 'none';
+                if (numbersPanel) numbersPanel.style.display = 'none';
+                if (bannerPanel) bannerPanel.style.display = 'none';
+                
+                if (typeof loadDiario === 'function') {
+                    loadDiario();
+                } else {
+                    console.warn('loadDiario não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showDiarioPanel:', e);
+                alert('Erro ao mostrar painel do diário: ' + e.message);
+            }
+        }
+        window.showDiarioPanel = showDiarioPanel;
+
+        function showUsersPanel() {
+            console.log('showUsersPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                
+                if (!usersPanel) {
+                    console.error('users-panel não encontrado!');
+                    return;
+                }
+                
+                const numbersPanel = document.getElementById('numbers-panel');
+                const bannerPanel = document.getElementById('banner-panel');
+                if (newsPanel) newsPanel.style.display = 'none';
+                if (activitiesPanel) activitiesPanel.style.display = 'none';
+                if (concursosPanel) concursosPanel.style.display = 'none';
+                if (diarioPanel) diarioPanel.style.display = 'none';
+                if (usersPanel) usersPanel.style.display = 'block';
+                if (numbersPanel) numbersPanel.style.display = 'none';
+                if (bannerPanel) bannerPanel.style.display = 'none';
+                
+                if (typeof loadUsers === 'function') {
+                    loadUsers();
+                } else {
+                    console.warn('loadUsers não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showUsersPanel:', e);
+                alert('Erro ao mostrar painel de usuários: ' + e.message);
+            }
+        }
+        window.showUsersPanel = showUsersPanel;
+
+        function showNumbersPanel() {
+            console.log('showNumbersPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                const numbersPanel = document.getElementById('numbers-panel');
+                
+                if (!numbersPanel) {
+                    console.error('numbers-panel não encontrado!');
+                    return;
+                }
+                
+                if (newsPanel) newsPanel.style.display = 'none';
+                if (activitiesPanel) activitiesPanel.style.display = 'none';
+                if (concursosPanel) concursosPanel.style.display = 'none';
+                if (diarioPanel) diarioPanel.style.display = 'none';
+                if (usersPanel) usersPanel.style.display = 'none';
+                if (numbersPanel) numbersPanel.style.display = 'block';
+                
+                if (typeof loadNumbersPreview === 'function') {
+                    loadNumbersPreview();
+                } else {
+                    console.warn('loadNumbersPreview não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showNumbersPanel:', e);
+                alert('Erro ao mostrar painel de números: ' + e.message);
+            }
+        }
+        window.showNumbersPanel = showNumbersPanel;
+
+        function showBannerPanel() {
+            console.log('showBannerPanel chamado');
+            try {
+                const newsPanel = document.getElementById('news-panel');
+                const activitiesPanel = document.getElementById('activities-panel');
+                const concursosPanel = document.getElementById('concursos-panel');
+                const diarioPanel = document.getElementById('diario-panel');
+                const usersPanel = document.getElementById('users-panel');
+                const numbersPanel = document.getElementById('numbers-panel');
+                const bannerPanel = document.getElementById('banner-panel');
+                
+                if (!bannerPanel) {
+                    console.error('banner-panel não encontrado!');
+                    return;
+                }
+                
+                if (newsPanel) newsPanel.style.display = 'none';
+                if (activitiesPanel) activitiesPanel.style.display = 'none';
+                if (concursosPanel) concursosPanel.style.display = 'none';
+                if (diarioPanel) diarioPanel.style.display = 'none';
+                if (usersPanel) usersPanel.style.display = 'none';
+                if (numbersPanel) numbersPanel.style.display = 'none';
+                if (bannerPanel) bannerPanel.style.display = 'block';
+                
+                if (typeof loadBannerPreview === 'function') {
+                    loadBannerPreview();
+                } else {
+                    console.warn('loadBannerPreview não está disponível ainda');
+                }
+            } catch (e) {
+                console.error('Erro em showBannerPanel:', e);
+                alert('Erro ao mostrar painel de banner: ' + e.message);
+            }
+        }
+        window.showBannerPanel = showBannerPanel;
+
+        // Configurar visibilidade dos botões baseado nas permissões
+        function setupPermissionButtons() {
+            if (typeof auth === 'undefined') return;
+            
+            const newsBtn = document.querySelector('button[onclick="showNewsPanel()"]');
+            if (newsBtn) {
+                newsBtn.style.display = auth.hasPermission('news') ? 'inline-flex' : 'none';
+            }
+            
+            const activitiesBtn = document.querySelector('button[onclick="showActivitiesPanel()"]');
+            if (activitiesBtn) {
+                activitiesBtn.style.display = auth.hasPermission('activities') ? 'inline-flex' : 'none';
+            }
+            
+            const concursosBtn = document.querySelector('button[onclick="showConcursosPanel()"]');
+            if (concursosBtn) {
+                concursosBtn.style.display = auth.hasPermission('concursos') ? 'inline-flex' : 'none';
+            }
+            
+            const diarioBtn = document.querySelector('button[onclick="showDiarioPanel()"]');
+            if (diarioBtn) {
+                diarioBtn.style.display = auth.hasPermission('diario') ? 'inline-flex' : 'none';
+            }
+            
+            const usersBtn = document.querySelector('button[onclick="showUsersPanel()"]');
+            if (usersBtn) {
+                usersBtn.style.display = auth.hasPermission('users') ? 'inline-flex' : 'none';
+            }
+            
+            const numbersBtn = document.querySelector('button[onclick="showNumbersPanel()"]');
+            if (numbersBtn) {
+                numbersBtn.style.display = auth.hasPermission('numbers') ? 'inline-flex' : 'none';
+            }
+            
+            const bannerBtn = document.querySelector('button[onclick="showBannerPanel()"]');
+            if (bannerBtn) {
+                bannerBtn.style.display = auth.hasPermission('banner') ? 'inline-flex' : 'none';
+            }
+        }
+        window.setupPermissionButtons = setupPermissionButtons;
+
+        // Aguardar carregamento completo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded iniciado');
+            console.log('showNewsPanel disponível?', typeof showNewsPanel);
+            console.log('showActivitiesPanel disponível?', typeof showActivitiesPanel);
+            console.log('showConcursosPanel disponível?', typeof showConcursosPanel);
+            console.log('showDiarioPanel disponível?', typeof showDiarioPanel);
+            console.log('showUsersPanel disponível?', typeof showUsersPanel);
+            console.log('showNumbersPanel disponível?', typeof showNumbersPanel);
+            
+            // Verificar se auth foi carregado
+            if (typeof auth === 'undefined') {
+                alert('Erro: Sistema de autenticação não carregado. Recarregue a página.');
+                console.error('auth não está definido!');
+                return;
+            }
+
+            // Verificar se tem acesso ao painel administrativo
+            const currentUser = auth.getCurrentUser();
+            if (!currentUser) {
+                alert('Acesso negado. Você precisa estar logado para acessar esta página.');
+                window.location.href = 'auth/login.html';
+                return;
+            }
+            
+            // Verificar se tem permissão (admin, governador, comandante ou p5)
+            const hasAccess = auth.isAdmin() || auth.isGovernador() || auth.isComandante() || auth.isP5();
+            if (!hasAccess) {
+                alert('Acesso negado. Você não tem permissão para acessar o painel administrativo.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Configurar visibilidade dos botões baseado no cargo
+            setupPermissionButtons();
+
+            // Verificar se managers estão disponíveis
+            if (typeof newsManager === 'undefined') {
+                console.warn('newsManager não está definido!');
+            } else {
+                console.log('✓ newsManager carregado');
+            }
+            if (typeof activitiesManager === 'undefined') {
+                console.warn('activitiesManager não está definido!');
+            } else {
+                console.log('✓ activitiesManager carregado');
+            }
+            if (typeof concursosManager === 'undefined') {
+                console.warn('concursosManager não está definido!');
+            } else {
+                console.log('✓ concursosManager carregado');
+            }
+            if (typeof userManagement === 'undefined') {
+                console.warn('userManagement não está definido!');
+            } else {
+                console.log('✓ userManagement carregado');
+            }
+            
+            console.log('✓ Sistema carregado com sucesso');
+
+            // Carregar notícias ao iniciar (se tiver permissão)
+            if (auth.hasPermission('news')) {
+                console.log('Chamando showNewsPanel...');
+                console.log('showNewsPanel tipo:', typeof window.showNewsPanel);
+                console.log('showNewsPanel tipo (sem window):', typeof showNewsPanel);
+                
+                // Tentar chamar de várias formas
+                if (typeof window.showNewsPanel === 'function') {
+                    window.showNewsPanel();
+                } else if (typeof showNewsPanel === 'function') {
+                    showNewsPanel();
+                } else {
+                    console.error('showNewsPanel não está definido!');
+                    alert('Erro: Funções não carregadas. Recarregue a página com Ctrl+F5.');
+                }
+            } else {
+                // Se não tiver permissão para notícias, mostrar o primeiro painel permitido
+                if (auth.hasPermission('concursos')) {
+                    if (typeof window.showConcursosPanel === 'function') {
+                        window.showConcursosPanel();
+                    }
+                } else if (auth.hasPermission('activities')) {
+                    if (typeof window.showActivitiesPanel === 'function') {
+                        window.showActivitiesPanel();
+                    }
+                } else if (auth.hasPermission('numbers')) {
+                    if (typeof window.showNumbersPanel === 'function') {
+                        window.showNumbersPanel();
+                    }
+                }
+            }
+            
+            // Preview de imagem de notícia
+            const newsImageInput = document.getElementById('news-image');
+            if (newsImageInput) {
+                newsImageInput.addEventListener('input', function() {
+                    const url = this.value;
+                    const preview = document.getElementById('image-preview');
+                    if (url && preview) {
+                        preview.src = url;
+                        preview.classList.add('active');
+                    } else if (preview) {
+                        preview.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Salvar notícia
+            const newsForm = document.getElementById('news-form');
+            if (newsForm) {
+                newsForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const id = document.getElementById('news-id').value;
+                    const newsData = {
+                        title: document.getElementById('news-title').value,
+                        description: document.getElementById('news-description').value,
+                        date: document.getElementById('news-date').value,
+                        image: document.getElementById('news-image').value
+                    };
+                    
+                    let result;
+                    if (id) {
+                        result = newsManager.updateNews(id, newsData);
+                    } else {
+                        result = newsManager.addNews(newsData);
+                    }
+                    
+                    if (result.success) {
+                        showAlert(id ? 'Notícia atualizada com sucesso!' : 'Notícia adicionada com sucesso!', 'success');
+                        closeNewsModal();
+                        loadNews();
+                    } else {
+                        showAlert(result.message || 'Erro ao salvar notícia', 'error');
+                    }
+                });
+            }
+            
+            // Preview de imagem de atividade
+            const activityImageInput = document.getElementById('activity-image');
+            if (activityImageInput) {
+                activityImageInput.addEventListener('input', function() {
+                    const url = this.value;
+                    const preview = document.getElementById('activity-image-preview');
+                    if (url && preview) {
+                        preview.src = url;
+                        preview.classList.add('active');
+                    } else if (preview) {
+                        preview.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Salvar atividade
+            const activityForm = document.getElementById('activity-form');
+            if (activityForm) {
+                activityForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const id = document.getElementById('activity-id').value;
+                    const activityData = {
+                        type: document.getElementById('activity-type').value,
+                        title: document.getElementById('activity-title').value,
+                        description: document.getElementById('activity-description').value || null,
+                        date: document.getElementById('activity-date').value || null,
+                        image: document.getElementById('activity-image').value || null
+                    };
+                    
+                    let result;
+                    if (id) {
+                        result = activitiesManager.updateActivity(id, activityData);
+                    } else {
+                        result = activitiesManager.addActivity(activityData);
+                    }
+                    
+                    if (result.success) {
+                        showAlert(id ? 'Atividade atualizada com sucesso!' : 'Atividade adicionada com sucesso!', 'success');
+                        closeActivityModal();
+                        loadActivities();
+                    } else {
+                        showAlert(result.message || 'Erro ao salvar atividade', 'error');
+                    }
+                });
+            }
+            
+            // Preview de imagem de concurso
+            const concursoImageInput = document.getElementById('concurso-image');
+            if (concursoImageInput) {
+                concursoImageInput.addEventListener('input', function() {
+                    const url = this.value;
+                    const preview = document.getElementById('concurso-image-preview');
+                    if (url && preview) {
+                        preview.src = url;
+                        preview.classList.add('active');
+                    } else if (preview) {
+                        preview.classList.remove('active');
+                    }
+                });
+            }
+
+            // Salvar concurso
+            const concursoForm = document.getElementById('concurso-form');
+            if (concursoForm) {
+                concursoForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const id = document.getElementById('concurso-id').value;
+                    const dataHoraProva = document.getElementById('concurso-data-hora-prova').value;
+                    const dataHoraFecharProva = document.getElementById('concurso-data-hora-fechar-prova').value;
+                    
+                    const concursoData = {
+                        title: document.getElementById('concurso-title').value,
+                        description: document.getElementById('concurso-description').value || null,
+                        image: document.getElementById('concurso-image').value || null,
+                        linkProva: document.getElementById('concurso-link-prova').value || null,
+                        dataHoraProva: dataHoraProva || null, // Data/hora para liberar a prova
+                        dataHoraFecharProva: dataHoraFecharProva || null, // Data/hora para fechar a prova
+                        linkApostila: document.getElementById('concurso-link-apostila').value || null,
+                        dataPostagem: document.getElementById('concurso-data-postagem').value || null,
+                        dataConcurso: document.getElementById('concurso-data-concurso').value || null,
+                        tipo: document.getElementById('concurso-tipo').value || 'aberto'
+                    };
+                    
+                    let result;
+                    if (id) {
+                        result = concursosManager.updateConcurso(id, concursoData);
+                    } else {
+                        result = concursosManager.addConcurso(concursoData);
+                    }
+                    
+                    if (result.success) {
+                        showAlert(id ? 'Concurso atualizado com sucesso!' : 'Concurso adicionado com sucesso!', 'success');
+                        closeConcursoModal();
+                        loadConcursos();
+                    } else {
+                        showAlert(result.message || 'Erro ao salvar concurso', 'error');
+                    }
+                });
+            }
+
+            // Formulário do Diário Oficial
+            const diarioForm = document.getElementById('diario-form');
+            if (diarioForm) {
+                diarioForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const id = document.getElementById('diario-id').value;
+                    
+                    const diarioData = {
+                        titulo: document.getElementById('diario-titulo').value,
+                        conteudo: document.getElementById('diario-conteudo').value,
+                        dataPublicacao: document.getElementById('diario-data-publicacao').value,
+                        edicao: document.getElementById('diario-edicao').value || '',
+                        caderno: document.getElementById('diario-caderno').value,
+                        secao: document.getElementById('diario-secao').value
+                    };
+                    
+                    if (!diarioData.titulo || !diarioData.conteudo || !diarioData.dataPublicacao) {
+                        showAlert('Preencha todos os campos obrigatórios', 'error');
+                        return;
+                    }
+                    
+                    let result;
+                    if (id) {
+                        result = diarioManager.updatePost(parseInt(id), diarioData);
+                    } else {
+                        result = diarioManager.addPost(diarioData);
+                    }
+                    
+                    if (result.success) {
+                        showAlert(id ? 'Publicação atualizada com sucesso!' : 'Publicação criada com sucesso!', 'success');
+                        closeDiarioModal();
+                        loadDiario();
+                    } else {
+                        showAlert(result.message || 'Erro ao salvar publicação', 'error');
+                    }
+                });
+            }
+            
+            // Formulário de criar usuário
+            const createUserForm = document.getElementById('create-user-form');
+            if (createUserForm) {
+                createUserForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('new-username').value.trim();
+                    const email = document.getElementById('new-email').value.trim();
+                    const password = document.getElementById('new-password').value;
+                    const role = document.getElementById('new-role').value;
+                    
+                    if (password.length < 6) {
+                        showAlert('A senha deve ter no mínimo 6 caracteres', 'error');
+                        return;
+                    }
+                    
+                    const result = auth.createUser(username, password, email, role);
+                    
+                    if (result.success) {
+                        showAlert('Usuário criado com sucesso!', 'success');
+                        closeCreateUserModal();
+                        loadUsers();
+                    } else {
+                        showAlert(result.message || 'Erro ao criar usuário', 'error');
+                    }
+                });
+            }
+
+            // Formulário de trocar senha
+            const changePasswordForm = document.getElementById('change-password-form');
+            if (changePasswordForm) {
+                changePasswordForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('change-password-username').value;
+                    const newPassword = document.getElementById('new-password-user').value;
+                    
+                    if (newPassword.length < 6) {
+                        showAlert('A senha deve ter no mínimo 6 caracteres', 'error');
+                        return;
+                    }
+                    
+                    const result = auth.changeUserPassword(username, newPassword);
+                    
+                    if (result.success) {
+                        showAlert('Senha alterada com sucesso!', 'success');
+                        closeChangePasswordModal();
+                    } else {
+                        showAlert(result.message || 'Erro ao alterar senha', 'error');
+                    }
+                });
+            }
+        });
+
+
+        // ========== FUNÇÕES GLOBAIS (fora do DOMContentLoaded) ==========
+        
+        // Carregar usuários
+        function loadUsers() {
+            const container = document.getElementById('users-list-container');
+            const users = userManagement.getAllUsers();
+            
+            if (users.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>Nenhum usuário cadastrado</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = users.map(user => {
+                let roleIcon = '<i class="fas fa-user"></i>';
+                let roleName = 'Usuário';
+                let roleClass = 'role-user';
+                
+                if (user.role === 'admin') {
+                    roleIcon = '<i class="fas fa-shield-alt"></i>';
+                    roleName = 'Administrador';
+                    roleClass = 'role-admin';
+                } else if (user.role === 'governador') {
+                    roleIcon = '<i class="fas fa-crown"></i>';
+                    roleName = 'Governador';
+                    roleClass = 'role-governador';
+                } else if (user.role === 'comandante') {
+                    roleIcon = '<i class="fas fa-star"></i>';
+                    roleName = 'Comandante';
+                    roleClass = 'role-comandante';
+                } else if (user.role === 'p5') {
+                    roleIcon = '<i class="fas fa-user-tie"></i>';
+                    roleName = 'P5';
+                    roleClass = 'role-p5';
+                } else if (user.role === 'policial') {
+                    roleIcon = '<i class="fas fa-badge-check"></i>';
+                    roleName = 'Policial';
+                    roleClass = 'role-policial';
+                }
+                
+                const createdAt = user.createdAt !== 'N/A' ? new Date(user.createdAt).toLocaleDateString('pt-BR') : 'N/A';
+                
+                const currentUser = auth.getCurrentUser();
+                const isComandante = currentUser && currentUser.role === 'comandante';
+                const isAdmin = currentUser && currentUser.role === 'admin';
+                
+                let roleSelect = '';
+                if (isComandante) {
+                    const canEdit = user.role !== 'admin' && user.role !== 'governador' && user.role !== 'comandante' && user.role !== 'p5';
+                    if (canEdit) {
+                        roleSelect = '<select class="btn" onchange="changeUserRole(\'' + user.username + '\', this.value)" style="padding: 8px 14px; margin-right: 8px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">' +
+                            '<option value="user" ' + (user.role === 'user' ? 'selected' : '') + '>Usuário</option>' +
+                            '<option value="policial" ' + (user.role === 'policial' ? 'selected' : '') + '>Policial</option>' +
+                        '</select>';
+                    } else {
+                        roleSelect = '<span class="btn" style="padding: 8px 14px; margin-right: 8px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: not-allowed; opacity: 0.6;">' + roleName + '</span>';
+                    }
+                } else if (isAdmin) {
+                    roleSelect = '<select class="btn" onchange="changeUserRole(\'' + user.username + '\', this.value)" style="padding: 8px 14px; margin-right: 8px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">' +
+                        '<option value="user" ' + (user.role === 'user' ? 'selected' : '') + '>Usuário</option>' +
+                        '<option value="p5" ' + (user.role === 'p5' ? 'selected' : '') + '>P5</option>' +
+                        '<option value="comandante" ' + (user.role === 'comandante' ? 'selected' : '') + '>Comandante</option>' +
+                        '<option value="governador" ' + (user.role === 'governador' ? 'selected' : '') + '>Governador</option>' +
+                        '<option value="admin" ' + (user.role === 'admin' ? 'selected' : '') + '>Administrador</option>' +
+                    '</select>';
+                } else {
+                    roleSelect = '<span class="btn" style="padding: 8px 14px; margin-right: 8px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: not-allowed; opacity: 0.6;">' + roleName + '</span>';
+                }
+                
+                return '<div class="user-item-admin">' +
+                    '<div class="user-info">' +
+                        '<div class="user-avatar"><i class="fas fa-user"></i></div>' +
+                        '<div class="user-details">' +
+                            '<h3>' + user.username + '</h3>' +
+                            '<p>' + user.email + '</p>' +
+                            '<span class="user-role ' + roleClass + '">' + roleIcon + ' ' + roleName + '</span>' +
+                            '<span class="user-date">Criado em: ' + createdAt + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="user-actions">' +
+                        roleSelect +
+                        '<button class="btn btn-primary" onclick="openChangePasswordModal(\'' + user.username + '\')" style="background-color: #17a2b8;"><i class="fas fa-key"></i> Trocar Senha</button>' +
+                        '<button class="btn btn-danger" onclick="deleteUser(\'' + user.username + '\')"><i class="fas fa-trash"></i> Excluir</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        window.changeUserRole = function(username, newRole) {
+            const roleNames = {
+                'admin': 'Administrador',
+                'governador': 'Governador',
+                'comandante': 'Comandante',
+                'p5': 'P5',
+                'policial': 'Policial',
+                'user': 'Usuário'
+            };
+            
+            const roleName = roleNames[newRole] || newRole;
+            const confirmMessage = `Tem certeza que deseja alterar o cargo de ${username} para ${roleName}?`;
+            
+            if (!confirm(confirmMessage)) {
+                // Recarregar usuários para resetar o select
+                loadUsers();
+                return;
+            }
+            
+            const result = userManagement.changeUserRole(username, newRole);
+            if (result.success) {
+                showAlert(result.message, 'success');
+                loadUsers();
+            } else {
+                showAlert(result.message, 'error');
+                loadUsers();
+            }
+        }
+
+        window.deleteUser = function(username) {
+            if (!confirm(`Tem certeza que deseja excluir o usuário "${username}"? Esta ação não pode ser desfeita.`)) {
+                return;
+            }
+            
+            const result = userManagement.deleteUser(username);
+            if (result.success) {
+                showAlert(result.message, 'success');
+                loadUsers();
+            } else {
+                showAlert(result.message, 'error');
+            }
+        }
+        
+        // Carregar notícias - DEFINIDAS NO ESCOPO GLOBAL
+        window.loadNews = function() {
+            const container = document.getElementById('news-list-container');
+            const news = newsManager.getAllNews();
+            
+            if (news.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-newspaper"></i>
+                        <h3>Nenhuma notícia cadastrada</h3>
+                        <p>Clique em "Nova Notícia" para adicionar a primeira notícia</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = news.map(newsItem => `
+                <div class="news-item-admin">
+                    <img src="${newsItem.image}" alt="${newsItem.title}" class="news-item-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'80\'%3E%3Crect fill=\'%23e3f2fd\' width=\'120\' height=\'80\'/%3E%3Ctext fill=\'%231976d2\' font-family=\'Arial\' font-size=\'12\' x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3ENotícia%3C/text%3E%3C/svg%3E'">
+                    <div class="news-item-content">
+                        <h3>${newsItem.title}</h3>
+                        <p>${newsItem.description}</p>
+                        <span class="news-item-date">${newsItem.date}</span>
+                    </div>
+                    <div class="news-item-actions">
+                        <button class="btn btn-primary" onclick="editNews(${newsItem.id})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteNews(${newsItem.id})">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Abrir modal para adicionar notícia - DEFINIDAS NO ESCOPO GLOBAL
+        window.openAddNewsModal = function() {
+            document.getElementById('modal-title').textContent = 'Nova Notícia';
+            document.getElementById('news-form').reset();
+            document.getElementById('news-id').value = '';
+            document.getElementById('image-preview').classList.remove('active');
+            document.getElementById('news-modal').classList.add('active');
+        }
+        
+        window.editNews = function(id) {
+            const newsItem = newsManager.getNewsById(id);
+            if (!newsItem) return;
+            
+            document.getElementById('modal-title').textContent = 'Editar Notícia';
+            document.getElementById('news-id').value = newsItem.id;
+            document.getElementById('news-title').value = newsItem.title;
+            document.getElementById('news-description').value = newsItem.description;
+            document.getElementById('news-date').value = newsItem.date;
+            document.getElementById('news-image').value = newsItem.image;
+            
+            const preview = document.getElementById('image-preview');
+            preview.src = newsItem.image;
+            preview.classList.add('active');
+            
+            document.getElementById('news-modal').classList.add('active');
+        }
+        
+        window.deleteNews = function(id) {
+            if (!confirm('Tem certeza que deseja excluir esta notícia?')) return;
+            
+            newsManager.deleteNews(id);
+            showAlert('Notícia excluída com sucesso!', 'success');
+            loadNews();
+        }
+        
+        window.closeNewsModal = function() {
+            document.getElementById('news-modal').classList.remove('active');
+        }
+        
+        // Mostrar alerta - DEFINIDAS NO ESCOPO GLOBAL
+        window.showAlert = function(message, type) {
+            const container = document.getElementById('alert-container');
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 3000);
+        }
+        
+        // Carregar atividades - DEFINIDAS NO ESCOPO GLOBAL
+        window.loadActivities = function() {
+            if (typeof activitiesManager === 'undefined') {
+                console.error('activitiesManager não está definido!');
+                return;
+            }
+            
+            const container = document.getElementById('activities-list-container');
+            if (!container) {
+                console.error('Container de atividades não encontrado!');
+                return;
+            }
+            
+            const activities = activitiesManager.getAllActivities();
+            
+            if (activities.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Nenhuma atividade cadastrada</h3>
+                        <p>Clique em um dos botões acima para adicionar uma nova atividade</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = activities.map(activity => {
+                const typeLabels = {
+                    'cultural': 'Atividades Culturais',
+                    'community': 'Atividades Comunitárias',
+                    'education': 'Diretoria de Ensino'
+                };
+                const iconClasses = {
+                    'cultural': 'fa-theater-masks',
+                    'community': 'fa-users',
+                    'education': 'fa-graduation-cap'
+                };
+                return `
+                    <div class="activity-item-admin">
+                        <div class="activity-info-admin">
+                            <div class="activity-icon-admin">
+                                <i class="fas ${iconClasses[activity.type]}"></i>
+                            </div>
+                            <div class="activity-details-admin">
+                                <h3>${activity.title}</h3>
+                                ${activity.description ? `<p style="margin: 5px 0; color: #666; font-size: 14px;">${activity.description.substring(0, 100)}${activity.description.length > 100 ? '...' : ''}</p>` : ''}
+                                ${activity.date ? `<span style="color: #999; font-size: 12px;">${activity.date}</span>` : ''}
+                                <span class="activity-type-badge type-${activity.type}">
+                                    ${typeLabels[activity.type]}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="activity-actions-admin">
+                            <button class="btn btn-primary" onclick="editActivity(${activity.id})">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteActivity(${activity.id})">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.openAddActivityModal = function(type) {
+            document.getElementById('activity-type').value = type;
+            const typeLabels = {
+                'cultural': 'Atividades Culturais',
+                'community': 'Atividades Comunitárias',
+                'education': 'Diretoria de Ensino'
+            };
+            document.getElementById('modal-activity-title').textContent = `Nova ${typeLabels[type]}`;
+            document.getElementById('activity-form').reset();
+            document.getElementById('activity-id').value = '';
+            document.getElementById('activity-image-preview').classList.remove('active');
+            
+            // Para Diretoria de Ensino, tornar descrição e data obrigatórias
+            const isEducation = type === 'education';
+            const descGroup = document.getElementById('activity-description-group');
+            const dateGroup = document.getElementById('activity-date-group');
+            const descRequired = document.getElementById('description-required');
+            const dateRequired = document.getElementById('date-required');
+            const descField = document.getElementById('activity-description');
+            const dateField = document.getElementById('activity-date');
+            
+            if (isEducation) {
+                descGroup.style.display = 'block';
+                dateGroup.style.display = 'block';
+                descRequired.style.display = 'inline';
+                dateRequired.style.display = 'inline';
+                descField.required = true;
+                dateField.required = true;
+            } else {
+                descGroup.style.display = 'block';
+                dateGroup.style.display = 'block';
+                descRequired.style.display = 'none';
+                dateRequired.style.display = 'none';
+                descField.required = false;
+                dateField.required = false;
+            }
+            
+            document.getElementById('activity-modal').classList.add('active');
+        }
+
+        window.editActivity = function(id) {
+            const activity = activitiesManager.getActivityById(id);
+            if (!activity) return;
+            
+            const typeLabels = {
+                'cultural': 'Atividades Culturais',
+                'community': 'Atividades Comunitárias',
+                'education': 'Diretoria de Ensino'
+            };
+            document.getElementById('modal-activity-title').textContent = `Editar ${typeLabels[activity.type]}`;
+            document.getElementById('activity-id').value = activity.id;
+            document.getElementById('activity-type').value = activity.type;
+            document.getElementById('activity-title').value = activity.title;
+            document.getElementById('activity-description').value = activity.description || '';
+            document.getElementById('activity-date').value = activity.date || '';
+            document.getElementById('activity-image').value = activity.image || '';
+            
+            // Para Diretoria de Ensino, tornar descrição e data obrigatórias
+            const isEducation = activity.type === 'education';
+            const descGroup = document.getElementById('activity-description-group');
+            const dateGroup = document.getElementById('activity-date-group');
+            const descRequired = document.getElementById('description-required');
+            const dateRequired = document.getElementById('date-required');
+            const descField = document.getElementById('activity-description');
+            const dateField = document.getElementById('activity-date');
+            
+            if (isEducation) {
+                descGroup.style.display = 'block';
+                dateGroup.style.display = 'block';
+                descRequired.style.display = 'inline';
+                dateRequired.style.display = 'inline';
+                descField.required = true;
+                dateField.required = true;
+            } else {
+                descGroup.style.display = 'block';
+                dateGroup.style.display = 'block';
+                descRequired.style.display = 'none';
+                dateRequired.style.display = 'none';
+                descField.required = false;
+                dateField.required = false;
+            }
+            
+            const preview = document.getElementById('activity-image-preview');
+            if (activity.image) {
+                preview.src = activity.image;
+                preview.classList.add('active');
+            } else {
+                preview.classList.remove('active');
+            }
+            
+            document.getElementById('activity-modal').classList.add('active');
+        }
+
+        window.deleteActivity = function(id) {
+            if (!confirm('Tem certeza que deseja excluir esta atividade?')) return;
+            
+            activitiesManager.deleteActivity(id);
+            showAlert('Atividade excluída com sucesso!', 'success');
+            loadActivities();
+        }
+
+        window.closeActivityModal = function() {
+            document.getElementById('activity-modal').classList.remove('active');
+        }
+
+        // Carregar concursos
+        window.loadConcursos = function() {
+            if (typeof concursosManager === 'undefined') {
+                console.error('concursosManager não está definido!');
+                return;
+            }
+            
+            const container = document.getElementById('concursos-list-container');
+            if (!container) {
+                console.error('Container de concursos não encontrado!');
+                return;
+            }
+            
+            const concursos = concursosManager.getAllConcursos();
+            
+            if (concursos.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Nenhum concurso cadastrado</h3>
+                        <p>Clique no botão "Novo Concurso" para adicionar um concurso</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = concursos.map(concurso => {
+                return `
+                    <div class="concurso-item-admin">
+                        <div class="concurso-info-admin">
+                            <div class="concurso-icon-admin">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="concurso-details-admin">
+                                <h3>${concurso.title}</h3>
+                                ${concurso.description ? `<p style="margin: 5px 0; color: #666; font-size: 14px;">${concurso.description.substring(0, 100)}${concurso.description.length > 100 ? '...' : ''}</p>` : ''}
+                                <div style="display: flex; gap: 15px; align-items: center; margin-top: 5px;">
+                                    ${concurso.dataConcurso ? `<span style="color: #999; font-size: 12px;">Data: ${concurso.dataConcurso}</span>` : ''}
+                                    <span style="color: ${concurso.tipo === 'interno' ? '#dc2626' : '#10b981'}; font-size: 12px; font-weight: 600;">
+                                        ${concurso.tipo === 'interno' ? '<i class="fas fa-lock"></i> Interno' : '<i class="fas fa-globe"></i> Aberto'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="concurso-actions-admin">
+                            <button class="btn btn-primary" onclick="editConcurso(${concurso.id})">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteConcurso(${concurso.id})">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.openAddConcursoModal = function() {
+            if (typeof concursosManager === 'undefined') {
+                alert('Erro: Sistema de concursos não carregado. Recarregue a página.');
+                return;
+            }
+            
+            document.getElementById('modal-concurso-title').textContent = 'Novo Concurso';
+            document.getElementById('concurso-form').reset();
+            document.getElementById('concurso-id').value = '';
+            // Limpar todos os campos explicitamente para garantir
+            document.getElementById('concurso-title').value = '';
+            document.getElementById('concurso-description').value = '';
+            document.getElementById('concurso-image').value = '';
+            document.getElementById('concurso-link-prova').value = '';
+            document.getElementById('concurso-data-hora-prova').value = '';
+            document.getElementById('concurso-data-hora-fechar-prova').value = '';
+            document.getElementById('concurso-link-apostila').value = '';
+            document.getElementById('concurso-data-postagem').value = '';
+            document.getElementById('concurso-data-concurso').value = '';
+            document.getElementById('concurso-tipo').value = 'aberto';
+            document.getElementById('concurso-image-preview').classList.remove('active');
+            document.getElementById('concurso-modal').classList.add('active');
+            
+            // Garantir que o campo de data/hora está visível
+            const dataHoraField = document.getElementById('concurso-data-hora-prova');
+            if (dataHoraField) {
+                dataHoraField.style.display = 'block';
+                dataHoraField.parentElement.style.display = 'block';
+            }
+        }
+
+        window.editConcurso = function(id) {
+            const concurso = concursosManager.getConcursoById(id);
+            if (!concurso) return;
+            
+            document.getElementById('modal-concurso-title').textContent = 'Editar Concurso';
+            document.getElementById('concurso-id').value = concurso.id;
+            document.getElementById('concurso-title').value = concurso.title;
+            document.getElementById('concurso-description').value = concurso.description || '';
+            document.getElementById('concurso-image').value = concurso.image || '';
+            document.getElementById('concurso-link-prova').value = concurso.linkProva || '';
+            document.getElementById('concurso-data-hora-prova').value = concurso.dataHoraProva || '';
+            document.getElementById('concurso-link-apostila').value = concurso.linkApostila || '';
+            document.getElementById('concurso-data-postagem').value = concurso.dataPostagem || '';
+            document.getElementById('concurso-data-concurso').value = concurso.dataConcurso || '';
+            document.getElementById('concurso-tipo').value = concurso.tipo || 'aberto';
+            
+            const preview = document.getElementById('concurso-image-preview');
+            if (concurso.image && preview) {
+                preview.src = concurso.image;
+                preview.classList.add('active');
+            } else if (preview) {
+                preview.classList.remove('active');
+            }
+            
+            document.getElementById('concurso-modal').classList.add('active');
+        }
+
+        window.deleteConcurso = function(id) {
+            if (!confirm('Tem certeza que deseja excluir este concurso?')) return;
+            
+            concursosManager.deleteConcurso(id);
+            showAlert('Concurso excluído com sucesso!', 'success');
+            loadConcursos();
+        }
+
+        window.closeConcursoModal = function() {
+            document.getElementById('concurso-modal').classList.remove('active');
+        }
+
+        // ========== FUNÇÕES DO DIÁRIO OFICIAL ==========
+        
+        function loadDiario() {
+            const container = document.getElementById('diario-list-container');
+            if (!container || typeof diarioManager === 'undefined') {
+                console.error('Container ou diarioManager não encontrado');
+                return;
+            }
+            
+            const posts = diarioManager.getAllPosts();
+            
+            if (posts.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-file-alt"></i><p>Nenhuma publicação cadastrada</p></div>';
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => {
+                const dataPub = new Date(post.dataPublicacao);
+                const dataFormatada = dataPub.toLocaleDateString('pt-BR', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                
+                return `
+                    <div class="diario-item-admin">
+                        <div class="diario-info-admin">
+                            <div class="diario-icon-admin">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="diario-details-admin">
+                                <h3>${post.titulo || 'Sem título'}</h3>
+                                <p><strong>Data:</strong> ${dataFormatada}</p>
+                                <p><strong>Caderno:</strong> ${post.caderno || 'Executivo'} | <strong>Seção:</strong> ${post.secao || 'Atos de Pessoal'}</p>
+                                <p class="diario-preview">${(post.conteudo || '').substring(0, 150)}${(post.conteudo || '').length > 150 ? '...' : ''}</p>
+                            </div>
+                        </div>
+                        <div class="diario-actions-admin">
+                            <button class="btn btn-secondary" onclick="editDiario(${post.id})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteDiario(${post.id})" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        window.loadDiario = loadDiario;
+
+        window.openAddDiarioModal = function() {
+            console.log('openAddDiarioModal chamado');
+            const modal = document.getElementById('diario-modal');
+            const form = document.getElementById('diario-form');
+            
+            if (!modal) {
+                console.error('Modal diario-modal não encontrado!');
+                alert('Erro: Modal não encontrado. Recarregue a página.');
+                return;
+            }
+            
+            if (!form) {
+                console.error('Formulário diario-form não encontrado!');
+                alert('Erro: Formulário não encontrado. Recarregue a página.');
+                return;
+            }
+            
+            form.reset();
+            document.getElementById('diario-id').value = '';
+            document.getElementById('modal-diario-title').textContent = 'Nova Publicação';
+            
+            // Definir data padrão como hoje
+            const today = new Date().toISOString().split('T')[0];
+            const dataField = document.getElementById('diario-data-publicacao');
+            if (dataField) {
+                dataField.value = today;
+            }
+            
+            modal.classList.add('active');
+            console.log('Modal do diário aberto');
+        }
+
+        window.editDiario = function(id) {
+            const post = diarioManager.getPostById(id);
+            if (!post) return;
+            
+            document.getElementById('modal-diario-title').textContent = 'Editar Publicação';
+            document.getElementById('diario-id').value = post.id;
+            document.getElementById('diario-titulo').value = post.titulo || '';
+            document.getElementById('diario-edicao').value = post.edicao || '';
+            document.getElementById('diario-caderno').value = post.caderno || 'Executivo';
+            document.getElementById('diario-secao').value = post.secao || 'Atos de Pessoal';
+            
+            const dataPub = new Date(post.dataPublicacao);
+            document.getElementById('diario-data-publicacao').value = dataPub.toISOString().split('T')[0];
+            
+            document.getElementById('diario-conteudo').value = post.conteudo || '';
+            
+            document.getElementById('diario-modal').classList.add('active');
+        }
+
+        window.deleteDiario = function(id) {
+            if (!confirm('Tem certeza que deseja excluir esta publicação?')) return;
+            
+            diarioManager.deletePost(id);
+            showAlert('Publicação excluída com sucesso!', 'success');
+            loadDiario();
+        }
+
+        window.closeDiarioModal = function() {
+            document.getElementById('diario-modal').classList.remove('active');
+        }
+
+        // Preview de imagem de concurso e salvar concurso serão configurados no DOMContentLoaded
+
+        window.openCreateUserModal = function() {
+            document.getElementById('create-user-form').reset();
+            document.getElementById('create-user-modal').classList.add('active');
+        }
+
+        window.closeCreateUserModal = function() {
+            document.getElementById('create-user-modal').classList.remove('active');
+        }
+
+        window.openChangePasswordModal = function(username) {
+            document.getElementById('change-password-username').value = username;
+            document.getElementById('change-password-username-display').value = username;
+            document.getElementById('change-password-form').reset();
+            document.getElementById('change-password-username').value = username;
+            document.getElementById('change-password-modal').classList.add('active');
+        }
+
+        window.closeChangePasswordModal = function() {
+            document.getElementById('change-password-modal').classList.remove('active');
+        }
+
+        // Funções para gerenciar números PM
+        function loadNumbersPreview() {
+            const container = document.getElementById('numbers-preview-container');
+            if (!container || typeof pmNumbersManager === 'undefined') {
+                return;
+            }
+
+            const period = pmNumbersManager.getPeriod();
+            const numbers = pmNumbersManager.getNumbers();
+
+            container.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 20px; color: #333;">Preview dos Números</h3>
+                    <p style="color: #666; margin-bottom: 30px;"><strong>Período:</strong> ${period}</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        ${numbers.map(num => `
+                            <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; color: white;">
+                                <div style="font-size: 48px; font-weight: 900; margin-bottom: 10px;">${num.value}</div>
+                                <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">${num.label}</div>
+                                <div style="font-size: 12px; opacity: 0.9;">${num.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        window.loadNumbersPreview = loadNumbersPreview;
+
+        function openEditNumbersModal() {
+            const modal = document.getElementById('numbers-modal');
+            const form = document.getElementById('numbers-form');
+            const container = document.getElementById('numbers-form-container');
+            
+            if (!modal || !form || !container) {
+                alert('Erro: Elementos do modal não encontrados.');
+                return;
+            }
+
+            const period = pmNumbersManager.getPeriod();
+            const numbers = pmNumbersManager.getNumbers();
+
+            document.getElementById('numbers-period').value = period;
+
+            container.innerHTML = numbers.map((num, index) => `
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #dee2e6;">
+                    <h4 style="margin-bottom: 15px; color: #333;">${num.description}</h4>
+                    <div class="form-group">
+                        <label>Valor *</label>
+                        <input type="text" name="number-value-${num.id}" value="${num.value}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Unidade/Medida *</label>
+                        <input type="text" name="number-label-${num.id}" value="${num.label}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição *</label>
+                        <input type="text" name="number-desc-${num.id}" value="${num.description}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.add('active');
+        }
+        window.openEditNumbersModal = openEditNumbersModal;
+
+        function closeNumbersModal() {
+            const modal = document.getElementById('numbers-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+        window.closeNumbersModal = closeNumbersModal;
+
+        // Event listener para o formulário de números
+        document.addEventListener('DOMContentLoaded', function() {
+            const numbersForm = document.getElementById('numbers-form');
+            if (numbersForm) {
+                numbersForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const period = document.getElementById('numbers-period').value;
+                    const numbers = pmNumbersManager.getNumbers();
+                    
+                    const updatedNumbers = numbers.map(num => {
+                        const value = document.querySelector(`input[name="number-value-${num.id}"]`).value;
+                        const label = document.querySelector(`input[name="number-label-${num.id}"]`).value;
+                        const description = document.querySelector(`input[name="number-desc-${num.id}"]`).value;
+                        
+                        return {
+                            ...num,
+                            value: value,
+                            label: label,
+                            description: description
+                        };
+                    });
+
+                    const result = pmNumbersManager.updateNumbers(updatedNumbers, period);
+                    
+                    if (result.success) {
+                        alert('Números atualizados com sucesso!');
+                        closeNumbersModal();
+                        loadNumbersPreview();
+                    } else {
+                        alert('Erro ao atualizar números: ' + (result.message || 'Erro desconhecido'));
+                    }
+                });
+            }
+        });
+
+        // Funções para gerenciar banner
+        function loadBannerPreview() {
+            const container = document.getElementById('banner-preview-container');
+            if (!container || typeof bannerManager === 'undefined') {
+                return;
+            }
+
+            const imageUrl = bannerManager.getBannerImage();
+            const texts = bannerManager.getBannerTexts();
+
+            container.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 20px; color: #333;">Preview do Banner</h3>
+                    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%); padding: 40px; border-radius: 8px; position: relative; min-height: 200px; ${imageUrl ? `background-image: url(${imageUrl}); background-size: cover; background-position: center;` : ''}">
+                        <div style="color: white; text-align: left;">
+                            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${texts.logoText || 'POLÍCIA MILITAR'}</div>
+                            <div style="font-size: 16px; margin-bottom: 5px;">${texts.rumoText || 'RUMO AOS'}</div>
+                            <div style="font-size: 48px; font-weight: 900; margin-bottom: 5px;">${texts.numberText || '200'}</div>
+                            <div style="font-size: 16px; margin-bottom: 10px;">${texts.anosText || 'ANOS'}</div>
+                            <div style="font-size: 14px;">${texts.sloganText || 'VAMOS TODOS JUNTOS. NINGUÉM FICA PARA TRÁS.'}</div>
+                        </div>
+                    </div>
+                    <p style="color: #666; margin-top: 15px;">
+                        <strong>Imagem atual:</strong> ${imageUrl || 'Gradiente padrão (nenhuma imagem)'}
+                    </p>
+                </div>
+            `;
+        }
+        window.loadBannerPreview = loadBannerPreview;
+
+        function openEditBannerModal() {
+            const modal = document.getElementById('banner-modal');
+            const form = document.getElementById('banner-form');
+            
+            if (!modal || !form) {
+                alert('Erro: Elementos do modal não encontrados.');
+                return;
+            }
+
+            const imageUrl = bannerManager.getBannerImage();
+            document.getElementById('banner-image-url').value = imageUrl;
+            
+            updateBannerPreview(imageUrl);
+
+            modal.classList.add('active');
+        }
+        window.openEditBannerModal = openEditBannerModal;
+
+        function closeBannerModal() {
+            const modal = document.getElementById('banner-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+        window.closeBannerModal = closeBannerModal;
+
+        function removeBannerImage() {
+            if (confirm('Tem certeza que deseja remover a imagem de fundo e voltar ao gradiente padrão?')) {
+                const result = bannerManager.updateBannerImage('');
+                if (result.success) {
+                    alert('Imagem removida com sucesso!');
+                    document.getElementById('banner-image-url').value = '';
+                    updateBannerPreview('');
+                    loadBannerPreview();
+                }
+            }
+        }
+        window.removeBannerImage = removeBannerImage;
+
+        function openEditBannerTextsModal() {
+            const modal = document.getElementById('banner-texts-modal');
+            const form = document.getElementById('banner-texts-form');
+            
+            if (!modal || !form) {
+                alert('Erro: Elementos do modal não encontrados.');
+                return;
+            }
+
+            const texts = bannerManager.getBannerTexts();
+            document.getElementById('banner-logo-text').value = texts.logoText || '';
+            document.getElementById('banner-rumo-text').value = texts.rumoText || '';
+            document.getElementById('banner-number-text').value = texts.numberText || '';
+            document.getElementById('banner-anos-text').value = texts.anosText || '';
+            document.getElementById('banner-slogan-text').value = texts.sloganText || '';
+
+            modal.classList.add('active');
+        }
+        window.openEditBannerTextsModal = openEditBannerTextsModal;
+
+        function closeBannerTextsModal() {
+            const modal = document.getElementById('banner-texts-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+        window.closeBannerTextsModal = closeBannerTextsModal;
+
+        function updateBannerPreview(imageUrl) {
+            const preview = document.getElementById('banner-image-preview');
+            if (preview) {
+                if (imageUrl && imageUrl.trim() !== '') {
+                    preview.innerHTML = `
+                        <img src="${imageUrl}" alt="Preview do banner" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 2px solid #ddd;" onerror="this.parentElement.innerHTML='<p style=\\'color: red;\\'>Erro ao carregar imagem. Verifique a URL.</p>'">
+                    `;
+                } else {
+                    preview.innerHTML = '<p style="color: #666;">Nenhuma imagem definida. O gradiente padrão será usado.</p>';
+                }
+            }
+        }
+
+        // Event listener para o formulário de banner
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerForm = document.getElementById('banner-form');
+            const bannerImageInput = document.getElementById('banner-image-url');
+            
+            if (bannerImageInput) {
+                bannerImageInput.addEventListener('input', function() {
+                    updateBannerPreview(this.value);
+                });
+            }
+
+            if (bannerForm) {
+                bannerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const imageUrl = document.getElementById('banner-image-url').value.trim();
+                    
+                    const result = bannerManager.updateBannerImage(imageUrl);
+                    
+                    if (result.success) {
+                        alert('Imagem do banner atualizada com sucesso!');
+                        closeBannerModal();
+                        loadBannerPreview();
+                    } else {
+                        alert('Erro ao atualizar imagem: ' + (result.message || 'Erro desconhecido'));
+                    }
+                });
+            }
+
+            // Event listener para o formulário de textos do banner
+            const bannerTextsForm = document.getElementById('banner-texts-form');
+            if (bannerTextsForm) {
+                bannerTextsForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const texts = {
+                        logoText: document.getElementById('banner-logo-text').value.trim() || 'POLÍCIA MILITAR',
+                        rumoText: document.getElementById('banner-rumo-text').value.trim() || 'RUMO AOS',
+                        numberText: document.getElementById('banner-number-text').value.trim() || '200',
+                        anosText: document.getElementById('banner-anos-text').value.trim() || 'ANOS',
+                        sloganText: document.getElementById('banner-slogan-text').value.trim() || 'VAMOS TODOS JUNTOS. NINGUÉM FICA PARA TRÁS.'
+                    };
+                    
+                    const result = bannerManager.updateBannerTexts(texts);
+                    
+                    if (result.success) {
+                        alert('Mensagens do banner atualizadas com sucesso!');
+                        closeBannerTextsModal();
+                        loadBannerPreview();
+                    } else {
+                        alert('Erro ao atualizar mensagens: ' + (result.message || 'Erro desconhecido'));
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

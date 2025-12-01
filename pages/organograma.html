@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organização/Organograma - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background-color: var(--white);
+            color: var(--darker-gray);
+            padding: 60px 0;
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--red);
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+        
+        .page-body {
+            max-width: 1400px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .page-body p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        /* Organograma Visual */
+        .organograma-container {
+            margin: 60px 0;
+            padding: 40px 20px;
+            background-color: var(--white);
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .organograma-image {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .organograma-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Legenda */
+        .abbreviations {
+            margin-top: 60px;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .abbreviations h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+        }
+        
+        .abbreviation-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px;
+        }
+        
+        .abbreviation-item {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .abbreviation-item strong {
+            color: var(--blue);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .back-link:hover {
+            background-color: var(--light-blue);
+        }
+        
+        @media (max-width: 768px) {
+            .organograma {
+                min-width: 100%;
+            }
+            
+            .level-2 {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .level-5 {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-body">
+                <div class="page-header">
+                    <h1>Organização/Organograma</h1>
+                </div>
+                
+                <p>Com base na estrutura determinada pela legislação federal, a Polícia Militar do Estado de São Paulo encontra-se organizada para alcançar eficiência, eficácia e efetividade nas ações policiais militares, na seguinte estrutura:</p>
+                
+                <div class="organizational-structure" style="margin: 40px 0; padding: 30px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h2 style="font-size: 24px; font-weight: bold; color: var(--dark-gray); margin-bottom: 25px; text-align: center;">Estrutura da Polícia Militar</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid var(--blue);">
+                            <h3 style="font-size: 18px; font-weight: bold; color: var(--blue); margin-bottom: 10px;">Órgãos de Direção Geral</h3>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid var(--light-blue);">
+                            <h3 style="font-size: 18px; font-weight: bold; color: var(--light-blue); margin-bottom: 10px;">Órgãos de Direção Setorial</h3>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid var(--red);">
+                            <h3 style="font-size: 18px; font-weight: bold; color: var(--red); margin-bottom: 10px;">Órgãos de Apoio</h3>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+                            <h3 style="font-size: 18px; font-weight: bold; color: #10b981; margin-bottom: 10px;">Órgãos de Execução</h3>
+                        </div>
+                        <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                            <h3 style="font-size: 18px; font-weight: bold; color: #f59e0b; margin-bottom: 10px;">Órgãos de Assessoria</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="organograma-container">
+                    <div class="organograma-image">
+                        <img src="../images/organograma_atualizado.png" alt="Organograma da Polícia Militar de São Paulo" style="width: 100%; height: auto; display: block;">
+                    </div>
+                </div>
+                
+                <div class="abbreviations">
+                    <h3>Legenda de Abreviações</h3>
+                    <div class="abbreviation-list">
+                        <div class="abbreviation-item">
+                            <strong>Assessorias PM:</strong> Assessorias Policial-Militares
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CAJ</strong> - Coordenadoria de Assuntos Jurídicos
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CavPM</strong> - Comando de Aviação da Policia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CCB</strong> - Comando do Corpo de Bombeiros
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CComSoc</strong> - Centro de Comunicação Social da Polícia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CIPM</strong> - Centro de Inteligência da Polícia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>Cmt G</strong> - Comandante Geral
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>Coord Op PM</strong> - Coordenador Operacional da Polícia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>COPOM:</strong> Centro de Operações da Polícia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>Correg PM</strong> - Corregedoria da Polícia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPAmb</strong> - Comando de Policiamento Ambiental
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPC</strong> - Comando de Policiamento da Capital
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPChq</strong> - Comando de Policiamento de Choque
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPI</strong> - Comando de Policiamento do Interior
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPM</strong> - Comando de Policiamento Metropolitano
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPRv</strong> - Comando de Policiamento Rodoviário
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>CPTran</strong> - Comando de Policiamento de Trânsito
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>EM/PM</strong> - Estado-Maior da Polícia Militar
+                        </div>
+                        <div class="abbreviation-item">
+                            <strong>Gab Cmt G</strong> - Gabinete do Comandante Geral
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+        });
+    </script>
+</body>
+</html>
+

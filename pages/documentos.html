@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos PMESP - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background-color: var(--white);
+            color: var(--darker-gray);
+            padding: 60px 0;
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: #000;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .page-body {
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .documents-list {
+            margin: 40px 0;
+        }
+        
+        .document-item {
+            background-color: #f8f9fa;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 6px solid var(--blue);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .document-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        
+        .document-item a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        
+        .document-item a:hover {
+            color: var(--blue);
+        }
+        
+        .document-icon {
+            font-size: 32px;
+            color: var(--blue);
+            min-width: 40px;
+        }
+        
+        .document-content {
+            flex: 1;
+        }
+        
+        .document-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 5px;
+        }
+        
+        .document-item:hover .document-title {
+            color: var(--light-blue);
+        }
+        
+        .document-link {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .document-link i {
+            font-size: 12px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+            padding: 12px 24px;
+            background-color: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .back-link i {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-body">
+                <div class="page-header">
+                    <h1>Documentos PMESP</h1>
+                </div>
+                
+                <div class="documents-list">
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/1k-T4hMF6ceIqu3wCR7yx0pYXJ_kXXaEBcKF91kT6rz4/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">DOUTRINAS P1</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/1b7YtKC3mpJx_xeJELk-G8o3Vptr5UBaIWiJl8qjeP94/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">DOUTRINAS P2</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/1fZ9GGpFdJ891ZwPFx77bGkDiexKRIplAjLVCzsAfzG0/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">Regulamento de Honrarias</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/1GG8gfoNc5AkJoYX7YK6ozJ6VGTsmsNwlBmfg5S1G2tQ/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">Código de Políticas e Procedimentos Militares</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/1g1k1NbbNZ-XKv4UcFk6T7TGcKOPMcQQ76ymtPcLwQVk/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">Regulamento Disciplinar da Polícia Militar</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/1-OWDzXTipeiksLblxHPxeXQJYI2xfGoMs6rKfHCiKFA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">Direito Penal Essencial e Segurança Jurídica na Atuação Policial</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="document-item">
+                        <a href="https://docs.google.com/document/d/19VCB_6eemgfO02qSOPnaMeO8GkgHgRc3UPtDJS489ks/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            <div class="document-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="document-content">
+                                <div class="document-title">AMPO - Regulamentação calibre 12 e taser</div>
+                                <div class="document-link">
+                                    Acessar documento <i class="fas fa-external-link-alt"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer class="main-footer" id="footer">
+        <div class="container">
+            <div class="footer-logos">
+                <a href="#" class="footer-logo"><span>Governo de São Paulo</span></a>
+                <a href="#" class="footer-logo"><span>Secretaria de Segurança Pública</span></a>
+                <a href="#" class="footer-logo"><span>Serviço de Informação ao Cidadão</span></a>
+                <a href="#" class="footer-logo"><span>Polícia Civil</span></a>
+                <a href="#" class="footer-logo"><span>Polícia Científica</span></a>
+                <a href="#" class="footer-logo"><span>Defesa Civil</span></a>
+                <a href="#" class="footer-logo"><span>DETRAN</span></a>
+                <a href="#" class="footer-logo"><span>SPPREV</span></a>
+                <a href="#" class="footer-logo"><span>Cruz Azul</span></a>
+                <a href="#" class="footer-logo"><span>CBPM</span></a>
+                <a href="#" class="footer-logo"><span>CNCG-PM/CBM</span></a>
+            </div>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="#">Brasão de Armas</a></li>
+                        <li><a href="#">Canção da PM</a></li>
+                        <li><a href="#">Capacitação e Treinamento</a></li>
+                        <li><a href="#">História da PM</a></li>
+                        <li><a href="#">Insígnias</a></li>
+                        <li><a href="#">Legislação</a></li>
+                        <li><a href="#">Nossos Autores</a></li>
+                        <li><a href="organograma.html">Organização</a></li>
+                        <li><a href="medalhas.html">Medalhas</a></li>
+                        <li><a href="#">Planejamento Estratégico</a></li>
+                        <li><a href="#">Portal de Notícias</a></li>
+                        <li><a href="#">Vultos Históricos</a></li>
+                        <li><a href="#">Revista A Força Policial</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Programas de Policiamento</h4>
+                    <ul>
+                        <li><a href="#">Policiamento Escolar</a></li>
+                        <li><a href="#">Forças Táticas</a></li>
+                        <li><a href="#">Radiopatrulha - Atendimento 190</a></li>
+                        <li><a href="#">ROCAM</a></li>
+                        <li><a href="#">Policiamento de Trânsito</a></li>
+                        <li><a href="#">Policiamento Comunitário</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Serviços</h4>
+                    <ul>
+                        <li><a href="documentos.html">Documentos PMESP</a></li>
+                        <li><a href="#">Boletim de Ocorrência Eletrônico</a></li>
+                        <li><a href="#">Delegacia Eletrônica</a></li>
+                        <li><a href="#">Cadastro de pessoa surda, de PCD auditiva ou fala</a></li>
+                        <li><a href="#">Informações das Rodovias</a></li>
+                        <li><a href="#">Aplicativos PMESP</a></li>
+                        <li><a href="#">Orientações de Segurança</a></li>
+                        <li><a href="#">O que a PM está fazendo por você</a></li>
+                        <li><a href="#">Roteiro Cultural</a></li>
+                        <li><a href="#">Canal de Imprensa</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Concursos</h4>
+                    <ul>
+                        <li><a href="#">Concursos</a></li>
+                    </ul>
+                    <h4>Comunidade</h4>
+                    <ul>
+                        <li><a href="#">CONSEG</a></li>
+                    </ul>
+                    <h4>Fale Conosco</h4>
+                    <h4>Pesquisas CIAF</h4>
+                    <ul>
+                        <li><a href="#">Acesso ao sistema InfoJud</a></li>
+                        <li><a href="#">Recibos</a></li>
+                        <li><a href="#">Upload Mecanizada</a></li>
+                        <li><a href="#">Download Mecanizada</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-links">
+                    <a href="#">Ouvidoria</a>
+                    <a href="#">Transparência</a>
+                    <a href="#">SIC</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+        });
+    </script>
+</body>
+</html>
+

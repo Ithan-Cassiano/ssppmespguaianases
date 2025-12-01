@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar E-mail - PMESP</title>
+    <link rel="stylesheet" href="../../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .auth-header {
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            color: var(--dark-gray);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .auth-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: var(--blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .icon-success {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 40px;
+        }
+
+        .icon-error {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 40px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--blue);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(30, 58, 138, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--blue);
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-logo">PM</div>
+            <h1>Verificação de E-mail</h1>
+        </div>
+
+        <div id="verification-status">
+            <div class="loading"></div>
+            <p>Verificando seu e-mail...</p>
+        </div>
+
+        <div id="verification-result" style="display: none;">
+            <div id="result-icon"></div>
+            <div id="result-message"></div>
+            <a href="login.html" class="btn-primary" id="login-link" style="display: none;">
+                Ir para Login
+            </a>
+        </div>
+    </div>
+
+    <script src="../../scripts/auth.js"></script>
+    <script>
+        const statusDiv = document.getElementById('verification-status');
+        const resultDiv = document.getElementById('verification-result');
+        const resultIcon = document.getElementById('result-icon');
+        const resultMessage = document.getElementById('result-message');
+        const loginLink = document.getElementById('login-link');
+
+        // Obter token e e-mail da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const email = urlParams.get('email');
+
+        async function verifyEmail() {
+            if (!token || !email) {
+                showResult('error', 'Link de verificação inválido ou expirado.');
+                return;
+            }
+
+            try {
+                const result = auth.verifyEmail(decodeURIComponent(email), token);
+                
+                if (result.success) {
+                    showResult('success', 'E-mail verificado com sucesso! Você já pode fazer login.');
+                    loginLink.style.display = 'inline-block';
+                } else {
+                    showResult('error', result.message || 'Erro ao verificar e-mail. O link pode ter expirado.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showResult('error', 'Erro ao processar verificação. Tente novamente.');
+            }
+        }
+
+        function showResult(type, message) {
+            statusDiv.style.display = 'none';
+            resultDiv.style.display = 'block';
+
+            if (type === 'success') {
+                resultIcon.innerHTML = '<div class="icon-success"><i class="fas fa-check"></i></div>';
+                resultMessage.innerHTML = `<div class="alert alert-success">${message}</div>`;
+            } else {
+                resultIcon.innerHTML = '<div class="icon-error"><i class="fas fa-times"></i></div>';
+                resultMessage.innerHTML = `<div class="alert alert-error">${message}</div>`;
+            }
+        }
+
+        // Verificar e-mail ao carregar a página
+        verifyEmail();
+    </script>
+</body>
+</html>
+

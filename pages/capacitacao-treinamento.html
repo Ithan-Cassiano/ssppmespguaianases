@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacitação e Treinamento - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+            color: var(--darker-gray);
+            padding: 60px 0;
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            margin-bottom: 50px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--red);
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--blue);
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .page-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .intro-section {
+            margin-bottom: 60px;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--blue);
+        }
+        
+        .intro-section p {
+            font-size: 17px;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: justify;
+            line-height: 1.9;
+        }
+        
+        .intro-section p:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        .intro-section strong {
+            color: var(--blue);
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .intro-image {
+            text-align: center;
+            margin: 40px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+        }
+        
+        .intro-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            border: 3px solid var(--white);
+        }
+        
+        .schools-section {
+            margin-top: 50px;
+        }
+        
+        .schools-section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--blue);
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .school-item {
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 2px solid #e0e0e0;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .school-item.active {
+            border-color: var(--blue);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.2);
+        }
+        
+        .school-item:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .school-header {
+            background: linear-gradient(135deg, var(--blue) 0%, #1e40af 100%);
+            color: var(--white);
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .school-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background-color: var(--red);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .school-header:hover {
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--blue) 100%);
+        }
+        
+        .school-header:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .school-header.active {
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--blue) 100%);
+        }
+        
+        .school-header.active::before {
+            transform: scaleY(1);
+        }
+        
+        .school-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            flex: 1;
+            line-height: 1.4;
+        }
+        
+        .school-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+        
+        .school-header.active .school-icon {
+            transform: rotate(180deg);
+        }
+        
+        .school-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: var(--white);
+        }
+        
+        .school-content.active {
+            max-height: 5000px;
+            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .school-body {
+            padding: 35px 40px;
+            color: #333;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .school-body p {
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            text-align: justify;
+            color: #444;
+        }
+        
+        .school-body p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .school-body h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .school-body h3:first-child {
+            margin-top: 0;
+        }
+        
+        .school-body ul {
+            margin-left: 25px;
+            margin-bottom: 25px;
+            list-style-type: disc;
+        }
+        
+        .school-body li {
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 12px;
+            color: #444;
+        }
+        
+        .school-body strong {
+            color: var(--blue);
+            font-weight: 700;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 60px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--blue) 0%, #1e40af 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .back-link:hover {
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--blue) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(30, 58, 138, 0.4);
+        }
+        
+        .back-link i {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .school-header {
+                padding: 20px;
+            }
+            
+            .school-title {
+                font-size: 16px;
+            }
+            
+            .school-body {
+                padding: 25px 20px;
+            }
+            
+            .intro-section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-body">
+                <div class="page-header">
+                    <h1>Capacitação e Treinamento</h1>
+                </div>
+                
+                <div class="intro-section">
+                    <p>A formação, graduação, pós-graduação, aperfeiçoamento, habilitação e treinamento dos policiais militares são realizados por intermédio dos Órgãos de Apoio de Ensino Superior da Diretoria de Ensino da Polícia Militar.</p>
+                    
+                    <p>Sua missão precípua é promover com excelência a gestão de ensino, através de conhecimentos científicos e tecnológicos, humanísticos e gerais, indispensáveis à educação e à capacitação do policial militar, com o objetivo de torná-lo apto a atuar como operador do sistema de segurança pública em conformidade com a filosofia de polícia comunitária e de direitos humanos.</p>
+                    
+                    <div class="intro-image">
+                        <img src="../images/ordemunida.png" alt="Capacitação e Treinamento PMESP" onerror="this.style.display='none';">
+                    </div>
+                    
+                    <p><strong>São Órgãos de Apoio de Ensino Superior:</strong></p>
+                </div>
+                
+                <div class="schools-section">
+                    <h2 class="schools-section-title">Órgãos de Apoio de Ensino Superior</h2>
+                    
+                    <div class="school-item">
+                        <div class="school-header" onclick="toggleSchool(this)">
+                            <h2 class="school-title">Academia de Polícia Militar do Barro Branco (APMBB)</h2>
+                            <i class="fas fa-chevron-down school-icon"></i>
+                        </div>
+                        <div class="school-content">
+                            <div class="school-body">
+                                <p>A Academia de Polícia Militar do Barro Branco (APMBB), criada pela Lei 1.244, de 27 de dezembro de 1910, com a denominação de Companhia da Força Pública (nome à época, da atual Polícia Militar do Estado de São Paulo), e com atual denominação que lhe atribuiu o Decreto n.º 11.241, de 09 de março de 1978, é o órgão de apoio de ensino superior da Polícia Militar, com regime especial e de nível superior, que tem como missão a formação, habilitação, adaptação e especialização de Oficiais da Polícia Militar do Estado de São Paulo, buscando promover com excelência as atividades de ensino aos integrantes da Polícia Militar que se preparam para o exercício do Oficialato, tendo por referência a ciência pedagógica, a técnica policial e as relações humanas.</p>
+                                
+                                <h3>Centro de Altos Estudos de Segurança "Cel PM Nelson Freire Terra" (CAES)</h3>
+                                <p>Órgão de Apoio de Ensino Superior (OAES) de pós-graduação profissional da Polícia Militar do Estado de São Paulo que tem por finalidade o desenvolvimento de cursos de Mestrado e Doutorado em Ciências Policiais de Segurança e Ordem Pública.</p>
+                                
+                                <p>Centro com a missão de aperfeiçoar capitães PM, habilitando-os à ascensão ao oficialato superior (promoção a major e, posteriormente, a tenente-coronel), visando ao exercício das funções de oficiais de estado-maior e ao assessoramento no planejamento das missões legais atribuídas à Instituição. Também realiza o Curso Superior de Polícia (CSP), destinado aos oficiais superiores (majores e tenentes-coronéis), habilitando-os à promoção ao posto de coronel PM para desempenho de funções no âmbito político e estratégico da polícia paulista.</p>
+                                
+                                <p>São cursos obrigatórios destinados a habilitar o oficial ao acesso na escala hierárquica, conforme previsão legal.</p>
+                                
+                                <p>Recentemente, Lei Complementar Estadual nº 1036/08, estabeleceu o Sistema de Ensino da Polícia Militar (nova Lei de Ensino da PMESP), proporcionado ao CAO e o CSP o reconhecimento como cursos de Mestrado e Doutorado em "Ciências Policiais de Segurança e Ordem Pública", respectivamente, tornando o ano de 2008 histórico para a Polícia Militar do Estado de São Paulo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="school-item">
+                        <div class="school-header" onclick="toggleSchool(this)">
+                            <h2 class="school-title">Escola de Educação Física (EEF)</h2>
+                            <i class="fas fa-chevron-down school-icon"></i>
+                        </div>
+                        <div class="school-content">
+                            <div class="school-body">
+                                <p>Responsável pela Graduação de Oficiais e Praças da Polícia Militar em Educação Física, também realiza especializações voltadas ao aprimoramento das doutrinas de policiamento e segurança pública. Promove atendimento fisioterápico e presta serviço ambulatorial nas especialidades ortopédica traumatológica e desportiva, voltada aos policiais militares e seus dependentes. São oferecidos os seguintes serviços: fisioterapia clássica e reeducação postural global.</p>
+                                
+                                <h3>Escola de Esportes</h3>
+                                <ul>
+                                    <li>O uso da Escola esta apenas para militares que no caso, deve comparecer ao P5.</li>
+                                </ul>
+                                
+                                <p><strong>DOCUMENTAÇÃO NECESSÁRIA</strong></p>
+                                <ul>
+                                    <li>Xerox funcional</li>
+                                    <li>2 fotos 3x4</li>
+                                    <li>Inspeção anual de saúde</li>
+                                    <li>Preenchimento de ficha com informações</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="school-item">
+                        <div class="school-header" onclick="toggleSchool(this)">
+                            <h2 class="school-title">Escola Superior de Sargentos (ESSgt)</h2>
+                            <i class="fas fa-chevron-down school-icon"></i>
+                        </div>
+                        <div class="school-content">
+                            <div class="school-body">
+                                <p>Tem sua origem num dos mais tradicionais Batalhões de Polícia Militar do Estado de São Paulo, o 2º Batalhão. Destina-se a formar e aperfeiçoar sargentos policiais militares, pautada na ciência pedagógica, técnica policial, respeito ao meio ambiente e relações humanas. Busca consolidar-se como referência em liderança, com excelência e cultura de valorização das atribuições policiais militares. Premiada duas vezes com o Prêmio "Gestão Banas pela Qualidade" nos anos de 2006 e 2007, a Escola Superior de Sargentos oferece os seguintes cursos:</p>
+                                
+                                <p><strong>Curso de Formação de Sargentos (CFS)</strong> que prepara os Cabos de Polícia Militar ao exercício de cargos e funções inerentes à graduação de Sargentos da Polícia Militar do Estado de São Paulo e de outros Estados do Brasil;</p>
+                                
+                                <p><strong>Curso de Aperfeiçoamento de Sargentos (CAS)</strong> que prepara os 2° Sargentos a exercerem os cargos e funções inerentes à graduação de 1° Sargento PM e Subtenente PM.</p>
+                                
+                                <p><strong>Curso ou Estágio de Especialização de Praças (CEP/EEP)</strong> da PMESP e de outros Estados do Brasil, para a área de ensino e instrução, pelos Cursos ou Estágios de Técnicas de Ensino e Gestão de Ensino.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="school-item">
+                        <div class="school-header" onclick="toggleSchool(this)">
+                            <h2 class="school-title">Escola Superior de Soldados "Cel PM Eduardo Assumpção"</h2>
+                            <i class="fas fa-chevron-down school-icon"></i>
+                        </div>
+                        <div class="school-content">
+                            <div class="school-body">
+                                <p>A Escola Superior de Soldados, busca continuadamente aperfeiçoar o currículo de formação do Policial Militar, tendo a partir de 1995, recepcionado e implementado a idéia do Policial Comunitário, como nova filosofia educacional. Além da atividade precípua de formar o Soldado PM de 2ª Classe masculino e feminino, realiza também o Curso de Direção Defensiva aos Oficiais e Praças da Instituição.</p>
+                                
+                                <p>Já foram formados até a data de hoje 25.082 (vinte e cinco mil e oitenta e dois) Soldados, tendo como seu efetivo atual 1172 (um mil e cento e setenta e dois) alunos em formação. Também é responsável fiscalizar os cursos de formação de soldados PM em outras 23 (vinte e três) unidades formadoras em todo o Estado de São Paulo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="school-item">
+                        <div class="school-header" onclick="toggleSchool(this)">
+                            <h2 class="school-title">Escola Superior de Bombeiros "Cel PM Paulo Marques Pereira"</h2>
+                            <i class="fas fa-chevron-down school-icon"></i>
+                        </div>
+                        <div class="school-content">
+                            <div class="school-body">
+                                <p>A Escola Superior de Bombeiros é hoje a materialização de um sonho de vários bombeiros empreendedores que a almejavam. Trata-se de um tradicional órgão de ensino, localizado numa região privilegiada do município de Franco da Rocha, próximo à cidade de São Paulo, rodeado de muito verde, ar puro e às margens da represa de Mairiporã, contando com uma área de cerca 109 (cento e nove) hectares e uma área construída de 51.000 m2 (cinqüenta e um mil metros quadrados).</p>
+                                
+                                <p>Tornou-se um referencial nacional no que tange à formação e especialização de Oficiais e Praças, nas diversas áreas, como combate e prevenção contra incêndios, salvamento terrestre e aquático, pronto-socorrismo, defesa civil e do meio ambiente, destacando-se os cursos de:</p>
+                                
+                                <ul>
+                                    <li>Curso de Bombeiros para Oficiais;</li>
+                                    <li>Curso de Bombeiros para Sargentos;</li>
+                                    <li>Curso de Formação de Soldados;</li>
+                                    <li>Curso de Mergulho Autônomo;</li>
+                                    <li>Curso de Salvamento em Altura;</li>
+                                    <li>Curso de Salvamento Terrestre;</li>
+                                    <li>Curso de Instrutor e Monitor de Resgate e Emergências Médicas;</li>
+                                    <li>Curso de Resgate e Emergências Médicas;</li>
+                                    <li>Curso de Guarda Vidas;</li>
+                                    <li>Curso de Produtos Perigosos.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Função para abrir/fechar as abas
+        function toggleSchool(header) {
+            const schoolItem = header.parentElement;
+            const content = schoolItem.querySelector('.school-content');
+            const isActive = header.classList.contains('active');
+            
+            // Fechar todas as outras abas
+            document.querySelectorAll('.school-item').forEach(item => {
+                if (item !== schoolItem) {
+                    item.classList.remove('active');
+                    item.querySelector('.school-header').classList.remove('active');
+                    item.querySelector('.school-content').classList.remove('active');
+                }
+            });
+            
+            // Toggle da aba atual
+            if (isActive) {
+                header.classList.remove('active');
+                content.classList.remove('active');
+                schoolItem.classList.remove('active');
+            } else {
+                header.classList.add('active');
+                content.classList.add('active');
+                schoolItem.classList.add('active');
+            }
+        }
+        
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+        });
+    </script>
+</body>
+</html>
+

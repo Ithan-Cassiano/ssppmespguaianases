@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Admin Simples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #1e40af;
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f3f4f6;
+            border-radius: 5px;
+        }
+        .erro {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .sucesso {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .info {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Teste Admin - Diagnóstico</h1>
+    
+    <button onclick="testarFuncoes()">1. Testar Funções</button>
+    <button onclick="testarAuth()">2. Testar Auth</button>
+    <button onclick="testarLocalStorage()">3. Testar LocalStorage</button>
+    <button onclick="corrigirTudo()">4. Corrigir Tudo</button>
+    <button onclick="window.location.href='admin.html'">5. Ir para Admin</button>
+    
+    <div id="resultado" class="resultado">
+        <p>Clique nos botões acima para testar.</p>
+    </div>
+    
+    <script src="../scripts/auth.js"></script>
+    <script>
+        function log(mensagem, tipo = 'info') {
+            const resultado = document.getElementById('resultado');
+            const div = document.createElement('div');
+            if (tipo === 'erro') {
+                div.className = 'erro';
+            } else if (tipo === 'sucesso') {
+                div.className = 'sucesso';
+            } else if (tipo === 'info') {
+                div.className = 'info';
+            }
+            div.innerHTML = mensagem;
+            resultado.appendChild(div);
+            console.log(mensagem);
+        }
+        
+        function testarFuncoes() {
+            document.getElementById('resultado').innerHTML = '<h3>Testando Funções do Admin...</h3>';
+            
+            log('ℹ️ As funções (showNewsPanel, etc.) só existem no admin.html', 'info');
+            log('ℹ️ Este teste verifica se o admin.html está acessível e funcional', 'info');
+            
+            // Verificar se podemos acessar o admin.html
+            log('Testando acesso ao admin.html...');
+            fetch('admin.html')
+                .then(response => {
+                    if (response.ok) {
+                        log('✓ admin.html está acessível', 'sucesso');
+                        return response.text();
+                    } else {
+                        log('✗ admin.html não está acessível (erro ' + response.status + ')', 'erro');
+                        throw new Error('admin.html não acessível');
+                    }
+                })
+                .then(html => {
+                    // Verificar se as funções estão definidas no HTML
+                    if (html.includes('function showNewsPanel') || html.includes('window.showNewsPanel')) {
+                        log('✓ Funções showNewsPanel encontradas no admin.html', 'sucesso');
+                    } else {
+                        log('⚠️ Funções showNewsPanel não encontradas no admin.html', 'erro');
+                    }
+                    
+                    if (html.includes('function showActivitiesPanel') || html.includes('window.showActivitiesPanel')) {
+                        log('✓ Funções showActivitiesPanel encontradas no admin.html', 'sucesso');
+                    } else {
+                        log('⚠️ Funções showActivitiesPanel não encontradas no admin.html', 'erro');
+                    }
+                    
+                    if (html.includes('function showConcursosPanel') || html.includes('window.showConcursosPanel')) {
+                        log('✓ Funções showConcursosPanel encontradas no admin.html', 'sucesso');
+                    } else {
+                        log('⚠️ Funções showConcursosPanel não encontradas no admin.html', 'erro');
+                    }
+                    
+                    if (html.includes('function showUsersPanel') || html.includes('window.showUsersPanel')) {
+                        log('✓ Funções showUsersPanel encontradas no admin.html', 'sucesso');
+                    } else {
+                        log('⚠️ Funções showUsersPanel não encontradas no admin.html', 'erro');
+                    }
+                })
+                .catch(error => {
+                    log('✗ Erro ao verificar admin.html: ' + error.message, 'erro');
+                    log('ℹ️ Isso é normal se você estiver abrindo o arquivo diretamente (file://)', 'info');
+                    log('ℹ️ Para testar as funções, abra o admin.html diretamente no navegador', 'info');
+                });
+        }
+        
+        function testarAuth() {
+            document.getElementById('resultado').innerHTML = '<h3>Testando Auth...</h3>';
+            
+            if (typeof auth === 'undefined') {
+                log('✗ auth não está definido!', 'erro');
+                return;
+            }
+            
+            log('✓ auth está definido', 'sucesso');
+            
+            const currentUser = auth.getCurrentUser();
+            if (currentUser) {
+                log('✓ Usuário logado: ' + currentUser.username, 'sucesso');
+                log('Role: ' + currentUser.role, currentUser.role === 'admin' ? 'sucesso' : 'erro');
+                
+                const isAdmin = auth.isAdmin();
+                log('auth.isAdmin(): ' + isAdmin, isAdmin ? 'sucesso' : 'erro');
+            } else {
+                log('⚠️ Nenhum usuário logado', 'erro');
+            }
+        }
+        
+        function testarLocalStorage() {
+            document.getElementById('resultado').innerHTML = '<h3>Testando LocalStorage...</h3>';
+            
+            try {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                log('✓ localStorage.getItem("users") OK', 'sucesso');
+                log('Usuários encontrados: ' + Object.keys(users).length);
+                
+                if (users['admin']) {
+                    log('✓ Usuário admin existe', 'sucesso');
+                    log('Role do admin: ' + users['admin'].role, users['admin'].role === 'admin' ? 'sucesso' : 'erro');
+                } else {
+                    log('✗ Usuário admin NÃO existe!', 'erro');
+                }
+                
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    log('✓ currentUser existe: ' + user.username, 'sucesso');
+                    log('Role do currentUser: ' + user.role, user.role === 'admin' ? 'sucesso' : 'erro');
+                } else {
+                    log('⚠️ Nenhum currentUser no localStorage', 'erro');
+                }
+            } catch (e) {
+                log('✗ Erro ao ler localStorage: ' + e.message, 'erro');
+            }
+        }
+        
+        function corrigirTudo() {
+            document.getElementById('resultado').innerHTML = '<h3>Corrigindo Tudo...</h3>';
+            
+            try {
+                // 1. Garantir que admin existe
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                users['admin'] = {
+                    username: 'admin',
+                    password: 'r0@t',
+                    email: 'admin@pmesp.gov.br',
+                    role: 'admin',
+                    createdAt: users['admin']?.createdAt || new Date().toISOString()
+                };
+                localStorage.setItem('users', JSON.stringify(users));
+                log('✓ Admin corrigido no localStorage', 'sucesso');
+                
+                // 2. Atualizar currentUser se for admin
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    if (user.username === 'admin') {
+                        user.role = 'admin';
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        log('✓ currentUser atualizado com role admin', 'sucesso');
+                    }
+                }
+                
+                log('✓ Correção concluída! Faça login novamente.', 'sucesso');
+                log('<a href="auth/login.html">Ir para Login</a>', 'sucesso');
+            } catch (e) {
+                log('✗ Erro ao corrigir: ' + e.message, 'erro');
+            }
+        }
+        
+        // Testar automaticamente ao carregar
+        window.onload = function() {
+            log('Página carregada. Clique nos botões para testar.');
+        };
+    </script>
+</body>
+</html>
+

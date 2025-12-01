@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Permissões - PMESP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #1e3a8a;
+        }
+        .success-box {
+            background: #d1fae5;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #10b981;
+        }
+        .error-box {
+            background: #fee2e2;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #ef4444;
+        }
+        .warning-box {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #f59e0b;
+        }
+        button {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #1e40af;
+        }
+        .btn-danger {
+            background: #ef4444;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        pre {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-ok {
+            background: #10b981;
+            color: white;
+        }
+        .status-error {
+            background: #ef4444;
+            color: white;
+        }
+        .status-warning {
+            background: #f59e0b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Verificador de Permissões - Admin</h1>
+        
+        <button onclick="verificarTudo()">Verificar Tudo</button>
+        <button onclick="corrigirAdmin()" class="btn-danger">Corrigir Admin</button>
+        <button onclick="limparTudo()" class="btn-danger">Limpar Tudo e Recriar</button>
+        <button onclick="window.location.href='admin.html'">Ir para Admin</button>
+        
+        <div id="resultado"></div>
+    </div>
+    
+    <script src="../scripts/auth.js"></script>
+    <script>
+        function verificarTudo() {
+            const resultado = document.getElementById('resultado');
+            let html = '';
+            
+            // 1. Verificar localStorage
+            html += '<div class="info-box"><h3>1. Verificando localStorage</h3>';
+            try {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                const currentUser = localStorage.getItem('currentUser');
+                
+                html += `<p><strong>Usuários no localStorage:</strong> ${Object.keys(users).length}</p>`;
+                html += `<p><strong>Usuário logado:</strong> ${currentUser ? 'Sim' : 'Não'}</p>`;
+                
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    html += `<pre>${JSON.stringify(user, null, 2)}</pre>`;
+                }
+            } catch (e) {
+                html += `<div class="error-box">Erro ao ler localStorage: ${e.message}</div>`;
+            }
+            html += '</div>';
+            
+            // 2. Verificar usuário admin
+            html += '<div class="info-box"><h3>2. Verificando Usuário Admin</h3>';
+            try {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                const admin = users['admin'];
+                
+                if (!admin) {
+                    html += '<div class="error-box"><strong>❌ ERRO:</strong> Usuário admin NÃO existe!</div>';
+                } else {
+                    html += '<div class="success-box"><strong>✓</strong> Usuário admin existe</div>';
+                    html += `<p><strong>Username:</strong> ${admin.username}</p>`;
+                    html += `<p><strong>Email:</strong> ${admin.email || 'N/A'}</p>`;
+                    html += `<p><strong>Role:</strong> <span class="status ${admin.role === 'admin' ? 'status-ok' : 'status-error'}">${admin.role || 'NÃO DEFINIDO'}</span></p>`;
+                    html += `<p><strong>Senha:</strong> ${admin.password ? '***' : 'NÃO DEFINIDA'}</p>`;
+                    
+                    if (admin.role !== 'admin') {
+                        html += '<div class="error-box"><strong>❌ ERRO CRÍTICO:</strong> O role do admin não é "admin"! É: "' + admin.role + '"</div>';
+                    }
+                    
+                    if (!admin.password || admin.password !== 'r0@t') {
+                        html += '<div class="warning-box"><strong>⚠️ AVISO:</strong> A senha do admin não está correta ou não está definida!</div>';
+                    }
+                    
+                    html += '<pre>' + JSON.stringify(admin, null, 2) + '</pre>';
+                }
+            } catch (e) {
+                html += `<div class="error-box">Erro ao verificar admin: ${e.message}</div>`;
+            }
+            html += '</div>';
+            
+            // 3. Verificar usuário logado
+            html += '<div class="info-box"><h3>3. Verificando Usuário Logado</h3>';
+            try {
+                const currentUser = localStorage.getItem('currentUser');
+                
+                if (!currentUser) {
+                    html += '<div class="warning-box"><strong>⚠️ AVISO:</strong> Nenhum usuário está logado!</div>';
+                    html += '<p>Você precisa fazer login primeiro.</p>';
+                } else {
+                    const user = JSON.parse(currentUser);
+                    html += '<div class="success-box"><strong>✓</strong> Usuário logado</div>';
+                    html += `<p><strong>Username:</strong> ${user.username}</p>`;
+                    html += `<p><strong>Role:</strong> <span class="status ${user.role === 'admin' ? 'status-ok' : 'status-error'}">${user.role || 'NÃO DEFINIDO'}</span></p>`;
+                    
+                    if (user.role !== 'admin') {
+                        html += '<div class="error-box"><strong>❌ ERRO:</strong> O usuário logado NÃO é admin! Role: "' + user.role + '"</div>';
+                    }
+                    
+                    html += '<pre>' + JSON.stringify(user, null, 2) + '</pre>';
+                }
+            } catch (e) {
+                html += `<div class="error-box">Erro ao verificar usuário logado: ${e.message}</div>`;
+            }
+            html += '</div>';
+            
+            // 4. Verificar auth.js
+            html += '<div class="info-box"><h3>4. Verificando Sistema de Autenticação</h3>';
+            try {
+                if (typeof auth === 'undefined') {
+                    html += '<div class="error-box"><strong>❌ ERRO:</strong> auth.js não foi carregado!</div>';
+                } else {
+                    html += '<div class="success-box"><strong>✓</strong> auth.js carregado</div>';
+                    
+                    const isAdmin = auth.isAdmin();
+                    html += `<p><strong>auth.isAdmin():</strong> <span class="status ${isAdmin ? 'status-ok' : 'status-error'}">${isAdmin ? 'SIM' : 'NÃO'}</span></p>`;
+                    
+                    const currentUser = auth.getCurrentUser();
+                    if (currentUser) {
+                        html += `<p><strong>auth.getCurrentUser():</strong></p>`;
+                        html += '<pre>' + JSON.stringify(currentUser, null, 2) + '</pre>';
+                    } else {
+                        html += '<p><strong>auth.getCurrentUser():</strong> null (nenhum usuário logado)</p>';
+                    }
+                }
+            } catch (e) {
+                html += `<div class="error-box">Erro ao verificar auth: ${e.message}</div>`;
+            }
+            html += '</div>';
+            
+            // 5. Resumo e Recomendações
+            html += '<div class="info-box"><h3>5. Resumo e Recomendações</h3>';
+            try {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                const admin = users['admin'];
+                const currentUser = localStorage.getItem('currentUser');
+                const user = currentUser ? JSON.parse(currentUser) : null;
+                
+                let problemas = [];
+                let solucoes = [];
+                
+                if (!admin) {
+                    problemas.push('Usuário admin não existe');
+                    solucoes.push('Clique em "Corrigir Admin" para criar o usuário admin');
+                } else if (admin.role !== 'admin') {
+                    problemas.push('Usuário admin não tem role "admin"');
+                    solucoes.push('Clique em "Corrigir Admin" para corrigir o role');
+                }
+                
+                if (!currentUser) {
+                    problemas.push('Nenhum usuário está logado');
+                    solucoes.push('Faça login com usuário: admin, senha: r0@t');
+                } else if (user && user.role !== 'admin') {
+                    problemas.push('Usuário logado não é admin');
+                    solucoes.push('Faça logout e login novamente com o usuário admin');
+                }
+                
+                if (typeof auth === 'undefined') {
+                    problemas.push('auth.js não foi carregado');
+                    solucoes.push('Verifique se o arquivo auth.js existe e está acessível');
+                } else if (!auth.isAdmin()) {
+                    problemas.push('auth.isAdmin() retorna false');
+                    solucoes.push('Corrija o usuário admin e faça login novamente');
+                }
+                
+                if (problemas.length === 0) {
+                    html += '<div class="success-box"><strong>✓ Tudo OK!</strong> Seu usuário admin está configurado corretamente.</div>';
+                } else {
+                    html += '<div class="error-box"><strong>❌ Problemas Encontrados:</strong><ul>';
+                    problemas.forEach(p => html += `<li>${p}</li>`);
+                    html += '</ul></div>';
+                    
+                    html += '<div class="warning-box"><strong>💡 Soluções:</strong><ul>';
+                    solucoes.forEach(s => html += `<li>${s}</li>`);
+                    html += '</ul></div>';
+                }
+            } catch (e) {
+                html += `<div class="error-box">Erro ao gerar resumo: ${e.message}</div>`;
+            }
+            html += '</div>';
+            
+            resultado.innerHTML = html;
+        }
+        
+        function corrigirAdmin() {
+            try {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                
+                // Garantir que admin existe e tem permissões corretas
+                users['admin'] = {
+                    username: 'admin',
+                    password: 'r0@t',
+                    email: 'admin@pmesp.gov.br',
+                    role: 'admin',
+                    createdAt: users['admin']?.createdAt || new Date().toISOString()
+                };
+                
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Atualizar usuário logado se for admin
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    if (user.username === 'admin') {
+                        user.role = 'admin';
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                    }
+                }
+                
+                alert('✓ Admin corrigido com sucesso!\n\nUsuário: admin\nSenha: r0@t\nRole: admin\n\nRecarregue a página e faça login novamente.');
+                verificarTudo();
+            } catch (error) {
+                alert('Erro ao corrigir admin: ' + error.message);
+            }
+        }
+        
+        function limparTudo() {
+            if (confirm('Tem certeza que deseja limpar TUDO? Isso apagará todos os usuários, notícias, atividades e concursos!')) {
+                localStorage.clear();
+                
+                // Recriar admin
+                const defaultUsers = {
+                    'admin': {
+                        username: 'admin',
+                        password: 'r0@t',
+                        email: 'admin@pmesp.gov.br',
+                        role: 'admin',
+                        createdAt: new Date().toISOString()
+                    }
+                };
+                localStorage.setItem('users', JSON.stringify(defaultUsers));
+                
+                alert('✓ Tudo limpo e admin recriado!\n\nUsuário: admin\nSenha: r0@t\n\nFaça login novamente.');
+                verificarTudo();
+            }
+        }
+        
+        // Verificar automaticamente ao carregar
+        window.onload = function() {
+            verificarTudo();
+        };
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Força Pública de São Paulo - Polícia Militar</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="main-banner" id="content">
+        <div class="banner-background">
+            <div class="banner-pattern-left"></div>
+            <div class="banner-pattern-right"></div>
+        </div>
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-left">
+                    <div class="banner-emblem">
+                        <div class="banner-logo">
+                            <div class="banner-logo-text">POLÍCIA MILITAR</div>
+                            <div class="banner-200">
+                                <span class="rumo">RUMO AOS</span>
+                                <div class="number-200">200</div>
+                                <span class="anos">ANOS</span>
+                                <div class="arrow-right">→</div>
+                            </div>
+                        </div>
+                        <div class="banner-slogan">
+                            VAMOS TODOS JUNTOS. NINGUÉM FICA PARA TRÁS.
+                        </div>
+                        <div class="banner-indicators">
+                            <span class="indicator active"></span>
+                            <span class="indicator"></span>
+                            <span class="indicator"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-right">
+                    <div class="site-verification">
+                        <i class="fas fa-check-circle"></i>
+                        <span>PMESP Guaianases RP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="pm-numbers">
+        <div class="container">
+            <div class="numbers-header">
+                <h2>PM EM NÚMEROS</h2>
+                <p class="numbers-period" id="numbers-period">(JANEIRO A DEZEMBRO DE 2026)</p>
+            </div>
+            <div class="numbers-grid" id="numbers-grid">
+                
+            </div>
+            <div class="numbers-footer">
+                <a href="#" class="btn-ver-mais">Ver mais</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="latest-news" id="noticias">
+        <div class="container">
+            <div class="news-header">
+                <h2>ÚLTIMAS NOTÍCIAS</h2>
+                <div class="red-line-news"></div>
+            </div>
+            <div class="news-grid" id="news-grid">
+                <article class="news-item">
+                    <div class="news-image">
+                        <img src="../images/NOVEMBRO_EM_NUMEROS.png" alt="Estatísticas do 28 BPM/M - Novembro em Números">
+                    </div>
+                    <div class="news-content">
+                        <h3>28 BPM/M registra números expressivos em operações de novembro</h3>
+                        <p>O 28º Batalhão de Polícia Militar Metropolitano divulgou os resultados de suas operações no mês de novembro: 112 kg de entorpecentes apreendidos, 136 armamentos, 3.689 munições, 127 materiais para furtos, 42 veículos recuperados e 21 unidades de explosivos...</p>
+                        <span class="news-date">Novembro 2024</span>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <div class="news-image">
+                        <div class="news-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3>Homem é preso por tráfico de drogas e corrupção ativa</h3>
+                        <p>Operação da Polícia Militar resulta na prisão de indivíduo envolvido em atividades ilícitas...</p>
+                        <span class="news-date">Fevereiro 2025</span>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <div class="news-image">
+                        <div class="news-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3>Mulher é detida com 34 pacotes de droga em ônibus que chegava ao Terminal Barra Funda</h3>
+                        <p>Fiscalização da PM apreende grande quantidade de entorpecentes durante abordagem...</p>
+                        <span class="news-date">Fevereiro 2025</span>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <div class="news-image">
+                        <div class="news-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3>Indivíduos são presos após roubo a posto de combustível</h3>
+                        <p>Ação rápida da Polícia Militar resulta na prisão dos suspeitos...</p>
+                        <span class="news-date">Fevereiro 2025</span>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <div class="news-image">
+                        <div class="news-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3>Sete indivíduos são presos após roubo a loja de joias em shopping</h3>
+                        <p>Operação coordenada da PM prende quadrilha especializada em assaltos...</p>
+                        <span class="news-date">Fevereiro 2025</span>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <div class="news-image">
+                        <div class="news-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3>Passageiros são detidos por descaminho durante fiscalização na SP-333</h3>
+                        <p>PM apreende mercadorias irregulares em operação de fiscalização rodoviária...</p>
+                        <span class="news-date">Fevereiro 2025</span>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <div class="news-image">
+                        <div class="news-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="news-content">
+                        <h3>Dupla é detida com motocicleta furtada após tentativa de fuga</h3>
+                        <p>Perseguição da PM resulta na recuperação de veículo e prisão dos suspeitos...</p>
+                        <span class="news-date">Fevereiro 2025</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="activities cultural">
+        <div class="container">
+            <div class="activities-header">
+                <h2>Atividades <strong>Culturais</strong></h2>
+                <div class="red-line-news"></div>
+            </div>
+            <div class="activities-grid" id="cultural-activities-grid">
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Procurado da Justiça é preso pelo TOR</h3>
+                    </div>
+                </article>
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Polícia Militar Rodoviária e Canil prendem traficante</h3>
+                    </div>
+                </article>
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>POLICIAIS RECEBEM A VISITA DO CENTRO EDUCACIONAL ARCA DE NOÉ</h3>
+                    </div>
+                </article>
+            </div>
+            <div class="activities-footer">
+                <a href="#" class="btn-ver-mais">VER MAIS</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="activities community">
+        <div class="container">
+            <div class="activities-header">
+                <h2>Atividades <strong>Comunitárias</strong></h2>
+                <div class="red-line-news"></div>
+            </div>
+            <div class="activities-grid" id="community-activities-grid">
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>FÃ ESPECIAL DA POLÍCIA MILITAR RECEBE AMIGOS EM SEU ANIVERSÁ</h3>
+                    </div>
+                </article>
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>"AJUDAR E SER AJUDADO" P</h3>
+                    </div>
+                </article>
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>PEDIDO ATENDIDO!</h3>
+                    </div>
+                </article>
+            </div>
+            <div class="activities-footer">
+                <a href="#" class="btn-ver-mais">VER MAIS</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="activities education">
+        <div class="container">
+            <div class="activities-header">
+                <h2>Diretoria de <strong>Ensino</strong></h2>
+                <div class="red-line-news"></div>
+            </div>
+            <div class="activities-grid" id="education-activities-grid">
+                <article class="activity-item">
+                    <div class="activity-image">
+                        <div class="activity-placeholder">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Nova atividade será adicionada aqui</h3>
+                    </div>
+                </article>
+            </div>
+            <div class="activities-footer">
+                <a href="#" class="btn-ver-mais">VER MAIS</a>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script src="../scripts/news-manager.js"></script>
+    <script src="../scripts/activities-manager.js"></script>
+    <script src="../scripts/pm-numbers-manager.js"></script>
+    <script src="../scripts/banner-manager.js"></script>
+    <script>
+        // Carregar notícias dinamicamente apenas se houver notícias editadas pelo admin
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsGrid = document.getElementById('news-grid');
+            const news = newsManager.getAllNews();
+            
+            // Só substituir se houver notícias cadastradas pelo admin
+            if (news.length > 0) {
+                newsGrid.innerHTML = news.slice(0, 6).map(newsItem => {
+                    const hasImage = newsItem.image && !newsItem.image.includes('placeholder');
+                    return `
+                        <article class="news-item">
+                            <div class="news-image">
+                                ${hasImage ? 
+                                    `<img src="${newsItem.image}" alt="${newsItem.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onerror="this.parentElement.innerHTML='<div class=\\'news-placeholder\\'><i class=\\'fas fa-newspaper\\'></i></div>'">` :
+                                    `<div class="news-placeholder"><i class="fas fa-newspaper"></i></div>`
+                                }
+                            </div>
+                            <div class="news-content">
+                                <h3>${newsItem.title}</h3>
+                                <p>${newsItem.description}</p>
+                                <span class="news-date">${newsItem.date}</span>
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+            }
+
+            // Carregar atividades dinamicamente
+            const culturalActivities = activitiesManager.getActivitiesByType('cultural');
+            if (culturalActivities.length > 0) {
+                activitiesManager.renderActivities('cultural-activities-grid', 'cultural', 3);
+            }
+
+            const communityActivities = activitiesManager.getActivitiesByType('community');
+            if (communityActivities.length > 0) {
+                activitiesManager.renderActivities('community-activities-grid', 'community', 3);
+            }
+
+            const educationActivities = activitiesManager.getActivitiesByType('education');
+            if (educationActivities.length > 0) {
+                activitiesManager.renderActivities('education-activities-grid', 'education', 3);
+            } else {
+                // Se não houver atividades de educação, remover o item padrão
+                const educationGrid = document.getElementById('education-activities-grid');
+                if (educationGrid && educationGrid.children.length === 1) {
+                    const defaultItem = educationGrid.querySelector('article');
+                    if (defaultItem && defaultItem.textContent.includes('Nova atividade será adicionada aqui')) {
+                        educationGrid.innerHTML = '';
+                    }
+                }
+            }
+
+            // Carregar concursos dinamicamente
+            if (typeof concursosManager !== 'undefined') {
+                const concursosGrid = document.getElementById('concursos-grid');
+                if (concursosGrid) {
+                    const concursos = concursosManager.getAllConcursos();
+                    
+                    if (concursos.length > 0) {
+                        concursosGrid.innerHTML = concursos.map(concurso => {
+                            const hasImage = concurso.image && !concurso.image.includes('placeholder');
+                            return `
+                        <article class="concurso-item">
+                            <div class="concurso-image">
+                                ${hasImage ? 
+                                    `<img src="${concurso.image}" alt="${concurso.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onerror="this.parentElement.innerHTML='<div class=\\'concurso-placeholder\\'><i class=\\'fas fa-clipboard-list\\'></i></div>'">` :
+                                    `<div class="concurso-placeholder"><i class="fas fa-clipboard-list"></i></div>`
+                                }
+                            </div>
+                            <div class="concurso-content">
+                                <h3>${concurso.title}</h3>
+                                ${concurso.description ? `<p>${concurso.description}</p>` : ''}
+                                <div class="concurso-dates">
+                                    ${concurso.dataPostagem ? `<span class="concurso-date"><strong>Postado em:</strong> ${concurso.dataPostagem}</span>` : ''}
+                                    ${concurso.dataConcurso ? `<span class="concurso-date"><strong>Data do Concurso:</strong> ${concurso.dataConcurso}</span>` : ''}
+                                </div>
+                                <div class="concurso-links">
+                                    ${concurso.linkProva ? `<a href="${concurso.linkProva}" target="_blank" class="btn-concurso btn-prova"><i class="fas fa-file-alt"></i> Acessar Prova</a>` : ''}
+                                    ${concurso.linkApostila ? `<a href="${concurso.linkApostila}" target="_blank" class="btn-concurso btn-apostila"><i class="fas fa-book"></i> Apostila</a>` : ''}
+                                </div>
+                            </div>
+                        </article>
+                            `;
+                        }).join('');
+                    } else {
+                        // Manter mensagem padrão se não houver concursos
+                        const emptyMsg = concursosGrid.querySelector('.empty-concursos');
+                        if (!emptyMsg) {
+                            concursosGrid.innerHTML = `
+                                <div class="empty-concursos" style="text-align: center; padding: 60px 20px; color: #999; grid-column: 1 / -1;">
+                                    <i class="fas fa-clipboard-list" style="font-size: 64px; margin-bottom: 20px; opacity: 0.3;"></i>
+                                    <h3>Nenhum concurso disponível no momento</h3>
+                                    <p>Novos concursos serão publicados em breve</p>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }
+
+            // Carregar números PM dinamicamente
+            if (typeof pmNumbersManager !== 'undefined') {
+                pmNumbersManager.renderNumbers('numbers-grid', 'numbers-period');
+            }
+        });
+    </script>
+</body>
+</html>
+

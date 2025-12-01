@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insígnias - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background-color: var(--white);
+            color: var(--darker-gray);
+            padding: 60px 0;
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: #000;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .page-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .insignias-section {
+            margin: 50px 0;
+        }
+        
+        .insignias-section h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--blue);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--blue);
+        }
+        
+        /* Carrossel de Insígnias */
+        .insignias-carousel {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .carousel-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+        
+        .carousel-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+        }
+        
+        .carousel-image-container {
+            flex: 1;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .carousel-main-image {
+            width: 100%;
+            max-width: 350px;
+            height: 350px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--blue);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .carousel-main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .carousel-info {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .carousel-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--blue);
+            margin-bottom: 15px;
+        }
+        
+        .carousel-rank {
+            font-size: 24px;
+            color: var(--dark-gray);
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--blue);
+            color: var(--white);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .carousel-nav:hover {
+            background-color: var(--light-blue);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-nav.prev {
+            left: -25px;
+        }
+        
+        .carousel-nav.next {
+            right: -25px;
+        }
+        
+        .carousel-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .carousel-nav:disabled:hover {
+            transform: translateY(-50%);
+            background-color: var(--blue);
+        }
+        
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            border: 2px solid var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .carousel-indicator.active {
+            background-color: var(--blue);
+            transform: scale(1.2);
+        }
+        
+        .carousel-indicator:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .insignia-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            color: #999;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-main {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .carousel-nav.prev {
+                left: 10px;
+            }
+            
+            .carousel-nav.next {
+                right: 10px;
+            }
+            
+            .carousel-main-image {
+                max-width: 250px;
+                height: 250px;
+            }
+            
+            .carousel-title {
+                font-size: 24px;
+            }
+            
+            .carousel-rank {
+                font-size: 18px;
+            }
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 50px;
+            padding: 12px 24px;
+            background-color: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .back-link i {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-body">
+                <div class="page-header">
+                    <h1>Insígnias</h1>
+                </div>
+                
+                
+                <div class="insignias-section">
+                    <h2>Oficiais</h2>
+                    <div class="insignias-carousel" id="oficiais-carousel">
+                        <div class="carousel-container">
+                            <button class="carousel-nav prev" onclick="changeInsignia('oficiais', -1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="carousel-main">
+                                <div class="carousel-image-container">
+                                    <div class="carousel-main-image" id="oficiais-image">
+                                        
+                                    </div>
+                                </div>
+                                <div class="carousel-info">
+                                    <div class="carousel-title" id="oficiais-title">Comandante Geral</div>
+                                    <div class="carousel-rank" id="oficiais-rank">Coronel PM</div>
+                                </div>
+                            </div>
+                            <button class="carousel-nav next" onclick="changeInsignia('oficiais', 1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="carousel-indicators" id="oficiais-indicators">
+                            
+                        </div>
+                    </div>
+                    <div class="insignias-grid" style="display: none;">
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/comandante-geral-coronel-pm.jpg" alt="Comandante Geral - Coronel PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Comandante Geral</div>
+                            <div class="insignia-rank">Coronel PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/coronel-pm.jpg" alt="Coronel PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Coronel PM</div>
+                            <div class="insignia-rank">Coronel PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/tenente-coronel-pm.jpg" alt="Tenente Coronel PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Tenente Coronel PM</div>
+                            <div class="insignia-rank">Tenente Coronel PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/major-pm.jpg" alt="Major PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Major PM</div>
+                            <div class="insignia-rank">Major PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/capitao-pm.jpg" alt="Capitão PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Capitão PM</div>
+                            <div class="insignia-rank">Capitão PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/1-tenente-pm.jpg" alt="1º Tenente PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">1º Tenente PM</div>
+                            <div class="insignia-rank">1º Tenente PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/2-tenente-pm.jpg" alt="2º Tenente PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">2º Tenente PM</div>
+                            <div class="insignia-rank">2º Tenente PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/aspirante-oficial-pm.jpg" alt="Aspirante a Oficial PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Aspirante a Oficial PM</div>
+                            <div class="insignia-rank">Aspirante a Oficial PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/aluno-3.jpg" alt="Aluno 3º Ano" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Aluno 3º Ano</div>
+                            <div class="insignia-rank">Aluno 3º Ano</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/aluno-2.jpg" alt="Aluno 2º Ano" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Aluno 2º Ano</div>
+                            <div class="insignia-rank">Aluno 2º Ano</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/aluno-1.jpg" alt="Aluno 1º Ano" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Aluno 1º Ano</div>
+                            <div class="insignia-rank">Aluno 1º Ano</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/aluno-cstamp.jpg" alt="Aluno CSTAPM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Aluno CSTAPM</div>
+                            <div class="insignia-rank">Aluno CSTAPM</div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="insignias-section">
+                    <h2>Praças</h2>
+                    <div class="insignias-carousel" id="pracas-carousel">
+                        <div class="carousel-container">
+                            <button class="carousel-nav prev" onclick="changeInsignia('pracas', -1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="carousel-main">
+                                <div class="carousel-image-container">
+                                    <div class="carousel-main-image" id="pracas-image">
+                                        
+                                    </div>
+                                </div>
+                                <div class="carousel-info">
+                                    <div class="carousel-title" id="pracas-title">Subtenente PM</div>
+                                    <div class="carousel-rank" id="pracas-rank">Subtenente PM</div>
+                                </div>
+                            </div>
+                            <button class="carousel-nav next" onclick="changeInsignia('pracas', 1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="carousel-indicators" id="pracas-indicators">
+                            
+                        </div>
+                    </div>
+                    <div class="insignias-grid" style="display: none;">
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/subtenente-pm.jpg" alt="Subtenente PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Subtenente PM</div>
+                            <div class="insignia-rank">Subtenente PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/1-sargento-pm.jpg" alt="1º Sargento PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">1º Sargento PM</div>
+                            <div class="insignia-rank">1º Sargento PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/2-sargento-pm.jpg" alt="2º Sargento PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">2º Sargento PM</div>
+                            <div class="insignia-rank">2º Sargento PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/3-sargento-pm.jpg" alt="3º Sargento PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">3º Sargento PM</div>
+                            <div class="insignia-rank">3º Sargento PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/aluno-sargento-pm.jpg" alt="Aluno Sargento PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Aluno Sargento PM</div>
+                            <div class="insignia-rank">Aluno Sargento PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/cabo-pm.jpg" alt="Cabo PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Cabo PM</div>
+                            <div class="insignia-rank">Cabo PM</div>
+                        </div>
+                        
+                        <div class="insignia-item">
+                            <div class="insignia-image">
+                                <img src="../images/soldado-pm.jpg" alt="Soldado PM" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">
+                            </div>
+                            <div class="insignia-title">Soldado PM</div>
+                            <div class="insignia-rank">Soldado PM</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Dados das insígnias
+        const insigniasData = {
+            oficiais: [
+                { image: '../images/comandante-geral-coronel-pm.jpg', title: 'Comandante Geral', rank: 'Coronel PM' },
+                { image: '../images/coronel-pm.jpg', title: 'Coronel PM', rank: 'Coronel PM' },
+                { image: '../images/tenente-coronel-pm.jpg', title: 'Tenente Coronel PM', rank: 'Tenente Coronel PM' },
+                { image: '../images/major-pm.jpg', title: 'Major PM', rank: 'Major PM' },
+                { image: '../images/capitao-pm.jpg', title: 'Capitão PM', rank: 'Capitão PM' },
+                { image: '../images/1-tenente-pm.jpg', title: '1º Tenente PM', rank: '1º Tenente PM' },
+                { image: '../images/2-tenente-pm.jpg', title: '2º Tenente PM', rank: '2º Tenente PM' },
+                { image: '../images/aspirante-oficial-pm.jpg', title: 'Aspirante a Oficial PM', rank: 'Aspirante a Oficial PM' },
+                { image: '../images/aluno-3.jpg', title: 'Aluno 3º Ano', rank: 'Aluno 3º Ano' },
+                { image: '../images/aluno-2.jpg', title: 'Aluno 2º Ano', rank: 'Aluno 2º Ano' },
+                { image: '../images/aluno-1.jpg', title: 'Aluno 1º Ano', rank: 'Aluno 1º Ano' },
+                { image: '../images/aluno-cstamp.jpg', title: 'Aluno CSTAPM', rank: 'Aluno CSTAPM' }
+            ],
+            pracas: [
+                { image: '../images/subtenente-pm.jpg', title: 'Subtenente PM', rank: 'Subtenente PM' },
+                { image: '../images/1-sargento-pm.jpg', title: '1º Sargento PM', rank: '1º Sargento PM' },
+                { image: '../images/2-sargento-pm.jpg', title: '2º Sargento PM', rank: '2º Sargento PM' },
+                { image: '../images/3-sargento-pm.jpg', title: '3º Sargento PM', rank: '3º Sargento PM' },
+                { image: '../images/aluno-sargento-pm.jpg', title: 'Aluno Sargento PM', rank: 'Aluno Sargento PM' },
+                { image: '../images/cabo-pm.jpg', title: 'Cabo PM', rank: 'Cabo PM' },
+                { image: '../images/soldado-pm.jpg', title: 'Soldado PM', rank: 'Soldado PM' }
+            ]
+        };
+        
+        let currentIndex = {
+            oficiais: 0,
+            pracas: 0
+        };
+        
+        // Inicializar carrosséis
+        function initCarousels() {
+            initCarousel('oficiais');
+            initCarousel('pracas');
+        }
+        
+        function initCarousel(type) {
+            const data = insigniasData[type];
+            const imageContainer = document.getElementById(`${type}-image`);
+            const titleElement = document.getElementById(`${type}-title`);
+            const rankElement = document.getElementById(`${type}-rank`);
+            const indicatorsContainer = document.getElementById(`${type}-indicators`);
+            
+            // Criar indicadores
+            indicatorsContainer.innerHTML = '';
+            data.forEach((item, index) => {
+                const indicator = document.createElement('div');
+                indicator.className = 'carousel-indicator' + (index === 0 ? ' active' : '');
+                indicator.onclick = () => goToInsignia(type, index);
+                indicatorsContainer.appendChild(indicator);
+            });
+            
+            // Carregar primeira insígnia
+            updateCarousel(type, 0);
+        }
+        
+        function updateCarousel(type, index) {
+            const data = insigniasData[type];
+            if (index < 0 || index >= data.length) return;
+            
+            currentIndex[type] = index;
+            const item = data[index];
+            
+            const imageContainer = document.getElementById(`${type}-image`);
+            const titleElement = document.getElementById(`${type}-title`);
+            const rankElement = document.getElementById(`${type}-rank`);
+            const indicators = document.querySelectorAll(`#${type}-indicators .carousel-indicator`);
+            
+            // Atualizar imagem
+            imageContainer.innerHTML = `<img src="${item.image}" alt="${item.title}" onerror="this.parentElement.innerHTML='<div class=\\'insignia-image-placeholder\\'><i class=\\'fas fa-shield-alt\\' style=\\'font-size: 64px; color: #ccc;\\'></i></div>'">`;
+            
+            // Atualizar texto
+            titleElement.textContent = item.title;
+            rankElement.textContent = item.rank;
+            
+            // Atualizar indicadores
+            indicators.forEach((ind, i) => {
+                ind.classList.toggle('active', i === index);
+            });
+            
+            // Atualizar botões de navegação
+            const prevBtn = document.querySelector(`#${type}-carousel .carousel-nav.prev`);
+            const nextBtn = document.querySelector(`#${type}-carousel .carousel-nav.next`);
+            if (prevBtn) prevBtn.disabled = index === 0;
+            if (nextBtn) nextBtn.disabled = index === data.length - 1;
+        }
+        
+        function changeInsignia(type, direction) {
+            const data = insigniasData[type];
+            let newIndex = currentIndex[type] + direction;
+            
+            if (newIndex < 0) newIndex = data.length - 1;
+            if (newIndex >= data.length) newIndex = 0;
+            
+            updateCarousel(type, newIndex);
+        }
+        
+        function goToInsignia(type, index) {
+            updateCarousel(type, index);
+        }
+        
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+            
+            // Inicializar carrosséis
+            initCarousels();
+            
+            // Adicionar suporte para teclado (setas)
+            document.addEventListener('keydown', function(e) {
+                const activeCarousel = document.querySelector('.insignias-carousel:not([style*="display: none"])');
+                if (!activeCarousel) return;
+                
+                const type = activeCarousel.id.replace('-carousel', '');
+                if (e.key === 'ArrowLeft') {
+                    changeInsignia(type, -1);
+                } else if (e.key === 'ArrowRight') {
+                    changeInsignia(type, 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

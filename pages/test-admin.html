@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Admin</title>
+</head>
+<body>
+    <h1>Teste de Funções Admin</h1>
+    <button onclick="testShowNewsPanel()">Testar showNewsPanel</button>
+    <button onclick="testShowActivitiesPanel()">Testar showActivitiesPanel</button>
+    <button onclick="testShowConcursosPanel()">Testar showConcursosPanel</button>
+    <button onclick="testShowUsersPanel()">Testar showUsersPanel</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        // Simular as funções
+        function testShowNewsPanel() {
+            document.getElementById('result').innerHTML = 'showNewsPanel chamado!';
+            console.log('showNewsPanel chamado');
+        }
+        
+        function testShowActivitiesPanel() {
+            document.getElementById('result').innerHTML = 'showActivitiesPanel chamado!';
+            console.log('showActivitiesPanel chamado');
+        }
+        
+        function testShowConcursosPanel() {
+            document.getElementById('result').innerHTML = 'showConcursosPanel chamado!';
+            console.log('showConcursosPanel chamado');
+        }
+        
+        function testShowUsersPanel() {
+            document.getElementById('result').innerHTML = 'showUsersPanel chamado!';
+            console.log('showUsersPanel chamado');
+        }
+        
+        // Testar se as funções estão acessíveis
+        window.onload = function() {
+            console.log('Página carregada');
+            console.log('showNewsPanel:', typeof showNewsPanel);
+            console.log('testShowNewsPanel:', typeof testShowNewsPanel);
+        };
+    </script>
+</body>
+</html>
+

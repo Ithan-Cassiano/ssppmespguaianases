@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canção da PM - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background: #f5f5f5;
+            color: var(--darker-gray);
+            padding: 60px 0 80px;
+            min-height: 70vh;
+        }
+        
+        .page-header {
+            margin-bottom: 50px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--red);
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--blue);
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .page-body {
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .download-section {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        
+        .download-card {
+            background: #ffffff;
+            padding: 30px 40px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: inline-block;
+        }
+        
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 28px;
+            background: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .download-button:hover {
+            background: #1e40af;
+        }
+        
+        .download-button i {
+            font-size: 18px;
+        }
+        
+        .view-lyrics-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--blue);
+            border: 2px solid var(--blue);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .view-lyrics-button:hover {
+            background: var(--blue);
+            color: var(--white);
+        }
+        
+        .view-lyrics-button i {
+            font-size: 16px;
+        }
+        
+        .lyrics-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .lyrics-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .lyrics-modal-content {
+            background-color: var(--white);
+            margin: auto;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideDown 0.3s ease;
+            position: relative;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .lyrics-modal-header {
+            background: #2c2c2c;
+            color: var(--white);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lyrics-modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .lyrics-modal-close {
+            color: var(--white);
+            font-size: 28px;
+            font-weight: 300;
+            cursor: pointer;
+            background: var(--red);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .lyrics-modal-close:hover {
+            background: #b91c1c;
+        }
+        
+        .lyrics-modal-body {
+            padding: 40px;
+            background: var(--white);
+            color: var(--darker-gray);
+        }
+        
+        .lyrics-modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--blue);
+        }
+        
+        .lyrics-modal-credits {
+            text-align: left;
+            margin-bottom: 35px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #374151;
+        }
+        
+        .lyrics-modal-credits strong {
+            color: var(--blue);
+            font-weight: 600;
+        }
+        
+        .lyrics-modal-text {
+            font-size: 17px;
+            line-height: 2.2;
+            text-align: center;
+            color: #374151;
+        }
+        
+        .lyrics-modal-text .verse {
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        
+        .lyrics-modal-text .chorus {
+            margin: 30px 0;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .lyrics-modal-content {
+                width: 95%;
+                max-height: 95vh;
+            }
+            
+            .lyrics-modal-body {
+                padding: 25px 20px;
+            }
+            
+            .lyrics-modal-title {
+                font-size: 22px;
+            }
+            
+            .lyrics-modal-text {
+                font-size: 15px;
+            }
+        }
+        
+        .content-section {
+            margin-bottom: 40px;
+            background: #ffffff;
+            padding: 35px 40px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .content-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--red);
+            padding-bottom: 12px;
+        }
+        
+        .content-section h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--blue);
+            margin: 25px 0 12px 0;
+        }
+        
+        .content-section p {
+            font-size: 16px;
+            color: #374151;
+            line-height: 1.8;
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+        
+        .content-section strong {
+            color: var(--blue);
+            font-weight: 600;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 50px;
+            padding: 12px 24px;
+            background: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .back-link:hover {
+            background: #1e40af;
+        }
+        
+        .back-link i {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .content-section {
+                padding: 25px 20px;
+            }
+            
+            .content-section h2 {
+                font-size: 20px;
+            }
+            
+            .content-section h3 {
+                font-size: 18px;
+            }
+            
+            .content-section p {
+                font-size: 15px;
+            }
+            
+            .download-card {
+                padding: 25px 20px;
+            }
+            
+            .download-button {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-body">
+                <div class="page-header">
+                    <h1>Canção da PM</h1>
+                </div>
+                
+                <div class="download-section">
+                    <div class="download-card" style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                        <a href="../images/cancaopm.zip" download class="download-button" target="_blank">
+                            <i class="fas fa-download"></i>
+                            Download da Canção da PM em MP3 (arquivo.zip)
+                        </a>
+                        <button class="view-lyrics-button" onclick="openLyricsModal()">
+                            <i class="fas fa-music"></i>
+                            Veja a letra da Canção da PM
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <p>Todas as organizações cantam: cantam os fiéis e os corais nas igrejas, cantam os soldados e policiais nos quartéis, cantam os funcionários de empresas orientais ao iniciar-se o expediente, cantam os escolares, cantam os escoteiros, cantam os membros de clubes de serviço, canta o povo nos eventos esportivos e artísticos, cantam as corporações, as cidades e nações interpretando seus hinos.</p>
+                    
+                    <p>A música está presente na Polícia Militar desde os primórdios da Instituição. Já em 07 de abril de 1857 foi organizado o conjunto musical do então denominado Corpo Policial Permanente, que se destinava a auxiliar a instrução e proporcionar lazer aos membros da Milícia.</p>
+                    
+                    <p>Foram esses músicos que acompanharam os "Permanentes", pela estrada das Lágrimas, quando desciam a serra do mar rumo ao porto de Santos e, dali, rumo ao teatro de operações do Paraguai, recebendo-os, posteriormente, de retorno do front, quando retornavam a São Paulo.</p>
+                    
+                    <p>A esse tempo, a Instituição não possuía um hino, limitando-se seus integrantes a cantarem canções patrióticas, militares (aproveitadas do Exército Imperial) e populares, muitas vezes acompanhados apenas por violão, como ocorreu, por exemplo, durante a "Retirada da Laguna", segundo registrou Alfredo Taunay em sua obra homônima à campanha.</p>
+                    
+                    <h3>Paris Belfort</h3>
+                    
+                    <p>O primeiro ensaio de uma canção que identificasse a Força Pública revelou-se durante os momentos que antecederam o movimento constitucionalista de 32. Poucas horas após os graves episódios acontecidos na Praça da República, em 23 e 24 de maio, e que resultaram na morte de Martins, Miragaia, Dráuzio e Camargo, o radialista César Ladeira adentrou às dependências da rádio Record e pediu ao operador que colocasse uma marcha militar como fundo para difundir a notícia aos ouvintes. Quase acidentalmente, o operador tomou o primeiro disco disponível sobre o tema e veiculou a marcha "Paris Belfort".</p>
+                    
+                    <p>Essa canção, composta durante a guerra franco-prussiana de 1870, foi trazida a São Paulo provavelmente pelos componentes da missão francesa de instrução da Força Pública (1906/1914 – 1919/1924) e adotada pela alma popular como um entusiástico e verdadeiro hino do movimento constitucionalista que eclodiu a 09 de julho de 32.</p>
+                    
+                    <p>Embora não possamos afirmar que tenha sido adotada formalmente, como hino de uso exclusivo pela Força Pública, pois todas as forças constitucionalistas, indistintamente, a empregaram, "Paris Belfort" adquiriu uma estreita identidade com a Instituição, que viveu em 1932 um momento épico de dor e de glória e que, possivelmente, jamais tenha sido igualado até o presente.</p>
+                    
+                    <h3>As Primeiras Canções</h3>
+                    
+                    <p>Após a derrota das armas constitucionalistas para as forças da ditadura, assistimos ao redirecionamento da Força para a atividade policial, em detrimento da velha tradição bélica que imperou desde o início da República.</p>
+                    
+                    <p>A remodelação do ensino policial militar, resultando em gerações de Oficiais com maior qualificação humanística, jurídica, literária e científica, passou a conceder espaço para manifestações mais intelectualizadas por parte da Oficialidade.</p>
+                    
+                    <p>Assim, em princípio de 1950, o Tenente Elêusis Dias Peixoto, jovem Oficial do BG, compõe a "Canção do Batalhão de Guardas", inaugurando a fase das canções tipicamente policiais militares.</p>
+                    
+                    <p>Marcante também foi a composição, em 1956, pelo maestro Clíneo Monteiro França e pelo Cadete Ilo Mello Xavier do "Hino da Escola de Oficiais", oficializado a partir de abril de 1957.</p>
+                    
+                    <p>Dessa maneira, as primeiras canções policiais militares passaram a fazer parte da cultura miliciana, que, entretanto, se ressentia de um Hino que louvasse os feitos gloriosos da Instituição como um todo.</p>
+                    
+                    <h3>A Canção da Polícia Militar</h3>
+                    
+                    <p>No início de 1964 o Cap Antonio Augusto Neves, Chefe do Setor de Relações Públicas da Força Pública (FP), comentou com o Gen Res Ex João Franco Pontes – Comandante Geral da Força Pública, que as Unidades da Corporação tinham Hino e que a Milícia Bandeirante não tinha e sugeriu que ele pedisse a alguém de renome para escrever a letra do Hino da Força Pública. Algum tempo depois o Comandante Geral chamou o Cap Neves e disse-lhe que havia conversado com o poeta Guilherme de Almeida e pedido para ele escrever a letra do Hino e recomendou ao Oficial que juntasse documentos sobre a história da Corporação e fosse ao escritório que o poeta tinha no centro da cidade.</p>
+                    
+                    <p>O Cap Neves reuniu documentos históricos da Força Pública e foi ao encontro do poeta, que já havia iniciado a composição da letra. O poeta pediu ao Oficial que lesse os documentos e fizesse comentários sobre a história da Corporação, o que foi feito. Após essa conversa, o poeta finalizou a letra do Hino da Força Pública.</p>
+                    
+                    <p>Posteriormente, o Cap Neves levou a letra ao Maj PM Músico Alcides Jacomo Degobbi, que compôs a música. A Canção da Polícia Militar foi oficializada em 1965, tornando-se o hino oficial da Instituição.</p>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Explicação da Letra</h2>
+                    
+                    <h3>Sentido! Frente, ordinário marcha!</h3>
+                    <p>Essa frase inicial evoca os comandos militares básicos que ordenam o movimento das tropas, estabelecendo desde o início da canção a identidade militar da Instituição.</p>
+                    
+                    <h3>Feijó conclama, Tobias manda</h3>
+                    <p>Refere-se a dois importantes personagens da história paulista: Diogo Antônio Feijó, regente do Império, e Rafael Tobias de Aguiar, que foi presidente da Província de São Paulo e comandante da Guarda Nacional. Ambos foram fundamentais na organização da Força Pública.</p>
+                    
+                    <h3>Dos cento e trinta de trinta e um</h3>
+                    <p>Refere-se aos 130 homens que compunham o Corpo Policial Permanente, criado em 1831, que deu origem à atual Polícia Militar do Estado de São Paulo.</p>
+                    
+                    <h3>Legião de idealistas</h3>
+                    <p>Destaca o caráter idealista e dedicado dos membros da Polícia Militar, que servem à sociedade com dedicação e compromisso.</p>
+                    
+                    <h3>Missão cumprida em Campo das Palmas</h3>
+                    <p>Refere-se à participação da Força Pública na Guerra do Paraguai, especificamente na batalha de Campo das Palmas.</p>
+                    
+                    <h3>Laguna, heroísmo na "Retirada"</h3>
+                    <p>Evoca a participação heroica da Força Pública na Retirada da Laguna, episódio marcante da Guerra do Paraguai, registrado por Alfredo Taunay.</p>
+                    
+                    <h3>Glória em Canudos</h3>
+                    <p>Refere-se à participação do 1° Batalhão da Força Pública na Guerra de Canudos, sob o comando do Tenente Coronel PM "Antônio Moreira César de Aguiar". A essa Unidade foi confiada a complexa missão de escoltar os comboios de víveres destinados ao suprimento das forças em operações na região de Canudos. Missão complexa, pois essas colunas de suprimento eram exatamente as mais visadas nos assaltos e emboscadas realizados pelos homens do Conselheiro.</p>
+                    
+                    <p>Levando a bom termo essa missão, credenciou-se a Unidade paulista a ser escolhida pelo Comando das operações a constituir uma das linhas de vanguarda no ataque à cidadela de Canudos. As operações de escolta e o combate, casa a casa, visando ocupar Canudos resultaram na morte de 12 milicianos. Dezenas de componentes do 1° Batalhão foram feridos, inclusive seu Subcomandante.</p>
+                    
+                    <p>No retorno a São Paulo, a Unidade foi recebida em triunfo pelas autoridades e pelo povo, que, inclusive, doou, mediante subscrição popular, um padrão de pedra ao 1° Batalhão, hoje erigido em seu pátio interno, em memória dessa campanha e dos mortos da Unidade.</p>
+                    
+                    <h3>E de armas e almas, ao nosso Julho da Clarinada</h3>
+                    <p>Essa frase evoca o movimento constitucionalista irrompido a 09 de julho de 1932, quando São Paulo fez soar a clarinada, convocando os paulistas, de nascimento ou de coração, para pegar em armas para restaurar a Lei Magna, a liberdade e a democracia em solo brasileiro, afrontado pela imposição de uma ditadura, que se perpetuava no poder, à margem da lei, desde 1930.</p>
+                    
+                    <p>O alistamento massivo de voluntários, moços e idosos, crianças e adolescentes, o engajamento das mulheres, das comunidades étnicas, dos imigrantes, do clero, dos alunos e docentes das faculdades, dos profissionais liberais, dos artistas, operários, comerciantes e empresariado, construiu o maior movimento cívico-militar e o mais importante movimento de opinião pública da história brasileira.</p>
+                    
+                    <h3>Sob as arcadas vêm, um a um,...</h3>
+                    <p>Como Guilherme de Almeida não deixou explícita a fonte de sua inspiração, três hipóteses podem ser formuladas:</p>
+                    
+                    <p><strong>A primeira</strong> – As arcadas são símbolos universais e milenares de triunfo militar. Os arcos do triunfo, evocando, por exemplo, as campanhas vitoriosas de Trajano (Roma) e de Napoleão Bonaparte (Paris) são cartões postais conhecidos em todo o mundo. Os nazistas desfilaram sob o Arco do Triunfo em 1940. Os franceses, no dia da Libertação, em 1944, vingaram-se da humilhação anterior, desfilando sob as mesmas arcadas.</p>
+                    
+                    <p>Várias vezes, também no Brasil, forças vitoriosas desfilaram, no retorno de suas campanhas, sob Arcos do Triunfo, como ocorreu, por exemplo, ao retornarem de Canudos e da Campanha da Itália (FEB).</p>
+                    
+                    <p>Assim o poeta, após traçar um retrato das várias intervenções bem sucedidas da Polícia Militar na história paulista e brasileira, afirmaria que os integrantes da Instituição retornam em triunfo à sua sede, com o sentimento do dever cumprido e o respeito e a gratidão da comunidade.</p>
+                    
+                    <p><strong>A segunda</strong> – As Arcadas evocariam a forma arquitetônica presente no convento de São Francisco, onde instalou-se a Faculdade de Direito de São Paulo.</p>
+                    
+                    <p>Nesse edifício, o maior celeiro de líderes políticos da história brasileira e paulista e sensório jurídico do país, foi instalado o posto central de alistamento de voluntários civis durante o movimento constitucionalista de 1932.</p>
+                    
+                    <p>Após alistados, os voluntários eram conduzidos a campos de treinamento, onde eram entregues aos cuidados de monitores e instrutores da Força Pública que os adestravam brevemente, antes de seguirem para o front.</p>
+                    
+                    <p>Esse momento histórico representou um dos pontos culminantes da integração entre a Polícia Militar e a comunidade paulista, à qual serve.</p>
+                    
+                    <p><strong>A terceira</strong> – Recordaria as arcadas do Convento do Carmo, cuja ala térrea sediou o primeiro aquartelamento ocupado, a partir de 1832, pela Polícia Militar.</p>
+                    
+                    <p>Dessa forma, a "Canção da Polícia Militar", fruto da genialidade poética de Guilherme de Almeida, valorizada pela competência e vibração de Degobbi, é um digno resumo, a espelhar os dramas, os desafios e as vitórias dessa Força que serve a comunidade e protege as pessoas contra atos ilegais, nas cidades, nas ruas e estradas, nos céus, nas águas e florestas de São Paulo.</p>
+                    
+                    <p style="margin-top: 40px; font-style: italic; color: #6b7280; text-align: right;">
+                        "Texto elaborado a partir da justaposição de excertos extraídos das obras, pesquisas e entrevistas realizadas pelos historiadores da Polícia Militar do Estado de São Paulo, Coronel PM Luiz Eduardo Pesce de Arruda e do Tenente Coronel PM Sérgio Marques."
+                    </p>
+                </div>
+                
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    
+    <div id="lyricsModal" class="lyrics-modal">
+        <div class="lyrics-modal-content">
+            <div class="lyrics-modal-header">
+                <h2>Canção da Polícia Militar</h2>
+                <span class="lyrics-modal-close" onclick="closeLyricsModal()">&times;</span>
+            </div>
+            <div class="lyrics-modal-body">
+                <div class="lyrics-modal-title">CANÇÃO DA POLÍCIA MILITAR</div>
+                <div class="lyrics-modal-credits">
+                    <strong>Letra:</strong> Guilherme de Almeida<br>
+                    <strong>Música:</strong> Maj PM Músico Alcides Jacomo Degobbi
+                </div>
+                <div class="lyrics-modal-text">
+                    <div class="verse">
+                        Sentido! Frente, ordinário marcha!<br>
+                        Feijó conclama, Tobias manda<br>
+                        E na distância, desfila a marcha<br>
+                        Nova cruzada, nova demanda<br>
+                        Um só por todos, todos por um<br>
+                        Dos cento e trinta de trinta e um!
+                    </div>
+                    
+                    <div class="chorus">
+                        Legião de idealistas<br>
+                        Feijó e Tobias<br>
+                        Legaram-na aos seus<br>
+                        Tornando-os vigias<br>
+                        Da Lei e Paulistas<br>
+                        "Por mercê de Deus"
+                    </div>
+                    
+                    <div class="verse">
+                        Ei-los que partem! Na paz, na guerra<br>
+                        Brasil Império, Brasil República<br>
+                        Seus passos deixam, fundo na terra<br>
+                        Rastro e raízes: é a Força Pública<br>
+                        Multiplicando por mil e um<br>
+                        Os cento e trinta de trinta e um
+                    </div>
+                    
+                    <div class="chorus">
+                        Legião de idealistas<br>
+                        Feijó e Tobias<br>
+                        Legaram-na aos seus<br>
+                        Tornando-os vigias<br>
+                        Da Lei e Paulistas<br>
+                        "Por mercê de Deus"
+                    </div>
+                    
+                    <div class="verse">
+                        Missão cumprida em Campo das Palmas<br>
+                        Laguna, heroísmo na "Retirada"<br>
+                        Glória em Canudos; e de armas e almas,<br>
+                        Ao nosso Julho da Clarinada<br>
+                        Sob as arcadas vêm um a um,<br>
+                        Os cento e trinta de trinta e um
+                    </div>
+                    
+                    <div class="chorus">
+                        Legião de idealistas<br>
+                        Feijó e Tobias<br>
+                        Legaram-na aos seus<br>
+                        Tornando-os vigias<br>
+                        Da Lei e Paulistas<br>
+                        "Por mercê de Deus"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+        });
+        
+        // Funções para abrir e fechar o modal
+        function openLyricsModal() {
+            const modal = document.getElementById('lyricsModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLyricsModal() {
+            const modal = document.getElementById('lyricsModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('lyricsModal');
+            if (event.target === modal) {
+                closeLyricsModal();
+            }
+        }
+        
+        // Fechar modal com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLyricsModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

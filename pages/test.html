@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - PMESP</title>
+</head>
+<body>
+    <h1>Teste do Sistema</h1>
+    <div id="results"></div>
+    
+    <script src="../scripts/auth.js"></script>
+    <script>
+        const results = document.getElementById('results');
+        let html = '<h2>Resultados do Teste:</h2><ul>';
+        
+        // Teste 1: Verificar se auth.js foi carregado
+        if (typeof auth !== 'undefined') {
+            html += '<li style="color: green;">✓ auth.js carregado</li>';
+        } else {
+            html += '<li style="color: red;">✗ auth.js NÃO carregado</li>';
+        }
+        
+        // Teste 2: Verificar localStorage
+        try {
+            localStorage.setItem('test', 'ok');
+            const test = localStorage.getItem('test');
+            if (test === 'ok') {
+                html += '<li style="color: green;">✓ localStorage funcionando</li>';
+                localStorage.removeItem('test');
+            } else {
+                html += '<li style="color: red;">✗ localStorage com problema</li>';
+            }
+        } catch (e) {
+            html += '<li style="color: red;">✗ localStorage erro: ' + e.message + '</li>';
+        }
+        
+        // Teste 3: Verificar se há usuários
+        try {
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (Object.keys(users).length > 0) {
+                html += '<li style="color: green;">✓ Usuários encontrados: ' + Object.keys(users).length + '</li>';
+                html += '<li>Usuários: ' + Object.keys(users).join(', ') + '</li>';
+            } else {
+                html += '<li style="color: orange;">⚠ Nenhum usuário encontrado (será criado o admin padrão)</li>';
+            }
+        } catch (e) {
+            html += '<li style="color: red;">✗ Erro ao ler usuários: ' + e.message + '</li>';
+        }
+        
+        // Teste 4: Verificar usuário atual
+        try {
+            const currentUser = auth.getCurrentUser();
+            if (currentUser) {
+                html += '<li style="color: green;">✓ Usuário logado: ' + currentUser.username + ' (role: ' + currentUser.role + ')</li>';
+            } else {
+                html += '<li style="color: orange;">⚠ Nenhum usuário logado</li>';
+            }
+        } catch (e) {
+            html += '<li style="color: red;">✗ Erro ao verificar usuário: ' + e.message + '</li>';
+        }
+        
+        // Teste 5: Verificar se é admin
+        try {
+            const isAdmin = auth.isAdmin();
+            html += '<li style="color: ' + (isAdmin ? 'green' : 'orange') + ';">' + (isAdmin ? '✓' : '⚠') + ' É admin: ' + isAdmin + '</li>';
+        } catch (e) {
+            html += '<li style="color: red;">✗ Erro ao verificar admin: ' + e.message + '</li>';
+        }
+        
+        html += '</ul>';
+        html += '<h3>Ações:</h3>';
+        html += '<button onclick="localStorage.clear(); location.reload();">Limpar localStorage e recarregar</button>';
+        html += '<br><br>';
+        html += '<a href="auth/login.html">Ir para Login</a> | ';
+        html += '<a href="admin.html">Ir para Admin</a> | ';
+        html += '<a href="index.html">Ir para Index</a>';
+        
+        results.innerHTML = html;
+    </script>
+</body>
+</html>
+

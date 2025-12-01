@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
+            padding: 40px 20px;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: var(--blue);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--darker-gray);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e5e5;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+        
+        .btn-login {
+            width: 100% !important;
+            padding: 14px !important;
+            background-color: #1e3a8a !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            transition: background 0.3s !important;
+            margin-bottom: 15px !important;
+            margin-top: 10px !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative !important;
+            z-index: 10 !important;
+            box-sizing: border-box !important;
+        }
+        
+        .btn-login:hover {
+            background-color: #3b82f6 !important;
+        }
+        
+        form#login-form button,
+        form#login-form button[type="submit"],
+        .btn-login,
+        button.btn-login {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .login-box form button {
+            display: block !important;
+        }
+        
+        .login-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .login-links a {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 10px;
+        }
+        
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-error {
+            background-color: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+        
+        .alert-success {
+            background-color: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--blue);
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1><i class="fas fa-shield-alt"></i> Login</h1>
+                <p>Acesso ao sistema administrativo</p>
+            </div>
+            
+            <div id="alert-container"></div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+            
+            <div class="login-links">
+                <a href="register.html">Criar conta</a>
+                <span>|</span>
+                <a href="forgot-password.html">Esqueceu a senha?</a>
+            </div>
+            
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Voltar para o site
+            </a>
+        </div>
+    </div>
+    
+    <script src="../../scripts/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.querySelector('.btn-login');
+            if (btn) {
+                btn.style.display = 'block';
+                btn.style.visibility = 'visible';
+                btn.style.opacity = '1';
+            }
+            
+            function checkAuthAndInit() {
+                if (typeof auth === 'undefined') {
+                    setTimeout(checkAuthAndInit, 100);
+                    return;
+                }
+                
+                const loginForm = document.getElementById('login-form');
+                if (!loginForm) {
+                    setTimeout(checkAuthAndInit, 100);
+                    return;
+                }
+                
+                loginForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const alertContainer = document.getElementById('alert-container');
+                    
+                    if (!username || !password) {
+                        alertContainer.innerHTML = '<div class="alert alert-error">Por favor, preencha todos os campos!</div>';
+                        return false;
+                    }
+                    
+                    const result = auth.login(username, password);
+                    
+                    if (result.success) {
+                        alertContainer.innerHTML = '<div class="alert alert-success">Login realizado com sucesso! Redirecionando...</div>';
+                        setTimeout(() => {
+                            if (result.user.role === 'admin') {
+                                window.location.href = '../admin.html';
+                            } else {
+                                window.location.href = '../index.html';
+                            }
+                        }, 1000);
+                    } else {
+                        alertContainer.innerHTML = `<div class="alert alert-error">${result.message}</div>`;
+                    }
+                    
+                    return false;
+                };
+            }
+            
+            checkAuthAndInit();
+        });
+    </script>
+</body>
+</html>
+

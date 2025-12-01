@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislação - A Força Pública de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background: #f5f5f5;
+            color: var(--darker-gray);
+            padding: 60px 0 80px;
+            min-height: 70vh;
+        }
+        
+        .page-header {
+            margin-bottom: 50px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--red);
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--blue);
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .page-body {
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .intro-section {
+            margin-bottom: 50px;
+            background: #ffffff;
+            padding: 35px 40px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .intro-section p {
+            font-size: 16px;
+            color: #374151;
+            margin: 0;
+            text-align: left;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+        
+        .legislation-section {
+            margin-top: 40px;
+            display: grid;
+            gap: 25px;
+        }
+        
+        .legislation-item {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .legislation-header {
+            background: var(--blue);
+            padding: 25px 35px;
+            color: var(--white);
+        }
+        
+        .legislation-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            line-height: 1.5;
+        }
+        
+        .legislation-title i {
+            font-size: 20px;
+            color: var(--white);
+            background: rgba(255,255,255,0.15);
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+        
+        .legislation-title-text {
+            flex: 1;
+        }
+        
+        .legislation-year {
+            font-size: 13px;
+            opacity: 0.95;
+            font-weight: 400;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .legislation-body {
+            padding: 30px 35px;
+        }
+        
+        .legislation-description {
+            font-size: 15px;
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        
+        .legislation-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: background-color 0.2s ease;
+        }
+        
+        .legislation-download:hover {
+            background: #1e40af;
+        }
+        
+        .legislation-download i {
+            font-size: 16px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 60px;
+            padding: 12px 24px;
+            background: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .back-link:hover {
+            background: #1e40af;
+        }
+        
+        .back-link i {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .legislation-header {
+                padding: 20px;
+            }
+            
+            .legislation-body {
+                padding: 20px;
+            }
+            
+            .legislation-title {
+                font-size: 16px;
+                flex-direction: row;
+            }
+            
+            .legislation-title i {
+                font-size: 18px;
+                padding: 6px 8px;
+                min-width: 36px;
+                height: 36px;
+            }
+            
+            .intro-section {
+                padding: 25px 20px;
+            }
+            
+            .intro-section p {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-body">
+                <div class="page-header">
+                    <h1>Legislação</h1>
+                </div>
+                
+                <div class="intro-section">
+                    <p>Lei Complementar nº 893, de 9 de março de 2001, que institui o Regulamento Disciplinar da Polícia Militar e sua alteração datada de 22 de março de 2002.</p>
+                </div>
+                
+                <div class="legislation-section">
+                    <div class="legislation-item">
+                        <div class="legislation-header">
+                            <div class="legislation-title">
+                                <i class="fas fa-file-pdf"></i>
+                                <div class="legislation-title-text">
+                                    <span>LEI COMPLEMENTAR Nº 893, DE 09 DE MARÇO DE 2001</span>
+                                    <span class="legislation-year">Ano: 2001</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="legislation-body">
+                            <div class="legislation-description">
+                                Lei Complementar que institui o Regulamento Disciplinar da Polícia Militar do Estado de São Paulo.
+                            </div>
+                            <a href="../images/complementar01.pdf" download class="legislation-download" target="_blank">
+                                <i class="fas fa-download"></i>
+                                Baixar Documento PDF
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="legislation-item">
+                        <div class="legislation-header">
+                            <div class="legislation-title">
+                                <i class="fas fa-file-pdf"></i>
+                                <div class="legislation-title-text">
+                                    <span>LEI COMPLEMENTAR Nº 915, DE 22 DE MARÇO DE 2002</span>
+                                    <span class="legislation-year">Ano: 2002</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="legislation-body">
+                            <div class="legislation-description">
+                                Alteração da Lei Complementar nº 893, de 9 de março de 2001, que institui o Regulamento Disciplinar da Polícia Militar.
+                            </div>
+                            <a href="../images/complementar02.pdf" download class="legislation-download" target="_blank">
+                                <i class="fas fa-download"></i>
+                                Baixar Documento PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+        });
+    </script>
+</body>
+</html>
+

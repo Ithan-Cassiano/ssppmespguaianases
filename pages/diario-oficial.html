@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Oficial - Polícia Militar do Estado de São Paulo</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content {
+            background-color: #f5f5f5;
+            padding: 40px 0;
+            min-height: 60vh;
+        }
+        
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--red);
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+        
+        .diario-posts-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .diario-post {
+            background: white;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 0;
+            page-break-inside: avoid;
+        }
+        
+        .diario-header {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .diario-emblem {
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            padding: 20px;
+        }
+        
+        .diario-emblem img {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .diario-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin: 20px 0;
+            text-transform: uppercase;
+        }
+        
+        .diario-meta {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .diario-content {
+            padding: 40px;
+            min-height: 400px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            text-align: center;
+        }
+        
+        .diario-content h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 30px 0 15px 0;
+            color: #000;
+            text-align: center;
+        }
+        
+        .diario-content p {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .diario-texto {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .diario-signature {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        .diario-signature-line {
+            margin: 60px auto 10px;
+            width: 300px;
+            border-top: 2px solid #000;
+        }
+        
+        .diario-signature-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .empty-diario {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-diario i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="logo-governo" style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../images/ssp_fundobranco.png" alt="Secretaria da Segurança Pública" style="height: 80px; width: auto;">
+                    <div class="text-governo">
+                        <span class="sao-paulo">SÃO PAULO</span>
+                        <span class="governo">GOVERNO DO ESTADO</span>
+                        <span class="slogan">SÃO PAULO SÃO TODOS</span>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="accessibility">
+                        <button class="acc-btn" id="font-increase" aria-label="Aumentar fonte">A+</button>
+                        <button class="acc-btn" id="font-decrease" aria-label="Diminuir fonte">A-</button>
+                        <button class="acc-btn" id="alert" aria-label="Alertas">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    </div>
+                    <div class="servicos-pm">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Serviços ao PM</span>
+                    </div>
+                    <div class="user-auth-header">
+                        <a href="auth/login.html" id="header-login-btn" class="auth-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                        <a href="auth/register.html" id="header-register-btn" class="auth-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Criar Conta</span>
+                        </a>
+                        <div id="header-user-menu" class="user-menu-header" style="display: none;">
+                            <span class="user-name-header"></span>
+                            <a href="admin.html" id="header-admin-link" class="auth-link" style="display: none;">
+                                <i class="fas fa-cog"></i>
+                                <span>Admin</span>
+                            </a>
+                            <a href="#" onclick="auth.logout(); return false;" class="auth-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div class="accessibility-shortcuts">
+        <div class="container">
+            <a href="#menu" class="shortcut-link">Ir para o menu</a>
+            <a href="#content" class="shortcut-link">Ir para o conteúdo</a>
+        </div>
+    </div>
+
+    
+    <header class="main-header" id="menu">
+        <div class="container">
+            <div class="main-header-content">
+                <div class="logo-pm">
+                    <div class="pm-emblem">
+                        <img src="../images/Logo_PMESP.png" alt="Polícia Militar do Estado de São Paulo" style="height: 80px; width: auto;">
+                    </div>
+                    <div class="pm-text">
+                        <h1>A FORÇA PÚBLICA DE SÃO PAULO</h1>
+                        <p>Secretaria da Segurança Pública</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#noticias">PORTAL DE NOTÍCIAS</a>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">INSTITUCIONAL</a>
+                        <div class="dropdown-menu">
+                            <a href="organograma.html">Organograma</a>
+                            <a href="insignias.html">Insígnias</a>
+                            <a href="medalhas.html">Medalhas</a>
+                            <a href="capacitacao-treinamento.html">Capacitação e Treinamento</a>
+                            <a href="legislacao.html">Legislação</a>
+                            <a href="cancao-pm.html">Canção da PM</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link-dropdown">SERVIÇOS</a>
+                        <div class="dropdown-menu">
+                            <a href="documentos.html">Documentos PMESP</a>
+                        </div>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <a href="concursos.html">CONCURSOS</a>
+                    <span class="nav-divider">|</span>
+                    <a href="diario-oficial.html">DIÁRIO OFICIAL</a>
+                    <span class="nav-divider">|</span>
+                    <a href="https://discord.com/channels/1339712807494488204/1367221702638960844" target="_blank">FALE CONOSCO</a>
+                </nav>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="red-line"></div>
+        </div>
+    </header>
+
+    
+    <section class="page-content" id="content">
+        <div class="container">
+            <div class="page-header">
+                <h1>DIÁRIO OFICIAL</h1>
+                <div class="red-line-news"></div>
+            </div>
+            
+            <div class="diario-posts-container" id="diario-posts-container">
+                <div class="empty-diario">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Nenhuma publicação disponível</h3>
+                    <p>Novas publicações serão adicionadas em breve</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script src="../scripts/diario-manager.js"></script>
+    <script>
+        // Atualizar UI de autenticação ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = auth.getCurrentUser();
+            auth.updateUI(currentUser);
+            
+            // Carregar postagens do diário
+            loadDiarioPosts();
+        });
+        
+        function loadDiarioPosts() {
+            const container = document.getElementById('diario-posts-container');
+            if (!container || typeof diarioManager === 'undefined') {
+                return;
+            }
+            
+            const posts = diarioManager.getAllPosts();
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-diario">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Nenhuma publicação disponível</h3>
+                        <p>Novas publicações serão adicionadas em breve</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => {
+                const dataPub = new Date(post.dataPublicacao);
+                const dataFormatada = dataPub.toLocaleDateString('pt-BR', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                }).toUpperCase();
+                
+                return `
+                    <article class="diario-post">
+                        <div class="diario-header">
+                            <div class="diario-emblem">
+                                <img src="../images/govsppng.png" alt="Brasão do Estado de São Paulo">
+                            </div>
+                            <div class="diario-title">DIÁRIO OFICIAL DO ESTADO DE SÃO PAULO</div>
+                            <div class="diario-meta">
+                                Publicado na Edição de ${dataFormatada} | Caderno ${post.caderno || 'Executivo'} | Seção ${post.secao || 'Atos de Pessoal'}
+                            </div>
+                        </div>
+                        <div class="diario-content">
+                            <h2>${post.titulo || 'PUBLICAÇÃO'}</h2>
+                            <div class="diario-texto">
+                                ${post.conteudo.replace(/\n/g, '<br>')}
+                            </div>
+                            <div class="diario-signature">
+                                <div class="diario-signature-line"></div>
+                                <div class="diario-signature-text">
+                                    SECRETARIA DE SEGURANÇA PÚBLICA
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
+
