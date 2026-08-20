@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCOM - Polícia Federal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .header-servicos { padding: 60px 20px; text-align: center; background: linear-gradient(rgba(0,0,0,0.85), #000), url('images/pf.jpg'); background-size: cover; border-bottom: 3px solid var(--gold); position: relative; }
+        .btn-voltar { position: absolute; top: 20px; left: 20px; background: var(--gold); color: #000; padding: 8px 15px; text-decoration: none; font-weight: bold; border-radius: 3px; font-size: 12px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo-area" href="/">
+            <img src="images/pf.jpg" alt="Polícia Federal Virtual">
+            <div class="logo-text"><h1>POLÍCIA FEDERAL</h1><p>INTELIGÊNCIA E ESTRATÉGIA</p></div>
+        </a>
+        <div class="nav-item"><a href="/" class="nav-link">Início</a></div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Institucional ▼</a>
+            <div class="dropdown-content">
+                <button onclick="abrirModalOrg()">Organograma</button>
+                <button onclick="abrirModalMedalhas()">Ordem do Mérito</button>
+                <button onclick="abrirModalOp()">Unidades Especiais</button>
+                <button onclick="abrirModalSuper()">Sede da Superintendência</button>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Serviços ▼</a>
+            <div class="dropdown-content">
+                <a href="/servicos?tipo=porte">Porte de Armas</a>
+                <a href="/servicos?tipo=documentos">Emissão de Documentos</a>
+                <a href="/servicos?tipo=reabilitacao">Reabilitação de Ficha</a>
+                <a href="/concursos">Editais</a>
+                <a href="/resultados">Resultados</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Corregedoria ▼</a>
+            <div class="dropdown-content">
+                <a href="/corregedoria">Denuncie</a>
+                <a href="/comunica">Comunica PF (anônimo)</a>
+                <a href="/fale-conosco">Fale Conosco</a>
+            </div>
+        </div>
+        <div class="nav-item"><a href="/ascom" class="nav-link">ASCOM</a></div>
+        <div class="nav-item"><a href="/admin" class="nav-link">Acesso restrito</a></div>
+    </nav>
+
+    <header class="header-servicos">
+        <h1>ASCOM Informa</h1>
+        <p style="color:var(--gold);font-size:10px;letter-spacing:3px">CENTRO DE COMUNICAÇÃO SOCIAL</p>
+    </header>
+    <section class="section-container">
+        <div id="news-grid" class="news-grid"><div class="news-empty">Carregando comunicados...</div></div>
+    </section>
+    <script src="scripts/site.js"></script>
+</body>
+</html>

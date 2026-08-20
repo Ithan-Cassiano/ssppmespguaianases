@@ -1,1 +1,186 @@
-<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=pages/index.html"></head><body><p>Redirecting...</p></body></html> 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Polícia Federal Virtual | Portal Institucional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="logo-area" href="/">
+            <img src="images/pf.jpg" alt="Polícia Federal Virtual">
+            <div class="logo-text">
+                <h1>POLÍCIA FEDERAL</h1>
+                <p>INTELIGÊNCIA E ESTRATÉGIA</p>
+            </div>
+        </a>
+
+        <div class="nav-item"><a href="/" class="nav-link">Início</a></div>
+
+        <div class="nav-item">
+            <a href="#" class="nav-link">Institucional ▼</a>
+            <div class="dropdown-content">
+                <button onclick="abrirModalOrg()">Organograma</button>
+                <button onclick="abrirModalMedalhas()">Ordem do Mérito</button>
+                <button onclick="abrirModalOp()">Unidades Especiais</button>
+                <button onclick="abrirModalSuper()">Sede da Superintendência</button>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <a href="#" class="nav-link">Serviços ▼</a>
+            <div class="dropdown-content">
+                <a href="/servicos?tipo=porte">Porte de Armas</a>
+                <a href="/servicos?tipo=documentos">Emissão de Documentos</a>
+                <a href="/servicos?tipo=reabilitacao">Reabilitação de Ficha</a>
+                <a href="/concursos">Editais</a>
+                <a href="/resultados">Resultados</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <a href="#" class="nav-link">Corregedoria ▼</a>
+            <div class="dropdown-content">
+                <a href="/corregedoria">Denuncie</a>
+                <a href="/comunica">Comunica PF (anônimo)</a>
+                <a href="/fale-conosco">Fale Conosco</a>
+            </div>
+        </div>
+
+        <div class="nav-item"><a href="/ascom" class="nav-link">ASCOM</a></div>
+        <div class="nav-item"><a href="/admin" class="nav-link">Acesso restrito</a></div>
+    </nav>
+
+    <div class="hero">
+        <h2>POLÍCIA FEDERAL VIRTUAL</h2>
+
+        <div class="hero-tags">
+            <span><i class="fas fa-shield-halved"></i> Superintendência</span>
+            <span><i class="fas fa-signal"></i> Rede protegida</span>
+            <span><i class="fas fa-clock"></i> Plantão 24h</span>
+        </div>
+
+        <div style="margin-top: 35px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+            <a href="/concursos" style="text-decoration:none">
+                <button class="btn-action" style="margin-top:0; min-width:200px">
+                    <i class="fas fa-file-contract"></i> EDITAL ABERTO
+                </button>
+            </a>
+            <a href="/resultados" style="text-decoration:none">
+                <button class="btn-action outline" style="margin-top:0; min-width:200px">
+                    <i class="fas fa-list-check"></i> RESULTADOS EDITAL
+                </button>
+            </a>
+        </div>
+
+        <div class="mon-card">
+            <div class="mon-header">
+                <span class="mon-title"><i class="fas fa-chart-line"></i> PF Monitor</span>
+                <span class="mon-live"><i id="state-dot" class="mon-live-dot"></i>LIVE</span>
+            </div>
+            <div class="mon-tiles">
+                <div class="mon-tile"><span class="mon-tile-label">Sync</span><strong id="m-sync" class="mon-tile-value">99.98%</strong><em class="mon-spark"><i></i><i></i><i></i><i></i><i></i></em></div>
+                <div class="mon-tile"><span class="mon-tile-label">Latency</span><strong id="m-latency" class="mon-tile-value">08ms</strong><em class="mon-spark"><i></i><i></i><i></i></em></div>
+                <div class="mon-tile"><span class="mon-tile-label">Load</span><strong id="m-load" class="mon-tile-value">24%</strong><em class="mon-spark"><i></i><i></i></em></div>
+            </div>
+            <div class="mon-badges">
+                <span class="mon-badge ok" id="st-rede"><i></i>Rede protegida</span>
+                <span class="mon-badge ok" id="st-db"><i></i>Sincronia ativa</span>
+            </div>
+            <div id="term-log" class="mon-log">
+                <div class="mon-log-row"><span class="mon-log-time">08:41:02</span><span class="mon-log-level ok">OK</span><span class="mon-log-msg">encrypted channel ready</span></div>
+                <div class="mon-log-row"><span class="mon-log-time">08:41:03</span><span class="mon-log-level ok">OK</span><span class="mon-log-msg">operational feed synced</span></div>
+                <div class="mon-log-row"><span class="mon-log-time">08:41:04</span><span class="mon-log-level idle">--</span><span class="mon-log-msg">console standby<span class="cursor">_</span></span></div>
+            </div>
+            <button onclick="deployTatico()" class="mon-refresh"><i class="fas fa-rotate"></i> Run connection check</button>
+        </div>
+    </div>
+
+    <section id="ascom-section" class="section-container" style="background:#050505">
+        <h2 class="section-title" style="text-align:left; max-width:1200px; margin:0 auto 40px">Ascom Informa</h2>
+        <div id="news-grid" class="news-grid"><div class="news-empty">Carregando comunicados...</div></div>
+    </section>
+
+    <section class="section-container">
+        <h2 class="section-title">POLÍCIA FEDERAL EM NÚMEROS</h2>
+        <span class="section-subtitle">INDICADORES OPERACIONAIS GERAIS</span>
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card"><h3 id="cfg-prisoes">1.2k</h3><p>Prisões Federais</p></div>
+            <div class="stat-card"><h3 id="cfg-entorpecentes">250</h3><p>Kg de Entorpecentes</p></div>
+            <div class="stat-card"><h3 id="cfg-armas">45</h3><p>Armas Apreendidas</p></div>
+            <div class="stat-card"><h3 id="cfg-operacoes">150</h3><p>Operações Efetuadas</p></div>
+        </div>
+    </section>
+
+    <!-- MODAL: OPERACIONAIS / UNIDADES ESPECIAIS -->
+    <div id="modalOp" class="modal-operacionais">
+        <div class="modal-op-content">
+            <div class="modal-op-header">
+                <h2><i class="fas fa-shield-alt"></i> Unidades Especiais</h2>
+                <button class="close-org" onclick="fecharModalOp()">×</button>
+            </div>
+            <div id="unidades-container"><p style="text-align:center;color:#888">Carregando unidades...</p></div>
+        </div>
+    </div>
+
+    <!-- MODAL: ORGANOGRAMA -->
+    <div id="modalOrganograma" class="modal-org">
+        <div class="modal-org-content">
+            <div class="modal-org-header">
+                <h2><i class="fas fa-sitemap"></i> Hierarquia Institucional</h2>
+                <button class="close-org" onclick="fecharOrganograma()">×</button>
+            </div>
+            <div class="org-container" id="org-container"><p style="text-align:center;color:#888">Carregando estrutura...</p></div>
+        </div>
+    </div>
+
+    <!-- MODAL: ORDEM DO MÉRITO -->
+    <div id="modalMedalhas" class="modal-org">
+        <div class="modal-org-content" style="border-color:#f1c40f">
+            <div class="modal-org-header">
+                <h2 style="color:#f1c40f"><i class="fas fa-medal"></i> Ordem do Mérito - PF</h2>
+                <button class="close-org" onclick="fecharModalMedalhas()">×</button>
+            </div>
+            <div class="org-container" style="max-height:80vh; overflow-y:auto">
+                <div class="medalhas-grid" id="medalhas-grid"><p style="text-align:center;color:#888">Carregando condecorações...</p></div>
+                <p class="footer-restrito">CONCESSÃO MEDIANTE ATO DE COMANDO DA DIREÇÃO-GERAL</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SEDE DA SUPERINTENDÊNCIA -->
+    <div id="modalSuper" class="modal-org">
+        <div class="modal-org-content" style="max-width:900px; border-color:#f1c40f">
+            <div class="modal-org-header">
+                <h2 style="color:#f1c40f"><i class="fas fa-building"></i> Sede da Superintendência - PF</h2>
+                <button class="close-org" onclick="fecharModalSuper()">×</button>
+            </div>
+            <div class="modal-super-grid">
+                <div class="hq-info">
+                    <h3>Informações de Contato</h3>
+                    <p><i class="fas fa-map-marker-alt" style="color:#f1c40f"></i> <strong>Endereço:</strong> <span id="cfg-endereco">Avenida Monteiro Lobato, 2100 — Setor Policial</span></p>
+                    <p><a href="/fale-conosco"><i class="fab fa-discord" style="color:#f1c40f"></i> <strong>Contato:</strong> Falar com a Superintendência</a></p>
+                    <p><i class="fas fa-clock" style="color:#f1c40f"></i> <strong>Plantão:</strong> <span id="cfg-plantao">24 horas</span></p>
+                    <hr style="border:0; border-top:1px solid #1a1a1a; margin:15px 0">
+                    <p style="font-size:11px; color:#f1c40f">Acesso tático restrito. Dúvidas sobre o atendimento, use o canal Fale Conosco.</p>
+                </div>
+                <div class="hq-map">
+                    <div class="grid-lines"></div>
+                    <div class="gps-marker"><div class="gps-dot"></div><div class="gps-pulse"></div></div>
+                </div>
+            </div>
+            <p class="footer-restrito">Coordenação de Apoio Logístico - PF</p>
+        </div>
+    </div>
+
+    <footer class="footer-restrito" style="padding:40px 0">© 2026 Polícia Federal Virtual — Portal institucional · ASCOM · Corregedoria</footer>
+
+    <script src="scripts/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* Override to use local hero image when pf-background.jpg is missing */
+.hero{background-image:linear-gradient(90deg,rgba(7,16,20,.96) 0%,rgba(7,16,20,.78) 42%,rgba(7,16,20,.3) 100%),url('../images/ChatGPT Image 19 de ago. de 2026, 23_48_14.png') !important;background-size:cover !important;background-position:center !important}
+.numbers,.news-section,.portal-section,.service-strip,.closing{background-image:linear-gradient(rgba(7,16,20,.94),rgba(7,16,20,.96)),url('../images/ChatGPT Image 19 de ago. de 2026, 23_48_14.png');background-size:cover;background-position:center;background-attachment:fixed}
+.news-card-image{background:#020607;min-height:150px;overflow:hidden}.news-card-image img{width:100%;height:150px;display:block;object-fit:cover;object-position:center;opacity:.78}.tracking-form{margin-top:24px}.tracking-form input{max-width:520px}
+
+/* Organograma: real hierarchy tree (classic CSS org-chart pattern) */
+.org-chart-scroll{overflow-x:auto;padding:10px 0 50px;text-align:center}
+.org-tree,.org-tree ul{list-style:none;margin:0 auto;padding:0;position:relative;display:table}
+.org-tree{padding-top:0}
+.org-tree ul{padding-top:30px}
+.org-tree ul::after{content:'';display:table;clear:both}
+.org-tree li{float:left;text-align:center;position:relative;padding:30px 12px 0 12px}
+.org-tree li::before,.org-tree li::after{content:'';position:absolute;top:0;right:50%;border-top:1px solid var(--line);width:50%;height:30px}
+.org-tree li::after{right:auto;left:50%;border-left:1px solid var(--line)}
+.org-tree li:only-child{padding-top:0}
+.org-tree li:only-child::before,.org-tree li:only-child::after{display:none}
+.org-tree li:first-child::before,.org-tree li:last-child::after{border:0 none}
+.org-tree li:last-child::before{border-right:1px solid var(--line);border-radius:0 6px 0 0}
+.org-tree li:first-child::after{border-radius:6px 0 0 0}
+.org-tree ul ul::before{content:'';position:absolute;top:0;left:50%;border-left:1px solid var(--line);width:0;height:30px}
+.org-tree>li{padding-top:0}
+.org-tree>li::before,.org-tree>li::after{display:none}
+.org-box{display:inline-block;border:1px solid var(--line);background:var(--ink-2);padding:14px 16px;min-width:170px;max-width:210px;white-space:normal;vertical-align:top;text-align:left}
+.org-box strong{display:block;font:600 17px 'Barlow Condensed';letter-spacing:.4px;text-transform:uppercase;color:var(--paper);margin-bottom:6px}
+.org-box span{font:9px 'IBM Plex Mono';color:var(--acid);text-transform:uppercase;letter-spacing:1px}
+.org-box p{font-size:11px;line-height:1.55;color:var(--muted);margin:8px 0 0}
+
+/* Ordem do Mérito: ranked list instead of a flat card grid */
+.medal-rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:medal}
+.medal-rank li{counter-increment:medal;display:flex;align-items:flex-start;gap:18px;border:1px solid var(--line);background:var(--ink-2);padding:18px 22px}
+.medal-rank li::before{content:counter(medal);flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--acid);color:var(--acid);display:flex;align-items:center;justify-content:center;font:700 15px 'IBM Plex Mono'}
+.medal-rank .medal-body{flex:1}
+.medal-rank h3{font:600 22px 'Barlow Condensed';margin:0 0 4px;color:var(--paper)}
+.medal-rank p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+
+/* Sede / contato institucional card on the closing section */
+.hq-card{display:flex;flex-wrap:wrap;gap:40px;margin-top:34px;padding-top:28px;border-top:1px solid rgba(255,255,255,.12)}
+.hq-card .label{display:block;font:10px 'IBM Plex Mono';letter-spacing:1px;color:var(--acid);margin-bottom:6px}
+.hq-card p{margin:0;font-size:13px;color:var(--muted)}
+.hq-card .text-link{color:var(--acid);text-decoration:none;font:inherit}

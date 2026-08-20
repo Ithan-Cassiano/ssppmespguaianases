@@ -1,0 +1,193 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "06414216528597ddc4f7a3dc5b82df4f:628b8539fe34955c78f6d9037188c44491168a6dbb77971452cca2055642c29b25aa4bf6ed7c39ea5465940ab5cc790f3b066de268d0bb3c4cb11e4442a7a3a3",
+      "name": "Administrador",
+      "role": "admin"
+    }
+  ],
+  "news": [
+    {
+      "id": "news-demo-001",
+      "title": "Boletim operacional semanal publicado",
+      "summary": "A Superintendência PF Virtual disponibilizou o boletim demonstrativo com indicadores, agenda e orientações institucionais da semana.",
+      "description": "A Superintendência PF Virtual disponibilizou o boletim demonstrativo com indicadores, agenda e orientações institucionais da semana.",
+      "date": "20/08/2026",
+      "status": "Publicado",
+      "image": "images/ChatGPT%20Image%2019%20de%20ago.%20de%202026,%2023_48_14.png",
+      "createdAt": "2026-08-20T09:00:00.000Z"
+    },
+    {
+      "id": "news-demo-002",
+      "title": "Novo canal para acompanhamento de manifestações",
+      "summary": "O portal agora permite consultar o status de uma manifestação por protocolo, sem expor dados pessoais na área pública.",
+      "description": "O portal agora permite consultar o status de uma manifestação por protocolo, sem expor dados pessoais na área pública.",
+      "date": "18/08/2026",
+      "status": "Publicado",
+      "image": "images/ChatGPT%20Image%2019%20de%20ago.%20de%202026,%2023_48_14.png",
+      "createdAt": "2026-08-18T14:30:00.000Z"
+    }
+  ],
+  "editais": [
+    {
+      "id": "edital-demo-001",
+      "title": "Processo seletivo demonstrativo 01/2026",
+      "description": "Edital de demonstração para treinamento do fluxo de inscrição, com prazo de consulta até 30/08/2026.",
+      "date": "Inscrições até 30/08/2026",
+      "status": "Aberto",
+      "token": "PFV-2026-01",
+      "createdAt": "2026-08-15T10:00:00.000Z"
+    }
+  ],
+  "resultados": [
+    {
+      "id": "resultado-demo-001",
+      "title": "Resultado preliminar · Processo seletivo demonstrativo 01/2026",
+      "description": "Consulta vinculada ao identificador PFV-2026-01. Resultado preliminar publicado para fins de demonstração do portal.",
+      "date": "Publicado em 20/08/2026",
+      "status": "Publicado",
+      "token": "PFV-2026-01",
+      "createdAt": "2026-08-20T11:00:00.000Z"
+    }
+  ],
+  "denuncias": [],
+  "operacionais": [],
+  "servicos": [],
+  "solicitacoes": [],
+  "organograma": [
+    {
+      "id": "org-direcao-geral",
+      "title": "Direção-Geral",
+      "description": "Comando máximo da instituição. Define diretrizes, representa o órgão e responde pelas decisões estratégicas de âmbito nacional.",
+      "tier": 1,
+      "createdAt": "2026-08-15T09:00:00.000Z"
+    },
+    {
+      "id": "org-corregedoria-geral",
+      "title": "Corregedoria-Geral",
+      "description": "Fiscaliza a conduta funcional dos agentes e conduz sindicâncias e processos administrativos disciplinares com independência.",
+      "tier": 2,
+      "createdAt": "2026-08-15T09:01:00.000Z"
+    },
+    {
+      "id": "org-gabinete-juridico",
+      "title": "Gabinete e Assessoria Jurídica",
+      "description": "Assessora a Direção-Geral em atos normativos, pareceres técnicos e representação institucional.",
+      "tier": 2,
+      "createdAt": "2026-08-15T09:02:00.000Z"
+    },
+    {
+      "id": "org-coord-comunicacao",
+      "title": "Coordenação de Comunicação (ASCOM)",
+      "description": "Centraliza comunicados oficiais, imprensa e relacionamento com a sociedade.",
+      "tier": 2,
+      "createdAt": "2026-08-15T09:03:00.000Z"
+    },
+    {
+      "id": "org-coord-inteligencia",
+      "title": "Coordenação de Inteligência e Operações",
+      "description": "Produz e analisa informações estratégicas e coordena a atuação das superintendências, delegacias e da academia de formação.",
+      "tier": 2,
+      "createdAt": "2026-08-15T09:04:00.000Z"
+    },
+    {
+      "id": "org-superintendencias",
+      "title": "Superintendências Regionais",
+      "description": "Representam a instituição nas unidades federativas, coordenando delegacias e núcleos locais.",
+      "tier": 3,
+      "createdAt": "2026-08-15T09:05:00.000Z"
+    },
+    {
+      "id": "org-delegacias",
+      "title": "Delegacias Especializadas",
+      "description": "Conduzem investigações temáticas: crimes financeiros, fronteiras, entorpecentes e crimes cibernéticos.",
+      "tier": 3,
+      "createdAt": "2026-08-15T09:06:00.000Z"
+    },
+    {
+      "id": "org-academia",
+      "title": "Academia de Formação",
+      "description": "Responsável pela seleção, capacitação e reciclagem funcional dos quadros da corporação.",
+      "tier": 3,
+      "createdAt": "2026-08-15T09:07:00.000Z"
+    }
+  ],
+  "medalhas": [
+    {
+      "id": "medalha-gra-cruz",
+      "title": "Grã-Cruz do Mérito",
+      "description": "Insígnia com centro esmaltado e faixa dourada. Concedida pela Direção-Geral em cerimônia institucional, mediante ato de comando.",
+      "tier": 1,
+      "createdAt": "2026-08-15T09:10:00.000Z"
+    },
+    {
+      "id": "medalha-grande-oficial",
+      "title": "Grande-Oficial",
+      "description": "Medalha dourada com fundo em couro azul-marinho. Concedida pela Direção-Geral a indicação da Corregedoria-Geral.",
+      "tier": 2,
+      "createdAt": "2026-08-15T09:11:00.000Z"
+    },
+    {
+      "id": "medalha-comendador",
+      "title": "Comendador",
+      "description": "Medalha prateada com fundo em couro vermelho. Concedida por Superintendência Regional, mediante requerimento e aprovação do Gabinete.",
+      "tier": 3,
+      "createdAt": "2026-08-15T09:12:00.000Z"
+    },
+    {
+      "id": "medalha-oficial",
+      "title": "Oficial",
+      "description": "Medalha prateada com fundo em couro preto. Concedida por Superintendência Regional, mediante requerimento e aprovação do Gabinete.",
+      "tier": 4,
+      "createdAt": "2026-08-15T09:13:00.000Z"
+    },
+    {
+      "id": "medalha-cavaleiro",
+      "title": "Cavaleiro",
+      "description": "Medalha em bronze com fundo em couro preto. Primeira condecoração de carreira, concedida por tempo de serviço e conduta ilibada.",
+      "tier": 5,
+      "createdAt": "2026-08-15T09:14:00.000Z"
+    }
+  ],
+  "unidades": [
+    {
+      "id": "unidade-gto",
+      "title": "GTO — Grupo Tático de Operações",
+      "description": "Atuação em cenários de alto risco: cerco, resgate de reféns e contenção de ameaças armadas.",
+      "tier": 1,
+      "createdAt": "2026-08-15T09:20:00.000Z"
+    },
+    {
+      "id": "unidade-nupam",
+      "title": "NUPAM — Núcleo de Polícia Aquática e Marítima",
+      "description": "Fiscalização de portos e hidrovias, e combate ao tráfico em ambiente aquático.",
+      "tier": 2,
+      "createdAt": "2026-08-15T09:21:00.000Z"
+    },
+    {
+      "id": "unidade-gri",
+      "title": "GRI — Grupo de Resposta Imediata",
+      "description": "Primeira resposta a ocorrências em andamento, com apoio rápido às delegacias.",
+      "tier": 3,
+      "createdAt": "2026-08-15T09:22:00.000Z"
+    },
+    {
+      "id": "unidade-cao",
+      "title": "CAO — Comando de Apoio Operacional",
+      "description": "Suporte aéreo e logístico às operações de campo das superintendências regionais.",
+      "tier": 4,
+      "createdAt": "2026-08-15T09:23:00.000Z"
+    }
+  ],
+  "config": {
+    "statPrisoes": "1.2k",
+    "statEntorpecentes": "250",
+    "statArmas": "45",
+    "statOperacoes": "150",
+    "sedeEndereco": "Avenida Monteiro Lobato, 2100 — Setor Policial",
+    "sedePlantao": "24 horas"
+  },
+  "usuarios": []
+}

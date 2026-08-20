@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Resultados - Polícia Federal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --gold: #f1c40f; --card-bg: #0a0f18; --text-muted: #718096; --success: #2ecc71; --danger: #e74c3c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #000; color: #fff; }
+        .page-wrap { min-height: calc(100vh - 82px); display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+        .container { width: 100%; max-width: 900px; }
+        .portal-card { background: var(--card-bg); padding: 40px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); border-top: 4px solid var(--gold); text-align: center; max-width: 500px; margin: 0 auto; }
+        .portal-card h2 { text-transform: uppercase; letter-spacing: 2px; font-size: 18px; margin-bottom: 30px; }
+        .select-group { margin-bottom: 15px; text-align: left; }
+        .select-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; display: block; }
+        input, select { width: 100%; background: #000; border: 1px solid #1a202c; padding: 14px; color: #fff; border-radius: 4px; outline: none; }
+        .btn-verificar { background: var(--gold); color: #000; border: none; padding: 18px; border-radius: 4px; font-weight: 900; cursor: pointer; width: 100%; text-transform: uppercase; margin-top: 15px; }
+        .btn-verificar:hover { background: #fff; }
+        #tela-resultados { display: none; width: 100%; }
+        .nav-back { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 20px; cursor: pointer; background: none; border: none; }
+        .nav-back:hover { color: var(--gold); }
+        .header-section { margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+        .results-wrapper { background: var(--card-bg); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 20px; font-size: 11px; text-transform: uppercase; color: var(--gold); background: rgba(255,255,255,0.02); }
+        td { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 14px; }
+        .token-cell { font-family: 'Consolas', monospace; font-weight: bold; }
+        .status-tag { padding: 5px 12px; border-radius: 4px; font-size: 10px; font-weight: 900; text-transform: uppercase; border: 1px solid var(--success); color: var(--success); background: rgba(46, 204, 113, 0.1); }
+        .empty-msg { padding: 40px; text-align: center; color: #666; }
+        .form-message { margin-top: 10px; font-size: 12px; color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="logo-area" href="/">
+            <img src="images/pf.jpg" alt="Polícia Federal Virtual">
+            <div class="logo-text"><h1>POLÍCIA FEDERAL</h1><p>INTELIGÊNCIA E ESTRATÉGIA</p></div>
+        </a>
+        <div class="nav-item"><a href="/" class="nav-link">Início</a></div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Institucional ▼</a>
+            <div class="dropdown-content">
+                <button onclick="abrirModalOrg()">Organograma</button>
+                <button onclick="abrirModalMedalhas()">Ordem do Mérito</button>
+                <button onclick="abrirModalOp()">Unidades Especiais</button>
+                <button onclick="abrirModalSuper()">Sede da Superintendência</button>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Serviços ▼</a>
+            <div class="dropdown-content">
+                <a href="/servicos?tipo=porte">Porte de Armas</a>
+                <a href="/servicos?tipo=documentos">Emissão de Documentos</a>
+                <a href="/servicos?tipo=reabilitacao">Reabilitação de Ficha</a>
+                <a href="/concursos">Editais</a>
+                <a href="/resultados">Resultados</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Corregedoria ▼</a>
+            <div class="dropdown-content">
+                <a href="/corregedoria">Denuncie</a>
+                <a href="/comunica">Comunica PF (anônimo)</a>
+                <a href="/fale-conosco">Fale Conosco</a>
+            </div>
+        </div>
+        <div class="nav-item"><a href="/ascom" class="nav-link">ASCOM</a></div>
+        <div class="nav-item"><a href="/admin" class="nav-link">Acesso restrito</a></div>
+    </nav>
+
+<div class="page-wrap">
+<div class="container" id="portal-consulta">
+    <div class="portal-card">
+        <i class="fas fa-magnifying-glass" style="font-size:50px;color:var(--gold);margin-bottom:20px;display:block"></i>
+        <h2>Consultar Resultado</h2>
+        <div class="select-group">
+            <label>Token ou número do edital</label>
+            <input type="text" id="token" placeholder="Ex: PFV-2026-01" required>
+        </div>
+        <button class="btn-verificar" onclick="verificarResultado()">Verificar Resultado</button>
+        <p id="form-message" class="form-message"></p>
+    </div>
+</div>
+
+<div class="container" id="tela-resultados">
+    <button onclick="voltarPortal()" class="nav-back"><i class="fas fa-arrow-left"></i> VOLTAR PARA A CONSULTA</button>
+    <div class="header-section"><h1 style="font-size:22px;text-transform:uppercase">Resultado localizado</h1></div>
+    <div class="results-wrapper">
+        <table>
+            <thead><tr><th>Token</th><th>Título</th><th>Situação</th><th>Data</th></tr></thead>
+            <tbody id="results-body"></tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+<script src="scripts/site.js"></script>
+<script>
+    async function verificarResultado() {
+        const msg = document.getElementById('form-message');
+        const token = document.getElementById('token').value.trim().toLowerCase();
+        if (!token) return;
+        try {
+            const resultados = await request('/api/resultados');
+            const matches = resultados.filter(item => String(item.token || '').toLowerCase() === token);
+            if (!matches.length) { msg.textContent = 'Nenhum resultado localizado para este identificador.'; return; }
+            document.getElementById('results-body').innerHTML = matches.map(item => `<tr><td class="token-cell">${escapeHtml(item.token)}</td><td>${escapeHtml(item.title)}</td><td><span class="status-tag">${escapeHtml(item.status || 'Publicado')}</span></td><td>${escapeHtml(item.date || '')}</td></tr>`).join('');
+            document.getElementById('portal-consulta').style.display = 'none';
+            document.getElementById('tela-resultados').style.display = 'block';
+        } catch (err) { msg.textContent = err.message; }
+    }
+
+    function voltarPortal() {
+        document.getElementById('tela-resultados').style.display = 'none';
+        document.getElementById('portal-consulta').style.display = 'block';
+    }
+</script>
+</body>
+</html>

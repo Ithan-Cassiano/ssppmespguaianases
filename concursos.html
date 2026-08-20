@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editais - Polícia Federal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --gold: #f1c40f; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #000; color: #fff; line-height: 1.6; }
+        .header-servicos { padding: 60px 20px; text-align: center; background: linear-gradient(rgba(0,0,0,0.85), #000), url('images/pf.jpg'); background-size: cover; border-bottom: 3px solid var(--gold); position: relative; }
+        .btn-voltar { position: absolute; top: 20px; left: 20px; background: var(--gold); color: #000; padding: 8px 15px; text-decoration: none; font-weight: bold; border-radius: 3px; font-size: 12px; text-transform: uppercase; }
+        .container { max-width: 1150px; margin: 50px auto; padding: 0 20px; }
+        .stats-row { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+        .stats-row div { text-align: center; }
+        .stats-row strong { display: block; font-size: 32px; color: var(--gold); }
+        .stats-row span { font-size: 11px; text-transform: uppercase; color: #888; }
+        .filtros { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
+        .filtros button { background: #0a0a0a; border: 1px solid #1a1a1a; color: #ccc; padding: 10px 24px; text-transform: uppercase; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        .filtros button.active, .filtros button:hover { border-color: var(--gold); color: var(--gold); }
+        .editais-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .edital-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 25px; transition: 0.3s; }
+        .edital-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .edital-card .status { display: inline-block; padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; }
+        .status.aberto { color: #2ecc71; border: 1px solid #2ecc71; background: rgba(46,204,113,.1); }
+        .status.encerrado { color: #e74c3c; border: 1px solid #e74c3c; background: rgba(231,76,60,.1); }
+        .edital-card h3 { font-size: 18px; margin-bottom: 10px; }
+        .edital-card p { font-size: 13px; color: #999; margin-bottom: 15px; }
+        .edital-card .date { font-size: 11px; color: #666; }
+        .empty-msg { grid-column: 1/-1; text-align: center; padding: 60px; color: #555; border: 1px dashed #1a1a1a; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo-area" href="/">
+            <img src="images/pf.jpg" alt="Polícia Federal Virtual">
+            <div class="logo-text"><h1>POLÍCIA FEDERAL</h1><p>INTELIGÊNCIA E ESTRATÉGIA</p></div>
+        </a>
+        <div class="nav-item"><a href="/" class="nav-link">Início</a></div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Institucional ▼</a>
+            <div class="dropdown-content">
+                <button onclick="abrirModalOrg()">Organograma</button>
+                <button onclick="abrirModalMedalhas()">Ordem do Mérito</button>
+                <button onclick="abrirModalOp()">Unidades Especiais</button>
+                <button onclick="abrirModalSuper()">Sede da Superintendência</button>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Serviços ▼</a>
+            <div class="dropdown-content">
+                <a href="/servicos?tipo=porte">Porte de Armas</a>
+                <a href="/servicos?tipo=documentos">Emissão de Documentos</a>
+                <a href="/servicos?tipo=reabilitacao">Reabilitação de Ficha</a>
+                <a href="/concursos">Editais</a>
+                <a href="/resultados">Resultados</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a href="#" class="nav-link">Corregedoria ▼</a>
+            <div class="dropdown-content">
+                <a href="/corregedoria">Denuncie</a>
+                <a href="/comunica">Comunica PF (anônimo)</a>
+                <a href="/fale-conosco">Fale Conosco</a>
+            </div>
+        </div>
+        <div class="nav-item"><a href="/ascom" class="nav-link">ASCOM</a></div>
+        <div class="nav-item"><a href="/admin" class="nav-link">Acesso restrito</a></div>
+    </nav>
+
+    <header class="header-servicos">
+        <h1>Editais e Concursos</h1>
+        <p style="color:var(--gold);font-size:10px;letter-spacing:3px">INGRESSO E CARREIRA - POLÍCIA FEDERAL</p>
+    </header>
+
+    <div class="container">
+        <div class="stats-row" id="stats-row"></div>
+        <div class="filtros">
+            <button class="active" data-filtro="todos">Todos</button>
+            <button data-filtro="aberto">Abertos</button>
+            <button data-filtro="encerrado">Encerrados</button>
+        </div>
+        <div class="editais-grid" id="editais-grid"><div class="empty-msg">Carregando editais...</div></div>
+    </div>
+
+    <script src="scripts/site.js"></script>
+    <script>
+        let editaisData = [];
+
+        function render(filtro) {
+            const grid = document.getElementById('editais-grid');
+            const list = filtro === 'todos' ? editaisData : editaisData.filter(item => (item.status || '').toLowerCase() === filtro);
+            grid.innerHTML = list.length ? list.map(item => `<div class="edital-card"><span class="status ${(item.status || '').toLowerCase() === 'aberto' ? 'aberto' : 'encerrado'}">${escapeHtml(item.status || 'Aberto')}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p><div class="date">${escapeHtml(item.date || '')}</div></div>`).join('') : '<div class="empty-msg">Nenhum edital nesta categoria.</div>';
+        }
+
+        document.querySelectorAll('.filtros button').forEach(btn => btn.onclick = () => {
+            document.querySelectorAll('.filtros button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render(btn.dataset.filtro);
+        });
+
+        request('/api/editais').then(data => {
+            editaisData = data;
+            const abertos = data.filter(item => (item.status || '').toLowerCase() === 'aberto').length;
+            document.getElementById('stats-row').innerHTML = `<div><strong>${data.length}</strong><span>Editais</span></div><div><strong>${abertos}</strong><span>Abertos</span></div>`;
+            render('todos');
+        }).catch(() => { document.getElementById('editais-grid').innerHTML = '<div class="empty-msg">Serviço de editais indisponível no momento.</div>'; });
+    </script>
+</body>
+</html>
