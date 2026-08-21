@@ -35,7 +35,7 @@ async function carregarOrganograma() {
         const tiers = { 1: [], 2: [], 3: [] };
         items.forEach(item => { (tiers[item.tier] || tiers[3]).push(item); });
         const labels = { 1: 'DIREÇÃO-GERAL', 2: 'COORDENAÇÕES E CONTROLE', 3: 'UNIDADES DE EXECUÇÃO' };
-        const icons = { 1: 'fa-star', 2: 'fa-shield-halved', 3: 'fa-user-shield' };
+        const icons = { 1: 'fa-star', 2: 'fa-shield', 3: 'fa-user-shield' };
         container.innerHTML = [1, 2, 3].filter(t => tiers[t].length).map(t => `<div class="org-section-title"><span>${labels[t]}</span></div><div class="org-row">${tiers[t].map(node => `<div class="org-box tier-${t}"><span class="org-tier-label"><i class="fas ${icons[t]}"></i></span><div class="org-name">${escapeHtml(node.title)}</div><div class="org-cargo">${escapeHtml(node.description)}</div></div>`).join('')}</div><div class="org-line-vertical"></div>`).join('') + '<div class="footer-restrito">Acesso restrito - Departamento de Inteligência</div>';
         orgCarregado = true;
     } catch { container.innerHTML = '<p style="text-align:center;color:#888">Estrutura organizacional indisponível no momento.</p>'; }
@@ -64,7 +64,7 @@ async function carregarUnidades() {
     try {
         const items = await request('/api/unidades');
         const sorted = [...items].sort((a, b) => (a.tier || 0) - (b.tier || 0));
-        container.innerHTML = sorted.map(item => { const [icon, cls] = unidadeIcones[item.tier] || ['fa-shield-halved', ''];
+        container.innerHTML = sorted.map(item => { const [icon, cls] = unidadeIcones[item.tier] || ['fa-shield', ''];
             return `<div class="unidade-card"><div class="icon-box ${cls}"><i class="fas ${icon}"></i></div><div class="unidade-info"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p></div></div>`;
         }).join('') || '<p style="text-align:center;color:#888">Nenhuma unidade publicada.</p>';
         unidadesCarregadas = true;
