@@ -128,3 +128,13 @@ async function verificarSessaoAdmin() {
     } catch { /* sem sessão ativa */ }
 }
 verificarSessaoAdmin();
+
+// RELÓGIO DA BARRA SUPERIOR
+function atualizarRelogioNav() {
+    const el = document.getElementById('nav-clock');
+    if (!el) return;
+    const now = new Date();
+    el.textContent = now.toLocaleDateString('pt-BR') + ' · ' + now.toLocaleTimeString('pt-BR');
+}
+atualizarRelogioNav();
+setInterval(atualizarRelogioNav, 1000);

@@ -58,7 +58,12 @@ body {
     flex-wrap: wrap;
 }
 .navbar .logo-area { margin-right: 30px; }
-.navbar .nav-item:last-child { margin-left: auto; }
+.navbar .nav-status { margin-left: auto; display: flex; align-items: center; gap: 16px; padding: 0 14px; }
+.navbar .nav-status .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #2ecc71; box-shadow: 0 0 6px #2ecc71; flex-shrink: 0; }
+.navbar .nav-status .status-text { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #8a8a8a; font-weight: 600; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.navbar .nav-status .status-clock { font-family: 'Consolas', monospace; font-size: 11px; color: var(--gold); border-left: 1px solid #222; padding-left: 14px; white-space: nowrap; }
+@media (max-width: 900px) { .navbar .nav-status .status-text { display: none; } }
+@media (max-width: 650px) { .navbar .nav-status { display: none; } }
 
 .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer; }
 .logo-area img { height: 50px; width: 50px; object-fit: cover; border-radius: 50%; }
