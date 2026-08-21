@@ -105,6 +105,18 @@ module.exports = async (req, res) => {
       return;
     }
 
+    if (req.method === 'GET' && mod === 'protocolo' && pathParts.length === 3) {
+      const code = decodeURIComponent(pathParts[2]).trim();
+      const resultado = (await db.getCollection('resultados')).find(item => String(item.token || '').toLowerCase() === code.toLowerCase());
+      if (resultado) { sendJson(res, 200, { type: 'resultado', token: resultado.token, title: resultado.title, status: resultado.status || 'Publicado', date: resultado.date || '' }); return; }
+      const denuncia = await db.getItem('denuncias', code);
+      if (denuncia) { sendJson(res, 200, { type: 'denuncia', id: denuncia.id, status: denuncia.status, motivoEncerramento: denuncia.motivoEncerramento || undefined, createdAt: denuncia.createdAt }); return; }
+      const solicitacao = await db.getItem('solicitacoes', code);
+      if (solicitacao) { sendJson(res, 200, { type: 'solicitacao', id: solicitacao.id, tipo: solicitacao.tipo, status: solicitacao.status, motivoEncerramento: solicitacao.motivoEncerramento || undefined, createdAt: solicitacao.createdAt }); return; }
+      sendJson(res, 404, { error: 'Nenhum resultado localizado para este identificador.' });
+      return;
+    }
+
     if (req.method === 'GET' && mod === 'denuncias' && pathParts.length === 3) {
       const item = await db.getItem('denuncias', pathParts[2]);
       if (!item) { sendJson(res, 404, { error: 'Protocolo não encontrado.' }); return; }

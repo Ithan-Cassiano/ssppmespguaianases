@@ -77,8 +77,8 @@
         <i class="fas fa-magnifying-glass" style="font-size:50px;color:var(--gold);margin-bottom:20px;display:block"></i>
         <h2>Consultar Resultado</h2>
         <div class="select-group">
-            <label>Token ou número do edital</label>
-            <input type="text" id="token" placeholder="Ex: PFV-2026-01" required>
+            <label>Token de resultado ou número do protocolo</label>
+            <input type="text" id="token" placeholder="Ex: PFV-2026-01 ou número do protocolo" required>
         </div>
         <button class="btn-verificar" onclick="verificarResultado()">Verificar Resultado</button>
         <p id="form-message" class="form-message"></p>
@@ -88,26 +88,28 @@
 <div class="container" id="tela-resultados">
     <button onclick="voltarPortal()" class="nav-back"><i class="fas fa-arrow-left"></i> VOLTAR PARA A CONSULTA</button>
     <div class="header-section"><h1 style="font-size:22px;text-transform:uppercase">Resultado localizado</h1></div>
-    <div class="results-wrapper">
-        <table>
-            <thead><tr><th>Token</th><th>Título</th><th>Situação</th><th>Data</th></tr></thead>
-            <tbody id="results-body"></tbody>
-        </table>
-    </div>
+    <div class="results-wrapper" id="results-wrapper"></div>
 </div>
 </div>
 
 <script src="scripts/site.js"></script>
 <script>
+    const tipoLabel = { porte: 'Porte de Armas', documentos: 'Emissão de Documentos', reabilitacao: 'Reabilitação de Ficha', contato: 'Fale Conosco' };
+
     async function verificarResultado() {
         const msg = document.getElementById('form-message');
-        const token = document.getElementById('token').value.trim().toLowerCase();
+        const token = document.getElementById('token').value.trim();
         if (!token) return;
+        msg.textContent = '';
         try {
-            const resultados = await request('/api/resultados');
-            const matches = resultados.filter(item => String(item.token || '').toLowerCase() === token);
-            if (!matches.length) { msg.textContent = 'Nenhum resultado localizado para este identificador.'; return; }
-            document.getElementById('results-body').innerHTML = matches.map(item => `<tr><td class="token-cell">${escapeHtml(item.token)}</td><td>${escapeHtml(item.title)}</td><td><span class="status-tag">${escapeHtml(item.status || 'Publicado')}</span></td><td>${escapeHtml(item.date || '')}</td></tr>`).join('');
+            const result = await request('/api/protocolo/' + encodeURIComponent(token));
+            const wrapper = document.getElementById('results-wrapper');
+            if (result.type === 'resultado') {
+                wrapper.innerHTML = `<table><thead><tr><th>Token</th><th>Título</th><th>Situação</th><th>Data</th></tr></thead><tbody><tr><td class="token-cell">${escapeHtml(result.token)}</td><td>${escapeHtml(result.title)}</td><td><span class="status-tag">${escapeHtml(result.status)}</span></td><td>${escapeHtml(result.date)}</td></tr></tbody></table>`;
+            } else {
+                const label = result.type === 'denuncia' ? 'Denúncia / Comunica PF' : (tipoLabel[result.tipo] || 'Solicitação');
+                wrapper.innerHTML = `<table><thead><tr><th>Protocolo</th><th>Tipo</th><th>Situação</th><th>Data</th></tr></thead><tbody><tr><td class="token-cell">${escapeHtml(result.id)}</td><td>${escapeHtml(label)}</td><td><span class="status-tag">${escapeHtml(result.status)}</span></td><td>${result.createdAt ? escapeHtml(new Date(result.createdAt).toLocaleDateString('pt-BR')) : ''}</td></tr>${result.motivoEncerramento ? `<tr><td colspan="4">Motivo do encerramento: ${escapeHtml(result.motivoEncerramento)}</td></tr>` : ''}</tbody></table>`;
+            }
             document.getElementById('portal-consulta').style.display = 'none';
             document.getElementById('tela-resultados').style.display = 'block';
         } catch (err) { msg.textContent = err.message; }
