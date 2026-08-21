@@ -10,9 +10,13 @@ const apiHandler = require('./api/[...path].js');
 
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = __dirname;
-const ALLOWED_ROOT_FILES = new Set(['index.html', 'servicos.html', 'concursos.html', 'resultados.html', 'corregedoria.html', 'comunica.html', 'ascom.html', 'fale-conosco.html', 'admin.html', 'style.css', 'favicon.ico']);
+// Sem lista fixa de rota->arquivo: qualquer <nome>.html na raiz vira /<nome>
+// automaticamente, igual o cleanUrls do Vercel. Renomear um arquivo (ex.: o
+// painel admin) já muda a URL sozinho, sem precisar editar isso aqui.
+const ROOT_HTML_FILES = fs.readdirSync(__dirname).filter(name => name.endsWith('.html'));
+const ALLOWED_ROOT_FILES = new Set([...ROOT_HTML_FILES, 'style.css', 'favicon.ico']);
 const ALLOWED_DIRS = ['images/', 'scripts/', 'styles/'];
-const CLEAN_ROUTES = { '': 'index.html', servicos: 'servicos.html', concursos: 'concursos.html', resultados: 'resultados.html', corregedoria: 'corregedoria.html', comunica: 'comunica.html', ascom: 'ascom.html', 'fale-conosco': 'fale-conosco.html', admin: 'admin.html' };
+const STEM_TO_FILE = Object.fromEntries(ROOT_HTML_FILES.map(name => [name.slice(0, -5).toLowerCase(), name]));
 
 function isAllowedPath(relative) {
   if (ALLOWED_ROOT_FILES.has(relative)) return true;
@@ -32,7 +36,8 @@ function serveStatic(req, res) {
     return;
   }
 
-  const relative = Object.prototype.hasOwnProperty.call(CLEAN_ROUTES, cleanKey) ? CLEAN_ROUTES[cleanKey] : requested.replace(/^\/+/, '');
+  const stemKey = cleanKey === '' ? 'index' : cleanKey;
+  const relative = STEM_TO_FILE[stemKey] || requested.replace(/^\/+/, '');
   if (!isAllowedPath(relative)) { res.writeHead(404); res.end('Não encontrado'); return; }
   const filePath = path.resolve(ROOT, relative);
   const withinRoot = filePath === ROOT || filePath.startsWith(ROOT + path.sep);

@@ -121,7 +121,7 @@ async function verificarSessaoAdmin() {
         if (!user) return;
         const bar = document.createElement('div');
         bar.id = 'admin-bar';
-        bar.innerHTML = `<span>Sessão: <strong>${escapeHtml(user.name || user.username)}</strong> (${escapeHtml(user.role)})</span><a href="/admin">Editar conteúdo do site ↗</a>`;
+        bar.innerHTML = `<span>Sessão: <strong>${escapeHtml(user.name || user.username)}</strong> (${escapeHtml(user.role)})</span><a href="/painel-e3f6b8e4bf">Editar conteúdo do site ↗</a>`;
         document.body.prepend(bar);
         document.body.classList.add('has-admin-bar');
     } catch { /* sem sessão ativa */ }

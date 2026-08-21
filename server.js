@@ -17,11 +17,11 @@ const loginAttempts = new Map();
 // Somente estes caminhos podem ser baixados como arquivo estático. Tudo fora
 // disso (data/, .git/, server.js, package.json, pages/ legado) é 404 —
 // evita vazar o banco de dados e o código-fonte do servidor.
-const ALLOWED_ROOT_FILES = new Set(['index.html', 'servicos.html', 'concursos.html', 'resultados.html', 'corregedoria.html', 'comunica.html', 'ascom.html', 'fale-conosco.html', 'admin.html', 'style.css', 'favicon.ico']);
+const ALLOWED_ROOT_FILES = new Set(['index.html', 'servicos.html', 'concursos.html', 'resultados.html', 'corregedoria.html', 'comunica.html', 'ascom.html', 'fale-conosco.html', 'painel-e3f6b8e4bf.html', 'style.css', 'favicon.ico']);
 const ALLOWED_DIRS = ['images/', 'scripts/', 'styles/'];
 
 // Rotas "limpas" (sem .html) que o navegador mostra na barra de endereço.
-const CLEAN_ROUTES = { '': 'index.html', 'servicos': 'servicos.html', 'concursos': 'concursos.html', 'resultados': 'resultados.html', 'corregedoria': 'corregedoria.html', 'comunica': 'comunica.html', 'ascom': 'ascom.html', 'fale-conosco': 'fale-conosco.html', 'admin': 'admin.html' };
+const CLEAN_ROUTES = { '': 'index.html', 'servicos': 'servicos.html', 'concursos': 'concursos.html', 'resultados': 'resultados.html', 'corregedoria': 'corregedoria.html', 'comunica': 'comunica.html', 'ascom': 'ascom.html', 'fale-conosco': 'fale-conosco.html', 'painel-e3f6b8e4bf': 'painel-e3f6b8e4bf.html' };
 
 function isAllowedPath(relative) {
   if (ALLOWED_ROOT_FILES.has(relative)) return true;
