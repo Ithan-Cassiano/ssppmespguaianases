@@ -25,11 +25,22 @@
         .edital-card:hover { border-color: var(--gold); transform: translateY(-5px); }
         .edital-card .status { display: inline-block; padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; }
         .status.aberto { color: #2ecc71; border: 1px solid #2ecc71; background: rgba(46,204,113,.1); }
+        .status.concluido { color: var(--gold); border: 1px solid var(--gold); background: rgba(241,196,15,.1); }
         .status.encerrado { color: #e74c3c; border: 1px solid #e74c3c; background: rgba(231,76,60,.1); }
         .edital-card h3 { font-size: 18px; margin-bottom: 10px; }
         .edital-card p { font-size: 13px; color: #999; margin-bottom: 15px; }
         .edital-card .date { font-size: 11px; color: #666; }
+        .edital-actions { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        .btn-edital { background: var(--gold); color: #000; border: none; padding: 10px 18px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; border-radius: 4px; text-decoration: none; display: inline-block; }
+        .btn-edital.secundario { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+        .protocolo-chip { font: 11px 'Consolas', monospace; color: #888; border: 1px dashed #333; padding: 6px 10px; border-radius: 4px; }
         .empty-msg { grid-column: 1/-1; text-align: center; padding: 60px; color: #555; border: 1px dashed #1a1a1a; border-radius: 8px; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); overflow-y: auto; }
+        .modal-content { background-color: #0a0a0a; margin: 4% auto; padding: 30px; border: 1px solid var(--gold); width: 90%; max-width: 550px; border-radius: 8px; }
+        .modal-header { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { color: var(--gold); font-size: 16px; text-transform: uppercase; }
+        .modal .close { color: #fff; font-size: 26px; font-weight: bold; cursor: pointer; background: none; border: none; }
+        .modal-body ul { padding-left: 18px; line-height: 1.9; max-height: 300px; overflow-y: auto; }
     </style>
 </head>
 <body>
@@ -85,14 +96,62 @@
         <div class="editais-grid" id="editais-grid"><div class="empty-msg">Carregando editais...</div></div>
     </div>
 
+    <div id="modalInfo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="modalInfo-title">Informação</h2><button class="close" onclick="fecharModalInfo()">&times;</button></div>
+            <div class="modal-body" id="modalInfo-body"></div>
+        </div>
+    </div>
+
     <script src="scripts/site.js"></script>
     <script>
         let editaisData = [];
+        const SETE_DIAS_MS = 7 * 24 * 60 * 60 * 1000;
+        const dentroDe7Dias = data => data && (Date.now() - new Date(data).getTime()) <= SETE_DIAS_MS;
+
+        function abrirModalInfo(title, bodyHtml) { document.getElementById('modalInfo-title').textContent = title; document.getElementById('modalInfo-body').innerHTML = bodyHtml; document.getElementById('modalInfo').style.display = 'block'; }
+        function fecharModalInfo() { document.getElementById('modalInfo').style.display = 'none'; }
+        window.addEventListener('click', event => { if (event.target.id === 'modalInfo') fecharModalInfo(); });
+
+        function cardActionsHtml(item) {
+            const status = (item.status || '').toLowerCase();
+            if (status === 'aberto') {
+                let html = '';
+                if (item.linkFormulario) html += `<button class="btn-edital" data-inscrever-id="${item.id}">Inscrever-se</button>`;
+                if (item.linkEdital) html += `<a class="btn-edital secundario" href="${escapeHtml(item.linkEdital)}" target="_blank" rel="noopener">Ver Edital</a>`;
+                return html ? `<div class="edital-actions">${html}</div>` : '';
+            }
+            if (Array.isArray(item.aprovados) && item.aprovados.length && dentroDe7Dias(item.resultadoPublicadoEm)) {
+                const chip = item.protocolo ? `<span class="protocolo-chip">Protocolo: ${escapeHtml(item.protocolo)}</span>` : '';
+                return `<div class="edital-actions"><button class="btn-edital" data-aprovados-id="${item.id}">Verificar Aprovados</button>${chip}</div>`;
+            }
+            return '';
+        }
 
         function render(filtro) {
             const grid = document.getElementById('editais-grid');
             const list = filtro === 'todos' ? editaisData : editaisData.filter(item => (item.status || '').toLowerCase() === filtro);
-            grid.innerHTML = list.length ? list.map(item => `<div class="edital-card"><span class="status ${(item.status || '').toLowerCase() === 'aberto' ? 'aberto' : 'encerrado'}">${escapeHtml(item.status || 'Aberto')}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p><div class="date">${escapeHtml(item.date || '')}</div></div>`).join('') : '<div class="empty-msg">Nenhum edital nesta categoria.</div>';
+            grid.innerHTML = list.length ? list.map(item => {
+                const statusLower = (item.status || '').toLowerCase();
+                const badgeClass = statusLower === 'aberto' ? 'aberto' : (statusLower === 'concluído' || statusLower === 'concluido' ? 'concluido' : 'encerrado');
+                return `<div class="edital-card"><span class="status ${badgeClass}">${escapeHtml(item.status || 'Aberto')}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p><div class="date">${escapeHtml(item.date || '')}</div>${cardActionsHtml(item)}</div>`;
+            }).join('') : '<div class="empty-msg">Nenhum edital nesta categoria.</div>';
+
+            grid.querySelectorAll('button[data-inscrever-id]').forEach(btn => btn.onclick = () => {
+                const item = editaisData.find(e => e.id === btn.dataset.inscreverId);
+                if (!item) return;
+                if (item.protocolo) {
+                    abrirModalInfo('Protocolo de inscrição', `<p>Guarde este número — ele é o mesmo para todos os inscritos neste edital e serve para consultar o resultado depois em <strong>/resultados</strong>.</p><p style="font:22px 'Consolas',monospace;color:var(--gold);margin:14px 0">${escapeHtml(item.protocolo)}</p><button class="btn-edital" onclick="window.open('${encodeURI(item.linkFormulario)}','_blank');fecharModalInfo()">Continuar para o formulário</button>`);
+                } else {
+                    window.open(item.linkFormulario, '_blank');
+                }
+            });
+            grid.querySelectorAll('button[data-aprovados-id]').forEach(btn => btn.onclick = () => {
+                const item = editaisData.find(e => e.id === btn.dataset.aprovadosId);
+                if (!item) return;
+                const lista = item.aprovados.map(nome => `<li>${escapeHtml(nome)}</li>`).join('');
+                abrirModalInfo('Aprovados — ' + item.title, `<ul>${lista}</ul><p style="margin-top:14px;font-size:11px;color:#888">Protocolo deste edital: <strong style="color:var(--gold)">${escapeHtml(item.protocolo || '')}</strong> — após 7 dias da publicação, consulte pelo protocolo em /resultados.</p>`);
+            });
         }
 
         document.querySelectorAll('.filtros button').forEach(btn => btn.onclick = () => {

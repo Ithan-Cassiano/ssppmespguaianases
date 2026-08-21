@@ -109,6 +109,8 @@ module.exports = async (req, res) => {
       const code = decodeURIComponent(pathParts[2]).trim();
       const resultado = (await db.getCollection('resultados')).find(item => String(item.token || '').toLowerCase() === code.toLowerCase());
       if (resultado) { sendJson(res, 200, { type: 'resultado', token: resultado.token, title: resultado.title, status: resultado.status || 'Publicado', date: resultado.date || '' }); return; }
+      const edital = (await db.getCollection('editais')).find(item => String(item.protocolo || '').toLowerCase() === code.toLowerCase());
+      if (edital) { sendJson(res, 200, { type: 'edital', id: edital.id, title: edital.title, status: edital.status, protocolo: edital.protocolo, aprovados: edital.aprovados || [], date: edital.date || '' }); return; }
       const denuncia = await db.getItem('denuncias', code);
       if (denuncia) { sendJson(res, 200, { type: 'denuncia', id: denuncia.id, status: denuncia.status, motivoEncerramento: denuncia.motivoEncerramento || undefined, createdAt: denuncia.createdAt }); return; }
       const solicitacao = await db.getItem('solicitacoes', code);
@@ -185,6 +187,7 @@ module.exports = async (req, res) => {
       const required = mod === 'news' ? ['title', 'summary'] : mod === 'denuncias' ? ['subject', 'description'] : ['title', 'description'];
       if (required.some(key => !body[key])) { sendJson(res, 400, { error: 'Preencha os campos obrigatórios.' }); return; }
       const item = { id: crypto.randomUUID(), ...body, createdAt: new Date().toISOString(), status: body.status || (mod === 'editais' ? 'Aberto' : 'Publicado') };
+      if (mod === 'editais') item.protocolo = 'EDT-' + crypto.randomBytes(4).toString('hex').toUpperCase();
       await db.insertItem(mod, item);
       sendJson(res, 201, item);
       return;
@@ -202,15 +205,20 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'PATCH' && modules.includes(mod) && pathParts[2]) {
+      let existing = null;
+      if (mod === 'denuncias' || mod === 'solicitacoes' || mod === 'editais') existing = await db.getItem(mod, pathParts[2]);
       if (mod === 'denuncias' || mod === 'solicitacoes') {
-        const item = await db.getItem(mod, pathParts[2]);
-        if (!item) { sendJson(res, 404, { error: 'Registro não encontrado.' }); return; }
-        if (!can(user, formPermission(mod, item))) { sendJson(res, 403, { error: 'Sem permissão para este registro.' }); return; }
+        if (!existing) { sendJson(res, 404, { error: 'Registro não encontrado.' }); return; }
+        if (!can(user, formPermission(mod, existing))) { sendJson(res, 403, { error: 'Sem permissão para este registro.' }); return; }
       } else if (!can(user, mod)) { sendJson(res, 403, { error: 'Sem permissão para este módulo.' }); return; }
       const body = await readBody(req);
       if (body.status === 'Encerrado' && !String(body.motivoEncerramento || '').trim()) { sendJson(res, 400, { error: 'Informe o motivo do encerramento.' }); return; }
       const { id, createdAt, ...rest } = body;
       if (Array.isArray(rest.anexosAnalise)) rest.anexosAnalise = rest.anexosAnalise.filter(link => typeof link === 'string').map(link => link.trim()).filter(Boolean).slice(0, 5);
+      if (mod === 'editais' && Array.isArray(rest.aprovados)) {
+        rest.aprovados = rest.aprovados.filter(name => typeof name === 'string').map(name => name.trim()).filter(Boolean).slice(0, 1000);
+        if (rest.aprovados.length && !(existing && existing.resultadoPublicadoEm)) rest.resultadoPublicadoEm = new Date().toISOString();
+      }
       const updated = await db.updateItem(mod, pathParts[2], rest);
       if (!updated) { sendJson(res, 404, { error: 'Registro não encontrado.' }); return; }
       sendJson(res, 200, updated);
