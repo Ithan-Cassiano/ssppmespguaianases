@@ -35,7 +35,8 @@ async function carregarOrganograma() {
         const tiers = { 1: [], 2: [], 3: [] };
         items.forEach(item => { (tiers[item.tier] || tiers[3]).push(item); });
         const labels = { 1: 'DIREÇÃO-GERAL', 2: 'COORDENAÇÕES E CONTROLE', 3: 'UNIDADES DE EXECUÇÃO' };
-        container.innerHTML = [1, 2, 3].filter(t => tiers[t].length).map(t => `<div class="org-section-title"><span>${labels[t]}</span></div><div class="org-row">${tiers[t].map(node => `<div class="org-box"><span class="org-tier-label"><i class="fas fa-shield-halved"></i></span><div class="org-name">${escapeHtml(node.title)}</div><div class="org-cargo">${escapeHtml(node.description)}</div></div>`).join('')}</div><div class="org-line-vertical"></div>`).join('') + '<div class="footer-restrito">Acesso restrito - Departamento de Inteligência</div>';
+        const icons = { 1: 'fa-star', 2: 'fa-shield-halved', 3: 'fa-user-shield' };
+        container.innerHTML = [1, 2, 3].filter(t => tiers[t].length).map(t => `<div class="org-section-title"><span>${labels[t]}</span></div><div class="org-row">${tiers[t].map(node => `<div class="org-box tier-${t}"><span class="org-tier-label"><i class="fas ${icons[t]}"></i></span><div class="org-name">${escapeHtml(node.title)}</div><div class="org-cargo">${escapeHtml(node.description)}</div></div>`).join('')}</div><div class="org-line-vertical"></div>`).join('') + '<div class="footer-restrito">Acesso restrito - Departamento de Inteligência</div>';
         orgCarregado = true;
     } catch { container.innerHTML = '<p style="text-align:center;color:#888">Estrutura organizacional indisponível no momento.</p>'; }
 }
