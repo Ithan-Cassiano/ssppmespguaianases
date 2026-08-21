@@ -1,12 +1,12 @@
 // Servidor local só pra testar antes de mandar pro Vercel — usa a mesma função
-// serverless de api/[...path].js e serve os arquivos estáticos com as mesmas
+// serverless de api/index.js e serve os arquivos estáticos com as mesmas
 // regras de URL limpa que o vercel.json aplica em produção.
 // Rodar: node --env-file=.env dev-server.js   (precisa de DATABASE_URL e SESSION_SECRET no .env)
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const apiHandler = require('./api/[...path].js');
+const apiHandler = require('./api/index.js');
 
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = __dirname;
