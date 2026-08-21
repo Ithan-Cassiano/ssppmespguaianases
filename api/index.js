@@ -8,8 +8,15 @@ const LOGIN_WINDOW_MS = 10 * 60 * 1000;
 const LOGIN_MAX_ATTEMPTS = 8;
 
 const modules = ['news', 'editais', 'resultados', 'denuncias', 'operacionais', 'servicos', 'solicitacoes', 'organograma', 'medalhas', 'unidades'];
-const permissions = ['news', 'editais', 'resultados', 'denuncias', 'operacionais', 'servicos', 'solicitacoes', 'organograma', 'medalhas', 'unidades', 'config', 'users'];
+const permissions = ['news', 'editais', 'resultados', 'denuncias', 'comunica_pf', 'porte', 'documentos', 'reabilitacao', 'fale_conosco', 'operacionais', 'servicos', 'organograma', 'medalhas', 'unidades', 'config', 'users'];
 const requestKinds = ['porte', 'documentos', 'reabilitacao', 'contato'];
+const requestKindPermission = { porte: 'porte', documentos: 'documentos', reabilitacao: 'reabilitacao', contato: 'fale_conosco' };
+
+function formPermission(collection, item) {
+  if (collection === 'denuncias') return item.origem === 'comunica' ? 'comunica_pf' : 'denuncias';
+  if (collection === 'solicitacoes') return requestKindPermission[item.tipo] || null;
+  return collection;
+}
 
 function securityHeaders() {
   return {
@@ -86,8 +93,13 @@ module.exports = async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/api/admin/data') {
       if (!user) { sendJson(res, 401, { error: 'Faça login.' }); return; }
       const data = {};
-      for (const key of modules) data[key] = await db.getCollection(key);
-      data.usuarios = (await db.listUsers()).map(safeUser);
+      for (const key of modules) {
+        const collection = await db.getCollection(key);
+        data[key] = (key === 'denuncias' || key === 'solicitacoes')
+          ? collection.filter(item => can(user, formPermission(key, item)))
+          : (can(user, key) ? collection : []);
+      }
+      if (can(user, 'users')) data.usuarios = (await db.listUsers()).map(safeUser);
       data.config = await db.getConfig();
       sendJson(res, 200, data);
       return;
@@ -96,13 +108,13 @@ module.exports = async (req, res) => {
     if (req.method === 'GET' && mod === 'denuncias' && pathParts.length === 3) {
       const item = await db.getItem('denuncias', pathParts[2]);
       if (!item) { sendJson(res, 404, { error: 'Protocolo não encontrado.' }); return; }
-      sendJson(res, 200, { id: item.id, status: item.status, createdAt: item.createdAt });
+      sendJson(res, 200, { id: item.id, status: item.status, motivoEncerramento: item.motivoEncerramento || undefined, createdAt: item.createdAt });
       return;
     }
     if (req.method === 'GET' && mod === 'solicitacoes' && pathParts.length === 3) {
       const item = await db.getItem('solicitacoes', pathParts[2]);
       if (!item) { sendJson(res, 404, { error: 'Protocolo não encontrado.' }); return; }
-      sendJson(res, 200, { id: item.id, tipo: item.tipo, status: item.status, createdAt: item.createdAt });
+      sendJson(res, 200, { id: item.id, tipo: item.tipo, status: item.status, motivoEncerramento: item.motivoEncerramento || undefined, createdAt: item.createdAt });
       return;
     }
 
@@ -145,6 +157,7 @@ module.exports = async (req, res) => {
         id: crypto.randomUUID(), subject: String(body.subject).trim(), description: String(body.description).trim(),
         contact: String(body.contact || '').trim(), alvo: String(body.alvo || '').trim(), local: String(body.local || '').trim(),
         anonima: Boolean(body.anonima),
+        origem: body.origem === 'comunica' ? 'comunica' : 'formal',
         anexos: Array.isArray(body.anexos) ? body.anexos.filter(link => typeof link === 'string').map(link => link.trim()).filter(Boolean).slice(0, 5) : [],
         status: 'Recebida', createdAt: new Date().toISOString(),
       };
@@ -166,16 +179,26 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'DELETE' && modules.includes(mod) && pathParts[2]) {
-      if (!can(user, mod)) { sendJson(res, 403, { error: 'Sem permissão para este módulo.' }); return; }
+      if (mod === 'denuncias' || mod === 'solicitacoes') {
+        const item = await db.getItem(mod, pathParts[2]);
+        if (!item) { sendJson(res, 404, { error: 'Registro não encontrado.' }); return; }
+        if (!can(user, formPermission(mod, item))) { sendJson(res, 403, { error: 'Sem permissão para este registro.' }); return; }
+      } else if (!can(user, mod)) { sendJson(res, 403, { error: 'Sem permissão para este módulo.' }); return; }
       await db.deleteItem(mod, pathParts[2]);
       sendJson(res, 200, { ok: true });
       return;
     }
 
     if (req.method === 'PATCH' && modules.includes(mod) && pathParts[2]) {
-      if (!can(user, mod)) { sendJson(res, 403, { error: 'Sem permissão para este módulo.' }); return; }
+      if (mod === 'denuncias' || mod === 'solicitacoes') {
+        const item = await db.getItem(mod, pathParts[2]);
+        if (!item) { sendJson(res, 404, { error: 'Registro não encontrado.' }); return; }
+        if (!can(user, formPermission(mod, item))) { sendJson(res, 403, { error: 'Sem permissão para este registro.' }); return; }
+      } else if (!can(user, mod)) { sendJson(res, 403, { error: 'Sem permissão para este módulo.' }); return; }
       const body = await readBody(req);
+      if (body.status === 'Encerrado' && !String(body.motivoEncerramento || '').trim()) { sendJson(res, 400, { error: 'Informe o motivo do encerramento.' }); return; }
       const { id, createdAt, ...rest } = body;
+      if (Array.isArray(rest.anexosAnalise)) rest.anexosAnalise = rest.anexosAnalise.filter(link => typeof link === 'string').map(link => link.trim()).filter(Boolean).slice(0, 5);
       const updated = await db.updateItem(mod, pathParts[2], rest);
       if (!updated) { sendJson(res, 404, { error: 'Registro não encontrado.' }); return; }
       sendJson(res, 200, updated);

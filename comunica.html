@@ -149,6 +149,7 @@
                     contact: [document.getElementById('nome').value, document.getElementById('telefone').value].filter(Boolean).join(' / '),
                     alvo: document.getElementById('local').value,
                     anonima: true,
+                    origem: 'comunica',
                     anexos: [document.getElementById('img1').value, document.getElementById('img2').value, document.getElementById('link_video').value]
                 }) });
                 msg.textContent = 'Informação recebida com sigilo. Protocolo: ' + result.id;

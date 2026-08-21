@@ -171,6 +171,7 @@
                     contact: document.getElementById('nome').value + ' / ' + document.getElementById('telefone').value,
                     alvo: document.getElementById('alvo').value,
                     local: local,
+                    origem: 'formal',
                     anexos: [document.getElementById('link_foto').value, document.getElementById('link_video').value]
                 }) });
                 msg.textContent = 'Protocolo registrado: ' + result.id;
